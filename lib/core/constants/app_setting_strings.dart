@@ -1,0 +1,3 @@
+class AppSettingStrings {
+  AppSettingStrings._();
+}
