@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'features/main/pages/root_page.dart';
+import 'features/main/state/main_state.dart';
 
 void main() {
   runApp(
-    const RootPage(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => MainState(),
+        ),
+      ],
+      child: const RootPage(),
+    ),
   );
 }

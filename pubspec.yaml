@@ -33,6 +33,7 @@ dependencies:
   hive_ce: ^2.19.3
   path_provider: ^2.1.6
   equatable: ^2.1.0
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:

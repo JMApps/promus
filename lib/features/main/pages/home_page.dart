@@ -1,12 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../core/constants/app_strings.dart';
+import '../../../core/constants/icon_paths.dart';
 import '../../../core/theme/app_paddings.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_shapes.dart';
+import '../state/main_state.dart';
+import '../widgets/main_navigation_item.dart';
+import '../widgets/main_navigation_label.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,6 +19,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
+    final currentNavigatorIndex = context.select<MainState, int>((s) => s.mainNavigationIndex);
     return Scaffold(
       body: Container(),
       bottomNavigationBar: MediaQuery.removePadding(
@@ -40,44 +46,26 @@ class HomePage extends StatelessWidget {
                   unselectedItemColor: appColors.onSurface.withAlpha(185),
                   items: [
                     SalomonBottomBarItem(
-                      icon: Image.asset(
-                        'assets/icons/home.png',
-                        height: 25,
-                        width: 25,
-                        color: appColors.primary,
-                      ),
-                      title: const Text(AppStrings.titleHome),
+                      icon: const MainNavigationIcon(iconPath: IconPaths.iconPathHome),
+                      title: const MainNavigationLabel(label: AppStrings.titleHome),
                     ),
                     SalomonBottomBarItem(
-                      icon: Image.asset(
-                        'assets/icons/book.png',
-                        height: 25,
-                        width: 25,
-                        color: appColors.primary,
-                      ),
-                      title: const Text(AppStrings.titleMushaf),
+                      icon: const MainNavigationIcon(iconPath: IconPaths.iconPathMushaf),
+                      title: const MainNavigationLabel(label: AppStrings.titleMushaf),
                     ),
                     SalomonBottomBarItem(
-                      icon: Image.asset(
-                        'assets/icons/library.png',
-                        height: 25,
-                        width: 25,
-                        color: appColors.primary,
-                      ),
-                      title: const Text(AppStrings.titleLibrary),
+                      icon: const MainNavigationIcon(iconPath: IconPaths.iconPathLibrary),
+                      title: const MainNavigationLabel(label: AppStrings.titleLibrary),
                     ),
                     SalomonBottomBarItem(
-                      icon: Image.asset(
-                        'assets/icons/setting.png',
-                        height: 25,
-                        width: 25,
-                        color: appColors.primary,
-                      ),
-                      title: const Text(AppStrings.titleSettings),
+                      icon: const MainNavigationIcon(iconPath: IconPaths.iconPathSetting),
+                      title: const MainNavigationLabel(label: AppStrings.titleSettings),
                     ),
                   ],
-                  currentIndex: 0,
-                  onTap: (int index) {},
+                  currentIndex: currentNavigatorIndex,
+                  onTap: (int index) {
+                    context.read<MainState>().changeNavigationIndex(index);
+                  },
                 ),
               ),
             ),
