@@ -9,19 +9,40 @@ import '../../../core/constants/icon_paths.dart';
 import '../../../core/theme/app_paddings.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_shapes.dart';
+import '../../prayer/presentation/pages/main_prayer_page.dart';
 import '../state/main_state.dart';
-import '../widgets/main_navigation_item.dart';
+import '../widgets/main_navigation_icon.dart';
 import '../widgets/main_navigation_label.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late final List<Widget> _mainPages;
+
+  @override
+  void initState() {
+    super.initState();
+    _mainPages = <Widget>[
+      const MainPrayerPage(),
+      const MainPrayerPage(),
+      const MainPrayerPage(),
+      const MainPrayerPage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
     final currentNavigatorIndex = context.select<MainState, int>((s) => s.mainNavigationIndex);
     return Scaffold(
-      body: Container(),
+      body: _mainPages[currentNavigatorIndex],
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       bottomNavigationBar: MediaQuery.removePadding(
         context: context,
         removeTop: true,
@@ -34,10 +55,10 @@ class HomePage extends StatelessWidget {
           child: ClipRRect(
             borderRadius: AppRadius.large,
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10.5, sigmaY: 10.5),
+              filter: ImageFilter.blur(sigmaX: 12.5, sigmaY: 12.5),
               child: Container(
                 decoration: BoxDecoration(
-                  color: appColors.surface,
+                  color: appColors.primaryContainer.withAlpha(055),
                   borderRadius: AppRadius.large,
                 ),
                 child: SalomonBottomBar(

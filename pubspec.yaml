@@ -34,6 +34,8 @@ dependencies:
   path_provider: ^2.1.6
   equatable: ^2.1.0
   provider: ^6.1.5+1
+  easy_stepper: ^1.2.0
+  sleek_circular_slider: ^2.1.0
 
 dev_dependencies:
   flutter_test:

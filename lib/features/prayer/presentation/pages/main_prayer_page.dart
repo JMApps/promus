@@ -1,0 +1,266 @@
+import 'package:easy_stepper/easy_stepper.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+
+import '../../../../core/theme/app_paddings.dart';
+import '../../../../core/theme/app_shapes.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
+
+class MainPrayerPage extends StatelessWidget {
+  const MainPrayerPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final appColors = Theme.of(context).colorScheme;
+    return SingleChildScrollView(
+      padding: const .only(
+        left: AppSpacing.medium,
+        top: kToolbarHeight + AppSpacing.small,
+        right: AppSpacing.medium,
+        bottom: kBottomNavigationBarHeight + AppSpacing.small,
+      ),
+      child: Column(
+        crossAxisAlignment: .stretch,
+        children: [
+          Card(
+            elevation: 0,
+            child: Row(
+              children: [
+                Expanded(
+                  child: CupertinoButton(
+                    padding: const .symmetric(
+                      horizontal: AppSpacing.medium,
+                      vertical: AppSpacing.small,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          CupertinoIcons.location_solid,
+                          size: 25.0,
+                          color: appColors.secondary,
+                        ),
+                        const SizedBox(width: AppSpacing.xSmall),
+                        Flexible(
+                          child: Text(
+                            'Izmir',
+                            style: AppTextStyles.medium.copyWith(color: appColors.secondary),
+                            overflow: .ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+                CupertinoButton(
+                  padding: .zero,
+                  child: Icon(
+                    Icons.settings,
+                    size: 25.0,
+                    color: appColors.tertiary,
+                  ),
+                  onPressed: () {},
+                ),
+                CupertinoButton(
+                  padding: .zero,
+                  child: Icon(
+                    Icons.calendar_month_rounded,
+                    size: 25.0,
+                    color: appColors.secondary,
+                  ),
+                  onPressed: () {},
+                ),
+                CupertinoButton(
+                  padding: .zero,
+                  child: Icon(
+                    Icons.compass_calibration_rounded,
+                    size: 25.0,
+                    color: appColors.secondary,
+                  ),
+                  onPressed: () {},
+                ),
+                CupertinoButton(
+                  padding: const .only(right: AppSpacing.medium),
+                  child: Icon(
+                    Icons.notifications,
+                    size: 25.0,
+                    color: appColors.secondary,
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.medium),
+          Card(
+            elevation: 0,
+            child: ListTile(
+              onTap: () {},
+              visualDensity: .compact,
+              shape: AppShapes.medium,
+              dense: true,
+              minVerticalPadding: 0,
+              minTileHeight: 0,
+              splashColor: appColors.secondaryContainer,
+              contentPadding: const .symmetric(horizontal: AppSpacing.medium, vertical: AppSpacing.small),
+              title: const Text(
+                '27 июнь, 2026',
+              ),
+              trailing: const Icon(Icons.keyboard_arrow_right_rounded),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.small),
+          Card(
+            elevation: 0,
+            child: ListTile(
+              onTap: () {},
+              visualDensity: .compact,
+              shape: AppShapes.medium,
+              dense: true,
+              minVerticalPadding: 0,
+              minTileHeight: 0,
+              splashColor: appColors.secondaryContainer,
+              contentPadding: const .symmetric(horizontal: AppSpacing.medium, vertical: AppSpacing.small),
+              title: const Text(
+                '15 сафар, 1448',
+              ),
+              trailing: const Icon(Icons.keyboard_arrow_right_rounded),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.medium),
+          Card(
+            elevation: 0,
+            child: Padding(
+              padding: AppPaddings.medium,
+              child: Row(
+                mainAxisAlignment: .center,
+                children: [
+                  Flexible(
+                    child: EasyStepper(
+                      verticalAlignment: .start,
+                      activeStep: 1,
+                      direction: .vertical,
+                      showTitle: true,
+                      showLoadingAnimation: false,
+                      stepRadius: AppSpacing.large,
+                      finishedStepBackgroundColor: appColors.primary,
+                      activeStepBackgroundColor: appColors.tertiary,
+                      unreachedStepBorderColor: appColors.secondaryContainer,
+                      activeStepBorderColor: Colors.transparent,
+                      unreachedStepIconColor: appColors.secondaryContainer,
+                      activeStepIconColor: appColors.primaryContainer,
+                      borderThickness: 3.5,
+                      activeStepBorderType: .normal,
+                      unreachedStepBorderType: .normal,
+                      lineStyle: const LineStyle(
+                        lineType: .dotted,
+                        unreachedLineType: .dotted,
+                      ),
+                      steps: const [
+                        EasyStep(
+                          icon: Icon(CupertinoIcons.sparkles),
+                          customTitle: Text(
+                            'Фаджр\n03:56',
+                          ),
+                        ),
+                        EasyStep(
+                          icon: Icon(CupertinoIcons.sun_max_fill),
+                          customTitle: Text(
+                            'Зухр\n12:41',
+                          ),
+                        ),
+                        EasyStep(
+                          icon: Icon(CupertinoIcons.sun_min_fill),
+                          customTitle: Text(
+                            '\'Аср\n16:28',
+                          ),
+                        ),
+                        EasyStep(
+                          icon: Icon(CupertinoIcons.sunset_fill),
+                          customTitle: Text(
+                            'Магриб\n19:42',
+                          ),
+                        ),
+                        EasyStep(
+                          icon: Icon(CupertinoIcons.moon_stars_fill),
+                          customTitle: Text(
+                            '\'Иша\n21:16',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: .stretch,
+                      children: [
+                        SleekCircularSlider(
+                          appearance: CircularSliderAppearance(
+                            startAngle: 270,
+                            angleRange: 360,
+                            counterClockwise: true,
+                            customWidths: CustomSliderWidths(
+                              progressBarWidth: AppSpacing.medium,
+                              shadowWidth: 0,
+                            ),
+                            customColors: CustomSliderColors(
+                              trackColor: appColors.tertiaryContainer,
+                              progressBarColor: appColors.tertiary,
+                            ),
+                          ),
+                          min: 0,
+                          max: 100,
+                          initialValue: 75,
+                          innerWidget: (_) => const Column(
+                            mainAxisSize: .min,
+                            mainAxisAlignment: .center,
+                            children: [
+                              Text(
+                                'Зухр',
+                                style: AppTextStyles.medium,
+                              ),
+                              Text(
+                                '-01:23',
+                                style: AppTextStyles.medium,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.medium),
+          Card(
+            elevation: 0,
+            child: ListTile(
+              onTap: () {},
+              shape: AppShapes.medium,
+              splashColor: appColors.secondaryContainer,
+              visualDensity: .compact,
+              contentPadding: const .symmetric(horizontal: AppSpacing.medium),
+              title: const Text('Время утренних азкаров'),
+              leading: Icon(
+                Icons.back_hand_rounded,
+                size: 20.0,
+                color: appColors.secondary,
+              ),
+              trailing: Icon(
+                Icons.keyboard_arrow_right_rounded,
+                color: appColors.primary,
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.medium),
+        ],
+      ),
+    );
+  }
+}

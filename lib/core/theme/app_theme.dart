@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:promus/core/theme/app_spacing.dart';
 
 import '../constants/font_families.dart';
 import 'app_radius.dart';
+import 'app_spacing.dart';
 
 class AppTheme {
   final Color seedColor;
@@ -42,6 +42,7 @@ class AppTheme {
         textStyle: TextStyle(
           color: colorScheme.onSurface,
           fontSize: AppSpacing.medium,
+          fontFamily: FontFamilies.ptSans,
         ),
       ),
     );

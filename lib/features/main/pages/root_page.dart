@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/app_strings.dart';
 import '../../../core/theme/app_theme.dart';
 import 'home_page.dart';
 
@@ -10,9 +11,10 @@ class RootPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme(seedColor: Colors.teal);
+    final appTheme = AppTheme(seedColor: Colors.amber);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: AppStrings.appName,
       theme: appTheme.lightTheme,
       darkTheme: appTheme.darkTheme,
       builder: (context, child) {
