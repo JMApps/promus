@@ -16,22 +16,21 @@ class MainPrayerPage extends StatelessWidget {
     final appColors = Theme.of(context).colorScheme;
     return SingleChildScrollView(
       padding: const .only(
-        left: AppSpacing.medium,
+        left: AppSpacing.small,
         top: kToolbarHeight + AppSpacing.small,
-        right: AppSpacing.medium,
+        right: AppSpacing.small,
         bottom: kBottomNavigationBarHeight + AppSpacing.small,
       ),
       child: Column(
         crossAxisAlignment: .stretch,
         children: [
           Card(
-            elevation: 0,
             child: Row(
               children: [
                 Expanded(
                   child: CupertinoButton(
                     padding: const .symmetric(
-                      horizontal: AppSpacing.medium,
+                      horizontal: AppSpacing.small,
                       vertical: AppSpacing.small,
                     ),
                     child: Row(
@@ -83,7 +82,7 @@ class MainPrayerPage extends StatelessWidget {
                   onPressed: () {},
                 ),
                 CupertinoButton(
-                  padding: const .only(right: AppSpacing.medium),
+                  padding: const .only(right: AppSpacing.small),
                   child: Icon(
                     Icons.notifications,
                     size: 25.0,
@@ -97,6 +96,7 @@ class MainPrayerPage extends StatelessWidget {
           const SizedBox(height: AppSpacing.medium),
           Card(
             elevation: 0,
+            color: appColors.primaryContainer,
             child: ListTile(
               onTap: () {},
               visualDensity: .compact,
@@ -105,7 +105,10 @@ class MainPrayerPage extends StatelessWidget {
               minVerticalPadding: 0,
               minTileHeight: 0,
               splashColor: appColors.secondaryContainer,
-              contentPadding: const .symmetric(horizontal: AppSpacing.medium, vertical: AppSpacing.small),
+              contentPadding: const .symmetric(
+                horizontal: AppSpacing.medium,
+                vertical: AppSpacing.small,
+              ),
               title: const Text(
                 '27 июнь, 2026',
               ),
@@ -114,6 +117,7 @@ class MainPrayerPage extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.small),
           Card(
+            color: appColors.secondaryContainer,
             elevation: 0,
             child: ListTile(
               onTap: () {},
@@ -123,16 +127,72 @@ class MainPrayerPage extends StatelessWidget {
               minVerticalPadding: 0,
               minTileHeight: 0,
               splashColor: appColors.secondaryContainer,
-              contentPadding: const .symmetric(horizontal: AppSpacing.medium, vertical: AppSpacing.small),
+              contentPadding: const .symmetric(
+                horizontal: AppSpacing.medium,
+                vertical: AppSpacing.small,
+              ),
               title: const Text(
                 '15 сафар, 1448',
               ),
               trailing: const Icon(Icons.keyboard_arrow_right_rounded),
             ),
           ),
-          const SizedBox(height: AppSpacing.medium),
+          const SizedBox(height: AppSpacing.small),
+          SizedBox(
+            height: 35,
+            child: Row(
+              mainAxisAlignment: .spaceBetween,
+              children: [
+                const Card(
+                  child: Padding(
+                    padding: AppPaddings.hrMediumVrXSmall,
+                    child: Text('Пн'),
+                  ),
+                ),
+                const Card(
+                  child: Padding(
+                    padding: AppPaddings.hrMediumVrXSmall,
+                    child: Text('Вт'),
+                  ),
+                ),
+                const Card(
+                  child: Padding(
+                    padding: AppPaddings.hrMediumVrXSmall,
+                    child: Text('Ср'),
+                  ),
+                ),
+                Card(
+                  color: appColors.inversePrimary,
+                  child: const Padding(
+                    padding: AppPaddings.hrMediumVrXSmall,
+                    child: Text(
+                      'Чт',
+                    ),
+                  ),
+                ),
+                const Card(
+                  child: Padding(
+                    padding: AppPaddings.hrMediumVrXSmall,
+                    child: Text('Пт'),
+                  ),
+                ),
+                const Card(
+                  child: Padding(
+                    padding: AppPaddings.hrMediumVrXSmall,
+                    child: Text('Сб'),
+                  ),
+                ),
+                const Card(
+                  child: Padding(
+                    padding: AppPaddings.hrMediumVrXSmall,
+                    child: Text('Вс'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.small),
           Card(
-            elevation: 0,
             child: Padding(
               padding: AppPaddings.medium,
               child: Row(
@@ -202,6 +262,40 @@ class MainPrayerPage extends StatelessWidget {
                           appearance: CircularSliderAppearance(
                             startAngle: 270,
                             angleRange: 360,
+                            counterClockwise: false,
+                            customWidths: CustomSliderWidths(
+                              progressBarWidth: AppSpacing.medium,
+                              shadowWidth: 0,
+                            ),
+                            customColors: CustomSliderColors(
+                              trackColor: appColors.secondaryContainer,
+                              progressBarColor: appColors.secondary,
+                              dotColor: appColors.secondaryContainer,
+                            ),
+                          ),
+                          min: 0,
+                          max: 100,
+                          initialValue: 75,
+                          innerWidget: (_) => const Column(
+                            mainAxisSize: .min,
+                            mainAxisAlignment: .center,
+                            children: [
+                              Text(
+                                'Фаджр',
+                                style: AppTextStyles.medium,
+                              ),
+                              Text(
+                                '00:23',
+                                style: AppTextStyles.medium,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.medium),
+                        SleekCircularSlider(
+                          appearance: CircularSliderAppearance(
+                            startAngle: 270,
+                            angleRange: 360,
                             counterClockwise: true,
                             customWidths: CustomSliderWidths(
                               progressBarWidth: AppSpacing.medium,
@@ -210,6 +304,7 @@ class MainPrayerPage extends StatelessWidget {
                             customColors: CustomSliderColors(
                               trackColor: appColors.tertiaryContainer,
                               progressBarColor: appColors.tertiary,
+                              dotColor: appColors.tertiaryContainer,
                             ),
                           ),
                           min: 0,
@@ -224,7 +319,7 @@ class MainPrayerPage extends StatelessWidget {
                                 style: AppTextStyles.medium,
                               ),
                               Text(
-                                '-01:23',
+                                '-06:23',
                                 style: AppTextStyles.medium,
                               ),
                             ],
@@ -240,6 +335,7 @@ class MainPrayerPage extends StatelessWidget {
           const SizedBox(height: AppSpacing.medium),
           Card(
             elevation: 0,
+            color: appColors.primaryContainer,
             child: ListTile(
               onTap: () {},
               shape: AppShapes.medium,
@@ -259,6 +355,100 @@ class MainPrayerPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.medium),
+          Card(
+            child: Padding(
+              padding: AppPaddings.mediumBottomSmall,
+              child: Row(
+                crossAxisAlignment: .center,
+                mainAxisAlignment: .center,
+                children: [
+                  Flexible(
+                    child: EasyStepper(
+                      verticalAlignment: .start,
+                      activeStep: 1,
+                      direction: .horizontal,
+                      showTitle: true,
+                      showLoadingAnimation: false,
+                      stepRadius: AppSpacing.large,
+                      finishedStepBackgroundColor: appColors.primary,
+                      activeStepBackgroundColor: appColors.tertiary,
+                      unreachedStepBorderColor: appColors.secondaryContainer,
+                      activeStepBorderColor: Colors.transparent,
+                      unreachedStepIconColor: appColors.secondaryContainer,
+                      activeStepIconColor: appColors.primaryContainer,
+                      borderThickness: 3.5,
+                      activeStepBorderType: .normal,
+                      unreachedStepBorderType: .normal,
+                      lineStyle: const LineStyle(
+                        lineLength: .infinity,
+                        lineType: .dotted,
+                        unreachedLineType: .dotted,
+                      ),
+                      steps: const [
+                        EasyStep(
+                          icon: Icon(CupertinoIcons.sunrise_fill),
+                          customTitle: Text(
+                            'Восход\n03:56',
+                            textAlign: .center,
+                          ),
+                        ),
+                        EasyStep(
+                          icon: Icon(CupertinoIcons.moon_fill),
+                          customTitle: Text(
+                            'Полночь\n12:41',
+                            textAlign: .center,
+                          ),
+                        ),
+                        EasyStep(
+                          icon: Icon(Icons.donut_small),
+                          customTitle: Text(
+                            'Треть\n16:28',
+                            textAlign: .center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.large),
+                  SleekCircularSlider(
+                    appearance: CircularSliderAppearance(
+                      size: 85,
+                      startAngle: 270,
+                      angleRange: 360,
+                      counterClockwise: true,
+                      customWidths: CustomSliderWidths(
+                        progressBarWidth: AppSpacing.small,
+                        shadowWidth: 0,
+                      ),
+                      customColors: CustomSliderColors(
+                        trackColor: appColors.primaryContainer,
+                        progressBarColor: appColors.primary,
+                        dotColor: appColors.primaryContainer,
+                      ),
+                    ),
+                    min: 0,
+                    max: 100,
+                    initialValue: 75,
+                    innerWidget: (_) => const Column(
+                      mainAxisSize: .min,
+                      mainAxisAlignment: .center,
+                      children: [
+                        Text(
+                          'Полночь',
+                          style: AppTextStyles.small,
+                        ),
+                        Text(
+                          '-06:23',
+                          style: AppTextStyles.small,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.medium * 2),
         ],
       ),
     );
