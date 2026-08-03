@@ -5,6 +5,6 @@ class AppStrings {
 
   static const String titleHome = 'Главная';
   static const String titleMushaf = 'Мусхаф';
-  static const String titleLibrary = 'Библиотека';
-  static const String titleSettings = 'Настройки';
+  static const String titleFortress = 'Крепость';
+  static const String titleCounter = 'Счётчик';
 }

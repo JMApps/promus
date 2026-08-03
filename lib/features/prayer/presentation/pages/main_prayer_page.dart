@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+import '../../../../core/constants/icon_paths.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../main/widgets/main_icon_item.dart';
 
 class MainPrayerPage extends StatelessWidget {
   const MainPrayerPage({super.key});
@@ -17,7 +19,6 @@ class MainPrayerPage extends StatelessWidget {
     return SingleChildScrollView(
       padding: const .only(
         left: AppSpacing.small,
-        top: kToolbarHeight + AppSpacing.small,
         right: AppSpacing.small,
         bottom: kBottomNavigationBarHeight + AppSpacing.small,
       ),
@@ -35,10 +36,9 @@ class MainPrayerPage extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                          CupertinoIcons.location_solid,
-                          size: 25.0,
-                          color: appColors.secondary,
+                        MainIconItem(
+                          iconPath: IconPaths.iconPathLocation,
+                          iconColor: appColors.error,
                         ),
                         const SizedBox(width: AppSpacing.xSmall),
                         Flexible(
@@ -56,37 +56,33 @@ class MainPrayerPage extends StatelessWidget {
                 ),
                 CupertinoButton(
                   padding: .zero,
-                  child: Icon(
-                    Icons.settings,
-                    size: 25.0,
-                    color: appColors.tertiary,
+                  child: MainIconItem(
+                    iconPath: IconPaths.iconPathParams,
+                    iconColor: appColors.tertiary,
                   ),
                   onPressed: () {},
                 ),
                 CupertinoButton(
                   padding: .zero,
-                  child: Icon(
-                    Icons.calendar_month_rounded,
-                    size: 25.0,
-                    color: appColors.secondary,
+                  child: MainIconItem(
+                    iconPath: IconPaths.iconPathCalendar,
+                    iconColor: appColors.secondary,
                   ),
                   onPressed: () {},
                 ),
                 CupertinoButton(
                   padding: .zero,
-                  child: Icon(
-                    Icons.compass_calibration_rounded,
-                    size: 25.0,
-                    color: appColors.secondary,
+                  child: MainIconItem(
+                    iconPath: IconPaths.iconPathQiblah,
+                    iconColor: appColors.secondary,
                   ),
                   onPressed: () {},
                 ),
                 CupertinoButton(
                   padding: const .only(right: AppSpacing.small),
-                  child: Icon(
-                    Icons.notifications,
-                    size: 25.0,
-                    color: appColors.secondary,
+                  child: MainIconItem(
+                    iconPath: IconPaths.iconPathNotifications,
+                    iconColor: appColors.secondary,
                   ),
                   onPressed: () {},
                 ),
@@ -343,10 +339,9 @@ class MainPrayerPage extends StatelessWidget {
               visualDensity: .compact,
               contentPadding: const .symmetric(horizontal: AppSpacing.medium),
               title: const Text('Время утренних азкаров'),
-              leading: Icon(
-                Icons.back_hand_rounded,
-                size: 20.0,
-                color: appColors.secondary,
+              leading: MainIconItem(
+                iconPath: IconPaths.iconPathHands,
+                iconColor: appColors.secondary,
               ),
               trailing: Icon(
                 Icons.keyboard_arrow_right_rounded,

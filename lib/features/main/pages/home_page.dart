@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -9,7 +10,9 @@ import '../../../core/constants/icon_paths.dart';
 import '../../../core/theme/app_paddings.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_shapes.dart';
+import '../../../core/theme/app_spacing.dart';
 import '../../prayer/presentation/pages/main_prayer_page.dart';
+import '../widgets/main_icon_item.dart';
 import '../state/main_state.dart';
 import '../widgets/main_navigation_icon.dart';
 import '../widgets/main_navigation_label.dart';
@@ -40,9 +43,30 @@ class _HomePageState extends State<HomePage> {
     final appColors = Theme.of(context).colorScheme;
     final currentNavigatorIndex = context.select<MainState, int>((s) => s.mainNavigationIndex);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('ПроМус'),
+        centerTitle: false,
+        actions: [
+          CupertinoButton(
+            padding: .zero,
+            child: MainIconItem(
+              iconPath: IconPaths.iconPathSetting,
+              iconColor: appColors.primary,
+            ),
+            onPressed: () {},
+          ),
+          CupertinoButton(
+            padding: const .only(right: AppSpacing.medium),
+            child: MainIconItem(
+              iconPath: IconPaths.iconPathLibrary,
+              iconColor: appColors.primary,
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
       body: _mainPages[currentNavigatorIndex],
       extendBody: true,
-      extendBodyBehindAppBar: true,
       bottomNavigationBar: MediaQuery.removePadding(
         context: context,
         removeTop: true,
@@ -75,12 +99,12 @@ class _HomePageState extends State<HomePage> {
                       title: const MainNavigationLabel(label: AppStrings.titleMushaf),
                     ),
                     SalomonBottomBarItem(
-                      icon: const MainNavigationIcon(iconPath: IconPaths.iconPathLibrary),
-                      title: const MainNavigationLabel(label: AppStrings.titleLibrary),
+                      icon: const MainNavigationIcon(iconPath: IconPaths.iconPathFortress),
+                      title: const MainNavigationLabel(label: AppStrings.titleFortress),
                     ),
                     SalomonBottomBarItem(
-                      icon: const MainNavigationIcon(iconPath: IconPaths.iconPathSetting),
-                      title: const MainNavigationLabel(label: AppStrings.titleSettings),
+                      icon: const MainNavigationIcon(iconPath: IconPaths.iconPathCounter),
+                      title: const MainNavigationLabel(label: AppStrings.titleCounter),
                     ),
                   ],
                   currentIndex: currentNavigatorIndex,
