@@ -1,6 +1,9 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:promus/features/prayer/presentation/lists/week_days_row.dart';
+import 'package:promus/features/prayer/presentation/widgets/main_city_cupertino_button.dart';
+import 'package:promus/features/prayer/presentation/widgets/main_date_card_item.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 import '../../../../core/constants/icon_paths.dart';
@@ -8,7 +11,8 @@ import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../main/widgets/main_icon_item.dart';
+import '../widgets/main_cupretino_button.dart';
+import '../widgets/main_icon_item.dart';
 
 class MainPrayerPage extends StatelessWidget {
   const MainPrayerPage({super.key});
@@ -29,164 +33,48 @@ class MainPrayerPage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: CupertinoButton(
-                    padding: const .symmetric(
-                      horizontal: AppSpacing.small,
-                      vertical: AppSpacing.small,
-                    ),
-                    child: Row(
-                      children: [
-                        MainIconItem(
-                          iconPath: IconPaths.iconPathLocation,
-                          iconColor: appColors.error,
-                        ),
-                        const SizedBox(width: AppSpacing.xSmall),
-                        Flexible(
-                          child: Text(
-                            'Izmir',
-                            style: AppTextStyles.medium.copyWith(color: appColors.secondary),
-                            overflow: .ellipsis,
-                            maxLines: 1,
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: MainCityCupertinoButton(
+                    cityText: 'Izmir',
                     onPressed: () {},
                   ),
                 ),
-                CupertinoButton(
-                  padding: .zero,
-                  child: MainIconItem(
-                    iconPath: IconPaths.iconPathParams,
-                    iconColor: appColors.tertiary,
-                  ),
+                MainCupertinoButton(
+                  iconPath: IconPaths.iconPathParams,
+                  iconColor: appColors.tertiary,
                   onPressed: () {},
                 ),
-                CupertinoButton(
-                  padding: .zero,
-                  child: MainIconItem(
-                    iconPath: IconPaths.iconPathCalendar,
-                    iconColor: appColors.secondary,
-                  ),
+                MainCupertinoButton(
+                  iconPath: IconPaths.iconPathCalendar,
+                  iconColor: appColors.secondary,
                   onPressed: () {},
                 ),
-                CupertinoButton(
-                  padding: .zero,
-                  child: MainIconItem(
-                    iconPath: IconPaths.iconPathQiblah,
-                    iconColor: appColors.secondary,
-                  ),
+                MainCupertinoButton(
+                  iconPath: IconPaths.iconPathQiblah,
+                  iconColor: appColors.secondary,
                   onPressed: () {},
                 ),
-                CupertinoButton(
-                  padding: const .only(right: AppSpacing.small),
-                  child: MainIconItem(
-                    iconPath: IconPaths.iconPathNotifications,
-                    iconColor: appColors.secondary,
-                  ),
+                MainCupertinoButton(
+                  iconPath: IconPaths.iconPathNotifications,
+                  iconColor: appColors.secondary,
                   onPressed: () {},
                 ),
               ],
             ),
           ),
           const SizedBox(height: AppSpacing.medium),
-          Card(
-            elevation: 0,
-            color: appColors.primaryContainer,
-            child: ListTile(
-              onTap: () {},
-              visualDensity: .compact,
-              shape: AppShapes.medium,
-              dense: true,
-              minVerticalPadding: 0,
-              minTileHeight: 0,
-              splashColor: appColors.secondaryContainer,
-              contentPadding: const .symmetric(
-                horizontal: AppSpacing.medium,
-                vertical: AppSpacing.small,
-              ),
-              title: const Text(
-                '27 июнь, 2026',
-              ),
-              trailing: const Icon(Icons.keyboard_arrow_right_rounded),
-            ),
+          MainDateCardItem(
+            dateText: '26 august 2026',
+            itemColor: appColors.primaryContainer,
+            onTap: () {},
           ),
           const SizedBox(height: AppSpacing.small),
-          Card(
-            color: appColors.secondaryContainer,
-            elevation: 0,
-            child: ListTile(
-              onTap: () {},
-              visualDensity: .compact,
-              shape: AppShapes.medium,
-              dense: true,
-              minVerticalPadding: 0,
-              minTileHeight: 0,
-              splashColor: appColors.secondaryContainer,
-              contentPadding: const .symmetric(
-                horizontal: AppSpacing.medium,
-                vertical: AppSpacing.small,
-              ),
-              title: const Text(
-                '15 сафар, 1448',
-              ),
-              trailing: const Icon(Icons.keyboard_arrow_right_rounded),
-            ),
+          MainDateCardItem(
+            dateText: '15 safar 1449',
+            itemColor: appColors.secondaryContainer,
+            onTap: () {},
           ),
           const SizedBox(height: AppSpacing.small),
-          SizedBox(
-            height: 35,
-            child: Row(
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                const Card(
-                  child: Padding(
-                    padding: AppPaddings.hrMediumVrXSmall,
-                    child: Text('Пн'),
-                  ),
-                ),
-                const Card(
-                  child: Padding(
-                    padding: AppPaddings.hrMediumVrXSmall,
-                    child: Text('Вт'),
-                  ),
-                ),
-                const Card(
-                  child: Padding(
-                    padding: AppPaddings.hrMediumVrXSmall,
-                    child: Text('Ср'),
-                  ),
-                ),
-                Card(
-                  color: appColors.inversePrimary,
-                  child: const Padding(
-                    padding: AppPaddings.hrMediumVrXSmall,
-                    child: Text(
-                      'Чт',
-                    ),
-                  ),
-                ),
-                const Card(
-                  child: Padding(
-                    padding: AppPaddings.hrMediumVrXSmall,
-                    child: Text('Пт'),
-                  ),
-                ),
-                const Card(
-                  child: Padding(
-                    padding: AppPaddings.hrMediumVrXSmall,
-                    child: Text('Сб'),
-                  ),
-                ),
-                const Card(
-                  child: Padding(
-                    padding: AppPaddings.hrMediumVrXSmall,
-                    child: Text('Вс'),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          WeekDaysRow(weekDay: DateTime.now().weekday),
           const SizedBox(height: AppSpacing.small),
           Card(
             child: Padding(

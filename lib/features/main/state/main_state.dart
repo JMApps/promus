@@ -11,4 +11,6 @@ class MainState extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void resetToHome() => changeNavigationIndex(0);
 }
