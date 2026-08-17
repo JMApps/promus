@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:promus/core/theme/app_paddings.dart';
+
+import '../../../../core/theme/app_paddings.dart';
 
 class MainCupertinoButton extends StatelessWidget {
   const MainCupertinoButton({

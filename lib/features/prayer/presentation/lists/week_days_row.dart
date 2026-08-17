@@ -24,7 +24,12 @@ class WeekDaysRow extends StatelessWidget {
               color: day == weekDay ? appColors.inversePrimary : null,
               child: Padding(
                 padding: AppPaddings.hrMediumVrXSmall,
-                child: Text(AppStrings.weekDays[day - 1]),
+                child: Text(
+                  AppStrings.weekDays[day - 1],
+                  style: TextStyle(
+                    color: appColors.primary,
+                  ),
+                ),
               ),
             ),
         ],

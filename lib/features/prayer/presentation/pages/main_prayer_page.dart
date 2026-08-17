@@ -1,18 +1,19 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:promus/features/prayer/presentation/lists/week_days_row.dart';
-import 'package:promus/features/prayer/presentation/widgets/main_city_cupertino_button.dart';
-import 'package:promus/features/prayer/presentation/widgets/main_date_card_item.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/icon_paths.dart';
 import '../../../../core/theme/app_paddings.dart';
-import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/app_text_styles.dart';
-import '../widgets/main_cupretino_button.dart';
-import '../widgets/main_icon_item.dart';
+import '../lists/week_days_row.dart';
+import '../widgets/card_additional_times.dart';
+import '../widgets/card_adhkar_reminder.dart';
+import '../widgets/elapsed_prayer_time_sleek.dart';
+import '../widgets/main_city_cupertino_button.dart';
+import '../widgets/main_cupertino_button.dart';
+import '../widgets/main_date_card_item.dart';
+import '../widgets/remaining_prayer_time_sleek.dart';
 
 class MainPrayerPage extends StatelessWidget {
   const MainPrayerPage({super.key});
@@ -107,31 +108,31 @@ class MainPrayerPage extends StatelessWidget {
                         EasyStep(
                           icon: Icon(CupertinoIcons.sparkles),
                           customTitle: Text(
-                            'Фаджр\n03:56',
+                            '${AppStrings.prayerFajr}\n03:56',
                           ),
                         ),
                         EasyStep(
                           icon: Icon(CupertinoIcons.sun_max_fill),
                           customTitle: Text(
-                            'Зухр\n12:41',
+                            '${AppStrings.prayerDhuhr}\n12:41',
                           ),
                         ),
                         EasyStep(
                           icon: Icon(CupertinoIcons.sun_min_fill),
                           customTitle: Text(
-                            '\'Аср\n16:28',
+                            '${AppStrings.prayerAsr}\n16:28',
                           ),
                         ),
                         EasyStep(
                           icon: Icon(CupertinoIcons.sunset_fill),
                           customTitle: Text(
-                            'Магриб\n19:42',
+                            '${AppStrings.prayerMaghrib}\n19:42',
                           ),
                         ),
                         EasyStep(
                           icon: Icon(CupertinoIcons.moon_stars_fill),
                           customTitle: Text(
-                            '\'Иша\n21:16',
+                            '${AppStrings.prayerIsha}\n21:16',
                           ),
                         ),
                       ],
@@ -142,72 +143,16 @@ class MainPrayerPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: .stretch,
                       children: [
-                        SleekCircularSlider(
-                          appearance: CircularSliderAppearance(
-                            startAngle: 270,
-                            angleRange: 360,
-                            counterClockwise: false,
-                            customWidths: CustomSliderWidths(
-                              progressBarWidth: AppSpacing.medium,
-                              shadowWidth: 0,
-                            ),
-                            customColors: CustomSliderColors(
-                              trackColor: appColors.secondaryContainer,
-                              progressBarColor: appColors.secondary,
-                              dotColor: appColors.secondaryContainer,
-                            ),
-                          ),
-                          min: 0,
-                          max: 100,
-                          initialValue: 75,
-                          innerWidget: (_) => const Column(
-                            mainAxisSize: .min,
-                            mainAxisAlignment: .center,
-                            children: [
-                              Text(
-                                'Фаджр',
-                                style: AppTextStyles.medium,
-                              ),
-                              Text(
-                                '00:23',
-                                style: AppTextStyles.medium,
-                              ),
-                            ],
-                          ),
+                        ElapsedPrayerTimeSleek(
+                          prayerName: 'Название',
+                          progress: 0.35,
+                          elapsedTime: DateTime.now(),
                         ),
                         const SizedBox(height: AppSpacing.medium),
-                        SleekCircularSlider(
-                          appearance: CircularSliderAppearance(
-                            startAngle: 270,
-                            angleRange: 360,
-                            counterClockwise: true,
-                            customWidths: CustomSliderWidths(
-                              progressBarWidth: AppSpacing.medium,
-                              shadowWidth: 0,
-                            ),
-                            customColors: CustomSliderColors(
-                              trackColor: appColors.tertiaryContainer,
-                              progressBarColor: appColors.tertiary,
-                              dotColor: appColors.tertiaryContainer,
-                            ),
-                          ),
-                          min: 0,
-                          max: 100,
-                          initialValue: 75,
-                          innerWidget: (_) => const Column(
-                            mainAxisSize: .min,
-                            mainAxisAlignment: .center,
-                            children: [
-                              Text(
-                                'Зухр',
-                                style: AppTextStyles.medium,
-                              ),
-                              Text(
-                                '-06:23',
-                                style: AppTextStyles.medium,
-                              ),
-                            ],
-                          ),
+                        RemainingPrayerTimeSleek(
+                          prayerName: 'Название',
+                          progress: 0.65,
+                          remainingTime: DateTime.now(),
                         ),
                       ],
                     ),
@@ -217,25 +162,9 @@ class MainPrayerPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.medium),
-          Card(
-            elevation: 0,
-            color: appColors.primaryContainer,
-            child: ListTile(
-              onTap: () {},
-              shape: AppShapes.medium,
-              splashColor: appColors.secondaryContainer,
-              visualDensity: .compact,
-              contentPadding: const .symmetric(horizontal: AppSpacing.medium),
-              title: const Text('Время утренних азкаров'),
-              leading: MainIconItem(
-                iconPath: IconPaths.iconPathHands,
-                iconColor: appColors.secondary,
-              ),
-              trailing: Icon(
-                Icons.keyboard_arrow_right_rounded,
-                color: appColors.primary,
-              ),
-            ),
+          CardAdhkarReminder(
+            message: 'Время утренних азкаров',
+            routeName: '',
           ),
           const SizedBox(height: AppSpacing.medium),
           Card(
@@ -271,21 +200,21 @@ class MainPrayerPage extends StatelessWidget {
                         EasyStep(
                           icon: Icon(CupertinoIcons.sunrise_fill),
                           customTitle: Text(
-                            'Восход\n03:56',
+                            '${AppStrings.sunrise}\n03:56',
                             textAlign: .center,
                           ),
                         ),
                         EasyStep(
                           icon: Icon(CupertinoIcons.moon_fill),
                           customTitle: Text(
-                            'Полночь\n12:41',
+                            '${AppStrings.midnight}\n12:41',
                             textAlign: .center,
                           ),
                         ),
                         EasyStep(
                           icon: Icon(Icons.donut_small),
                           customTitle: Text(
-                            'Треть\n16:28',
+                            '${AppStrings.lastThirdNight}\n16:28',
                             textAlign: .center,
                           ),
                         ),
@@ -293,39 +222,10 @@ class MainPrayerPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: AppSpacing.large),
-                  SleekCircularSlider(
-                    appearance: CircularSliderAppearance(
-                      size: 85,
-                      startAngle: 270,
-                      angleRange: 360,
-                      counterClockwise: true,
-                      customWidths: CustomSliderWidths(
-                        progressBarWidth: AppSpacing.small,
-                        shadowWidth: 0,
-                      ),
-                      customColors: CustomSliderColors(
-                        trackColor: appColors.primaryContainer,
-                        progressBarColor: appColors.primary,
-                        dotColor: appColors.primaryContainer,
-                      ),
-                    ),
-                    min: 0,
-                    max: 100,
-                    initialValue: 75,
-                    innerWidget: (_) => const Column(
-                      mainAxisSize: .min,
-                      mainAxisAlignment: .center,
-                      children: [
-                        Text(
-                          'Полночь',
-                          style: AppTextStyles.small,
-                        ),
-                        Text(
-                          '-06:23',
-                          style: AppTextStyles.small,
-                        ),
-                      ],
-                    ),
+                  CardAdditionalTimes(
+                    eventName: 'Название',
+                    progress: 0.65,
+                    remainingTime: DateTime.now(),
                   ),
                 ],
               ),
