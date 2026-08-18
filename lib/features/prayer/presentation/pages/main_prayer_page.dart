@@ -24,6 +24,7 @@ class MainPrayerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
     final prayer = context.watch<PrayerState>();
+    final adhkarMessage = prayer.adhkarMessage;
     return SingleChildScrollView(
       padding: const .only(
         left: AppSpacing.small,
@@ -89,7 +90,7 @@ class MainPrayerPage extends StatelessWidget {
                   Flexible(
                     child: EasyStepper(
                       verticalAlignment: .start,
-                      activeStep: 1,
+                      activeStep: prayer.currentPrayerStep,
                       direction: .vertical,
                       showTitle: true,
                       showLoadingAnimation: false,
@@ -107,35 +108,35 @@ class MainPrayerPage extends StatelessWidget {
                         lineType: .dotted,
                         unreachedLineType: .dotted,
                       ),
-                      steps: const [
+                      steps: [
                         EasyStep(
-                          icon: Icon(CupertinoIcons.sparkles),
+                          icon: const Icon(CupertinoIcons.sparkles),
                           customTitle: Text(
-                            '${AppStrings.prayerFajr}\n03:56',
+                            '${AppStrings.prayerFajr}\n${prayer.formatTime(prayer.prayerTimes.fajr)}',
                           ),
                         ),
                         EasyStep(
-                          icon: Icon(CupertinoIcons.sun_max_fill),
+                          icon: const Icon(CupertinoIcons.sun_max_fill),
                           customTitle: Text(
-                            '${AppStrings.prayerDhuhr}\n12:41',
+                            '${AppStrings.prayerDhuhr}\n${prayer.formatTime(prayer.prayerTimes.dhuhr)}',
                           ),
                         ),
                         EasyStep(
-                          icon: Icon(CupertinoIcons.sun_min_fill),
+                          icon: const Icon(CupertinoIcons.sun_min_fill),
                           customTitle: Text(
-                            '${AppStrings.prayerAsr}\n16:28',
+                            '${AppStrings.prayerAsr}\n${prayer.formatTime(prayer.prayerTimes.asr)}',
                           ),
                         ),
                         EasyStep(
-                          icon: Icon(CupertinoIcons.sunset_fill),
+                          icon: const Icon(CupertinoIcons.sunset_fill),
                           customTitle: Text(
-                            '${AppStrings.prayerMaghrib}\n19:42',
+                            '${AppStrings.prayerMaghrib}\n${prayer.formatTime(prayer.prayerTimes.maghrib)}',
                           ),
                         ),
                         EasyStep(
-                          icon: Icon(CupertinoIcons.moon_stars_fill),
+                          icon: const Icon(CupertinoIcons.moon_stars_fill),
                           customTitle: Text(
-                            '${AppStrings.prayerIsha}\n21:16',
+                            '${AppStrings.prayerIsha}\n${prayer.formatTime(prayer.prayerTimes.isha)}',
                           ),
                         ),
                       ],
@@ -165,10 +166,13 @@ class MainPrayerPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.medium),
-          const CardAdhkarReminder(
-            message: 'Время утренних азкаров',
-            routeName: '',
-          ),
+          if (adhkarMessage != null) ...[
+            CardAdhkarReminder(
+              message: adhkarMessage,
+              routeName: '',
+            ),
+            const SizedBox(height: AppSpacing.medium),
+          ],
           const SizedBox(height: AppSpacing.medium),
           Card(
             child: Padding(
@@ -180,7 +184,7 @@ class MainPrayerPage extends StatelessWidget {
                   Flexible(
                     child: EasyStepper(
                       verticalAlignment: .start,
-                      activeStep: 1,
+                      activeStep: prayer.currentEventStep,
                       direction: .horizontal,
                       showTitle: true,
                       showLoadingAnimation: false,
@@ -199,25 +203,25 @@ class MainPrayerPage extends StatelessWidget {
                         lineType: .dotted,
                         unreachedLineType: .dotted,
                       ),
-                      steps: const [
+                      steps: [
                         EasyStep(
-                          icon: Icon(CupertinoIcons.sunrise_fill),
+                          icon: const Icon(CupertinoIcons.sunrise_fill),
                           customTitle: Text(
-                            '${AppStrings.sunrise}\n03:56',
+                            '${AppStrings.sunrise}\n${prayer.formatTime(prayer.prayerTimes.sunrise)}',
                             textAlign: .center,
                           ),
                         ),
                         EasyStep(
-                          icon: Icon(CupertinoIcons.moon_fill),
+                          icon: const Icon(CupertinoIcons.moon_fill),
                           customTitle: Text(
-                            '${AppStrings.midnight}\n12:41',
+                            '${AppStrings.midnight}\n${prayer.formatTime(prayer.sunnahTimes.middleOfTheNight)}',
                             textAlign: .center,
                           ),
                         ),
                         EasyStep(
-                          icon: Icon(Icons.donut_small),
+                          icon: const Icon(Icons.donut_small),
                           customTitle: Text(
-                            '${AppStrings.lastThirdNight}\n16:28',
+                            '${AppStrings.lastThirdNight}\n${prayer.formatTime(prayer.sunnahTimes.lastThirdOfTheNight)}',
                             textAlign: .center,
                           ),
                         ),
@@ -226,9 +230,9 @@ class MainPrayerPage extends StatelessWidget {
                   ),
                   const SizedBox(width: AppSpacing.large),
                   CardAdditionalTimes(
-                    eventName: 'Название',
-                    progress: 0.65,
-                    remainingTime: DateTime.now(),
+                    eventName: prayer.event.name,
+                    progress: prayer.event.progress,
+                    timeText: prayer.event.timeText,
                   ),
                 ],
               ),

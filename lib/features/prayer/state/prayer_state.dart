@@ -3,6 +3,7 @@ import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/app_strings.dart';
@@ -131,6 +132,56 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   void _startCron() {
     _cron.schedule(Schedule.parse('*/1 * * * *'), _updateDateTime);
+  }
+
+  // в PrayerState
+  static const Duration _adhanWindow = Duration(minutes: 3);
+  static const Duration _dhikrWindow = Duration(minutes: 30);
+
+  /// Индекс актуального сообщения в AppStrings.adhkarList или null,
+  /// если сейчас показывать нечего. Порядок проверок = приоритет.
+  int? get currentAdhkarIndex {
+    // 1. Окно азана: ±3 минуты вокруг каждой из пяти молитв.
+    for (final p in _todayPrayers) {
+      if (_isWithinRange(
+          p.time.subtract(_adhanWindow), p.time.add(_adhanWindow))) {
+        return 0;
+      }
+    }
+
+    // 2. Поминания после молитвы: от +3 до +30 минут после каждой.
+    for (final p in _todayPrayers) {
+      if (_isWithinRange(
+          p.time.add(_adhanWindow), p.time.add(_dhikrWindow))) {
+        return 1;
+      }
+    }
+
+    // 3. Утренние азкары: фаджр+30 → зухр.
+    if (_isWithinRange(
+        _prayerTimes.fajr.add(_dhikrWindow), _prayerTimes.dhuhr)) {
+      return 2;
+    }
+
+    // 4. Вечерние азкары: 'аср+30 → магриб.
+    if (_isWithinRange(
+        _prayerTimes.asr.add(_dhikrWindow), _prayerTimes.maghrib)) {
+      return 3;
+    }
+
+    // 5. Ночные азкары: 'иша+30 → полночь (середина ночи).
+    if (_isWithinRange(
+        _prayerTimes.isha.add(_dhikrWindow), _sunnahTimes.middleOfTheNight)) {
+      return 4;
+    }
+
+    // После полуночи, между зухр+30 и 'аср−3, магриб+30 и 'иша−3 — ничего.
+    return null;
+  }
+
+  String? get adhkarMessage {
+    final index = currentAdhkarIndex;
+    return index == null ? null : AppConstants.adhkarList[index];
   }
 
   void _updateDateTime() {
@@ -355,6 +406,34 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   int get maghribAdjustment => _maghribAdjustment;
 
   int get ishaAdjustment => _ishaAdjustment;
+
+  String formatTime(DateTime time) => DateFormat('HH:mm').format(time);
+
+  int get currentEventStep {
+    // До восхода текущий цикл — вчерашний: ночные события берём со сдвигом
+    // −24ч, а восход считаем вчерашним (т.е. прошедшим).
+    final beforeSunrise = _dateTime.isBefore(_prayerTimes.sunrise);
+
+    final events = <DateTime>[
+      beforeSunrise
+          ? _prayerTimes.sunrise.subtract(_day)
+          : _prayerTimes.sunrise,
+      beforeSunrise
+          ? _sunnahTimes.middleOfTheNight.subtract(_day)
+          : _sunnahTimes.middleOfTheNight,
+      beforeSunrise
+          ? _sunnahTimes.lastThirdOfTheNight.subtract(_day)
+          : _sunnahTimes.lastThirdOfTheNight,
+    ];
+
+    final passed = events.where((t) => !t.isAfter(_dateTime)).length;
+    return passed.clamp(0, events.length - 1);
+  }
+
+  int get currentPrayerStep {
+    final passed = _todayPrayers.where((p) => !p.time.isAfter(_dateTime)).length;
+    return passed.clamp(0, _todayPrayers.length - 1);
+  }
 
   set fajrAdjustment(int value) {
     if (_fajrAdjustment != value) {
