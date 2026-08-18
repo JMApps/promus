@@ -46,7 +46,7 @@ class RemainingPrayerTimeSleek extends StatelessWidget {
             style: AppTextStyles.medium,
           ),
           Text(
-            timeText,
+            '-$timeText',
             style: AppTextStyles.medium,
           ),
         ],

@@ -171,7 +171,6 @@ class MainPrayerPage extends StatelessWidget {
               message: adhkarMessage,
               routeName: '',
             ),
-            const SizedBox(height: AppSpacing.medium),
           ],
           const SizedBox(height: AppSpacing.medium),
           Card(
