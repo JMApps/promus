@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promus/core/theme/app_radius.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
@@ -21,7 +22,13 @@ class WeekDaysRow extends StatelessWidget {
         children: [
           for (var day = DateTime.monday; day <= DateTime.sunday; day++)
             Card(
-              color: day == weekDay ? appColors.inversePrimary : null,
+              shape: RoundedRectangleBorder(
+                borderRadius: AppRadius.small,
+                side: BorderSide(
+                  width: day == weekDay ? 2.0 : 0.01,
+                  color: appColors.primary,
+                ),
+              ),
               child: Padding(
                 padding: AppPaddings.hrMediumVrXSmall,
                 child: Text(

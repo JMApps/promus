@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 import '../../../../core/theme/app_spacing.dart';
@@ -10,12 +9,12 @@ class ElapsedPrayerTimeSleek extends StatelessWidget {
     super.key,
     required this.prayerName,
     required this.progress,
-    required this.elapsedTime,
+    required this.timeText,
   });
 
   final String prayerName;
   final double progress;
-  final DateTime elapsedTime;
+  final String timeText;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +46,7 @@ class ElapsedPrayerTimeSleek extends StatelessWidget {
             style: AppTextStyles.medium,
           ),
           Text(
-            DateFormat('HH:mm').format(elapsedTime),
+            timeText,
             style: AppTextStyles.medium,
           ),
         ],

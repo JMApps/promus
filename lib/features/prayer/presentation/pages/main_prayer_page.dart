@@ -1,11 +1,13 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/icon_paths.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../state/prayer_state.dart';
 import '../lists/week_days_row.dart';
 import '../widgets/card_additional_times.dart';
 import '../widgets/card_adhkar_reminder.dart';
@@ -21,6 +23,7 @@ class MainPrayerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
+    final prayer = context.watch<PrayerState>();
     return SingleChildScrollView(
       padding: const .only(
         left: AppSpacing.small,
@@ -35,7 +38,7 @@ class MainPrayerPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: MainCityCupertinoButton(
-                    cityText: 'Izmir',
+                    cityText: prayer.city,
                     onPressed: () {},
                   ),
                 ),
@@ -64,13 +67,13 @@ class MainPrayerPage extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.medium),
           MainDateCardItem(
-            dateText: '26 august 2026',
+            dateText: prayer.gregorianDateText,
             itemColor: appColors.primaryContainer,
             onTap: () {},
           ),
           const SizedBox(height: AppSpacing.small),
           MainDateCardItem(
-            dateText: '15 safar 1449',
+            dateText: prayer.hijriDateText,
             itemColor: appColors.secondaryContainer,
             onTap: () {},
           ),
@@ -144,15 +147,15 @@ class MainPrayerPage extends StatelessWidget {
                       crossAxisAlignment: .stretch,
                       children: [
                         ElapsedPrayerTimeSleek(
-                          prayerName: 'Название',
-                          progress: 0.35,
-                          elapsedTime: DateTime.now(),
+                          prayerName: prayer.elapsed.name,
+                          progress: prayer.elapsed.progress,
+                          timeText: prayer.elapsed.timeText,
                         ),
                         const SizedBox(height: AppSpacing.medium),
                         RemainingPrayerTimeSleek(
-                          prayerName: 'Название',
-                          progress: 0.65,
-                          remainingTime: DateTime.now(),
+                          prayerName: prayer.remaining.name,
+                          progress: prayer.remaining.progress,
+                          timeText: prayer.remaining.timeText,
                         ),
                       ],
                     ),
@@ -162,7 +165,7 @@ class MainPrayerPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.medium),
-          CardAdhkarReminder(
+          const CardAdhkarReminder(
             message: 'Время утренних азкаров',
             routeName: '',
           ),

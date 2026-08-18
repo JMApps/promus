@@ -33,7 +33,7 @@ class MainCityCupertinoButton extends StatelessWidget {
           const SizedBox(width: AppSpacing.small),
           Flexible(
             child: Text(
-              'Izmir',
+              cityText,
               style: AppTextStyles.medium.copyWith(color: appColors.secondary),
               overflow: .ellipsis,
               maxLines: 1,
