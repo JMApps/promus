@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class AppStrings {
   AppStrings._();
 
@@ -27,4 +29,27 @@ class AppStrings {
   static const String sunrise = 'Восход';
   static const String midnight = 'Полночь';
   static const String lastThirdNight = 'Треть';
+
+  static String ayahsCount(int count) => Intl.plural(
+    count,
+    one: '$count аят',
+    few: '$count аята',
+    many: '$count аятов',
+    other: '$count аята',
+    locale: 'ru',
+  );
+
+  static String searchResults(int count) => Intl.plural(
+    count,
+    zero: 'ничего не найдено',
+    one: 'найден $count результат',
+    few: 'найдено $count результата',
+    many: 'найдено $count результатов',
+    other: 'Найдено $count результата',
+    locale: 'ru',
+  );
+
+  static String searchByQuery(String query, String matches) =>
+      'По запросу «$query»\n$matches';
+  static String searchError(String error) => 'Ошибка поиска: $error';
 }

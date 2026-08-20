@@ -22,7 +22,8 @@ void main() async {
           create: (_) => MainState(),
         ),
         ChangeNotifierProvider(
-          create: (_) => PrayerState(Hive.box(AppConstants.keySettingsPrayerTimeBox)),
+          create: (_) =>
+              PrayerState(Hive.box(AppConstants.keySettingsPrayerTimeBox)),
         ),
       ],
       child: const RootPage(),

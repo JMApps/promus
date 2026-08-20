@@ -41,7 +41,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final currentNavigatorIndex = context.select<MainState, int>((s) => s.mainNavigationIndex);
+    final currentNavigatorIndex = context.select<MainState, int>(
+      (s) => s.mainNavigationIndex,
+    );
     return PopScope(
       canPop: currentNavigatorIndex == 0,
       onPopInvokedWithResult: (didPop, _) {
@@ -97,20 +99,36 @@ class _HomePageState extends State<HomePage> {
                     unselectedItemColor: appColors.onSurface.withAlpha(185),
                     items: [
                       SalomonBottomBarItem(
-                        icon: const MainNavigationIcon(iconPath: IconPaths.iconPathHome),
-                        title: const MainNavigationLabel(label: AppStrings.titleHome),
+                        icon: const MainNavigationIcon(
+                          iconPath: IconPaths.iconPathHome,
+                        ),
+                        title: const MainNavigationLabel(
+                          label: AppStrings.titleHome,
+                        ),
                       ),
                       SalomonBottomBarItem(
-                        icon: const MainNavigationIcon(iconPath: IconPaths.iconPathMushaf),
-                        title: const MainNavigationLabel(label: AppStrings.titleMushaf),
+                        icon: const MainNavigationIcon(
+                          iconPath: IconPaths.iconPathMushaf,
+                        ),
+                        title: const MainNavigationLabel(
+                          label: AppStrings.titleMushaf,
+                        ),
                       ),
                       SalomonBottomBarItem(
-                        icon: const MainNavigationIcon(iconPath: IconPaths.iconPathFortress),
-                        title: const MainNavigationLabel(label: AppStrings.titleFortress),
+                        icon: const MainNavigationIcon(
+                          iconPath: IconPaths.iconPathFortress,
+                        ),
+                        title: const MainNavigationLabel(
+                          label: AppStrings.titleFortress,
+                        ),
                       ),
                       SalomonBottomBarItem(
-                        icon: const MainNavigationIcon(iconPath: IconPaths.iconPathCounter),
-                        title: const MainNavigationLabel(label: AppStrings.titleCounter),
+                        icon: const MainNavigationIcon(
+                          iconPath: IconPaths.iconPathCounter,
+                        ),
+                        title: const MainNavigationLabel(
+                          label: AppStrings.titleCounter,
+                        ),
                       ),
                     ],
                     currentIndex: currentNavigatorIndex,

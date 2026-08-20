@@ -8,15 +8,46 @@ class AppPaddings {
   static const medium = EdgeInsets.all(AppSpacing.medium);
   static const large = EdgeInsets.all(AppSpacing.large);
   static const topMedium = EdgeInsets.only(top: AppSpacing.medium);
-  static const withoutTopMedium = EdgeInsets.only(left: AppSpacing.medium, right: AppSpacing.medium, bottom: AppSpacing.medium);
-  static const withoutBottomMedium = EdgeInsets.only(left: AppSpacing.medium, top: AppSpacing.medium, right: AppSpacing.medium);
-  static const mediumBottomSmall = EdgeInsets.only(left: AppSpacing.medium, top: AppSpacing.medium, right: AppSpacing.medium, bottom: AppSpacing.small);
-  static const withoutRightSmall = EdgeInsets.only(left: AppSpacing.medium, top: AppSpacing.medium, bottom: AppSpacing.medium);
-  static const hrSmallVrLarge = EdgeInsets.symmetric(horizontal: AppSpacing.small, vertical: AppSpacing.large);
-  static const hrMediumVrXSmall = EdgeInsets.symmetric(horizontal: AppSpacing.medium, vertical: AppSpacing.xSmall);
-  static const hrMediumVrSmall = EdgeInsets.symmetric(horizontal: AppSpacing.medium, vertical: AppSpacing.small);
+  static const withoutTopMedium = EdgeInsets.only(
+    left: AppSpacing.medium,
+    right: AppSpacing.medium,
+    bottom: AppSpacing.medium,
+  );
+  static const withoutBottomMedium = EdgeInsets.only(
+    left: AppSpacing.medium,
+    top: AppSpacing.medium,
+    right: AppSpacing.medium,
+  );
+  static const mediumBottomSmall = EdgeInsets.only(
+    left: AppSpacing.medium,
+    top: AppSpacing.medium,
+    right: AppSpacing.medium,
+    bottom: AppSpacing.small,
+  );
+  static const withoutRightSmall = EdgeInsets.only(
+    left: AppSpacing.medium,
+    top: AppSpacing.medium,
+    bottom: AppSpacing.medium,
+  );
+  static const hrSmallVrLarge = EdgeInsets.symmetric(
+    horizontal: AppSpacing.small,
+    vertical: AppSpacing.large,
+  );
+  static const hrMediumVrXSmall = EdgeInsets.symmetric(
+    horizontal: AppSpacing.medium,
+    vertical: AppSpacing.xSmall,
+  );
+  static const hrMediumVrSmall = EdgeInsets.symmetric(
+    horizontal: AppSpacing.medium,
+    vertical: AppSpacing.small,
+  );
   static const hrMedium = EdgeInsets.symmetric(horizontal: AppSpacing.medium);
   static const bottomLarge = EdgeInsets.only(bottom: AppSpacing.large);
   static const rightMedium = EdgeInsets.only(right: AppSpacing.medium);
-  static const topMediumSmallOther = EdgeInsets.only(left: AppSpacing.small, top: AppSpacing.large, right: AppSpacing.small, bottom: AppSpacing.medium);
+  static const topMediumSmallOther = EdgeInsets.only(
+    left: AppSpacing.small,
+    top: AppSpacing.large,
+    right: AppSpacing.small,
+    bottom: AppSpacing.medium,
+  );
 }

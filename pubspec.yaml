@@ -36,6 +36,9 @@ dependencies:
   provider: ^6.1.5+1
   easy_stepper: ^1.2.0
   sleek_circular_slider: ^2.1.0
+  path: ^1.9.1
+  share_plus: ^13.3.0
+  pasteboard: ^0.5.0
 
 dev_dependencies:
   flutter_test:
