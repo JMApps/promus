@@ -11,6 +11,7 @@ import '../../state/prayer_state.dart';
 import '../lists/week_days_row.dart';
 import '../widgets/card_additional_times.dart';
 import '../widgets/card_adhkar_reminder.dart';
+import '../widgets/days_to_holidays.dart';
 import '../widgets/elapsed_prayer_time_sleek.dart';
 import '../widgets/main_city_cupertino_button.dart';
 import '../widgets/main_cupertino_button.dart';
@@ -236,6 +237,11 @@ class MainPrayerPage extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+          const SizedBox(height: AppSpacing.medium),
+          const DaysToHolidays(
+            eventDay: 'Дней до Рамадана',
+            remainingDays: 166,
           ),
           const SizedBox(height: AppSpacing.medium * 2),
         ],

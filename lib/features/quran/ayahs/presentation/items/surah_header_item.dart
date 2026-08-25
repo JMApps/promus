@@ -17,7 +17,7 @@ class SurahHeaderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final String surahNameTranscription = context.read<SurahNameState>().surahByNumber(surahNumber: surahNumber)!.nameTranscriptionRu;
+    final String surahNameTranscription = context.read<SurahNameState>().surahByNumber(surahNumber: surahNumber)!.nameTranscription;
     return Container(
       padding: AppPaddings.medium,
       margin: AppPaddings.medium,

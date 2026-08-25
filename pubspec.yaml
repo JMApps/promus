@@ -18,7 +18,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   scrollable_positioned_list: ^0.3.8
   flutter_material_color_picker: ^1.2.0
-  syncfusion_flutter_datepicker: ^34.2.3
+  syncfusion_flutter_datepicker: ^34.2.4
   home_widget: ^0.9.3
   sqflite: ^2.4.3
   hijri: ^3.0.1
@@ -50,11 +50,28 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
   assets:
     - assets/fonts/
     - assets/icons/
+    - assets/databases/
 
   fonts:
+    - family: Uthmanic
+      fonts:
+        - asset: assets/fonts/uthmanic_hafs_v_22.ttf
     - family: PT Sans
       fonts:
         - asset: assets/fonts/pt_sans_regular.ttf
+    - family: QCF_BSML
+      fonts:
+        - asset: assets/fonts/qcf_bsml.ttf
+    - family: Juz name
+      fonts:
+        - asset: assets/fonts/juz_name.ttf
+    - family: Surah name v4
+      fonts:
+        - asset: assets/fonts/surah_name_v4.ttf
+    - family: Noto Naskh
+      fonts:
+        - asset: assets/fonts/noto_naskh.ttf

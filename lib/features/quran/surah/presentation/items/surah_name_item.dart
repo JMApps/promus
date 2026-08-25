@@ -54,10 +54,7 @@ class SurahNameItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: .stretch,
                 children: [
-                  Selector<
-                    ReadingSettingsState,
-                    ({bool arabic, bool translation})
-                  >(
+                  Selector<ReadingSettingsState, ({bool arabic, bool translation})>(
                     selector: (_, state) => (
                       arabic: state.arabicNameSurah,
                       translation: state.translationNameSurah,
@@ -82,7 +79,7 @@ class SurahNameItem extends StatelessWidget {
                             children: [
                               Flexible(
                                 child: Text(
-                                  surah.nameTranscriptionRu,
+                                  surah.nameTranscription,
                                   style: AppTextStyles.medium,
                                   maxLines: 1,
                                 ),
@@ -90,7 +87,7 @@ class SurahNameItem extends StatelessWidget {
                               if (settings.translation)
                                 Flexible(
                                   child: Text(
-                                    ' (${surah.nameTranslationRu})',
+                                    ' (${surah.nameTranslation})',
                                     style: AppTextStyles.medium,
                                     maxLines: 1,
                                     overflow: .ellipsis,

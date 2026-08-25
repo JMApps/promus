@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:promus/features/quran/surah/presentation/pages/surah_name_page.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -32,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _mainPages = <Widget>[
       const MainPrayerPage(),
-      const MainPrayerPage(),
+      SurahNamePage(scrollController: ScrollController()),
       const MainPrayerPage(),
       const MainPrayerPage(),
     ];

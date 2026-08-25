@@ -40,7 +40,7 @@ class SurahNameState extends ChangeNotifier {
     final surah = _surahByNumberMap[surahNumber];
     if (surah == null) return null;
 
-    return '$surahTitle ${surah.nameTranscriptionRu}, $ayahTitle $ayahNumber';
+    return '$surahTitle ${surah.nameTranscription}, $ayahTitle $ayahNumber';
   }
 
   SurahNameEntity? surahByNumber({required int surahNumber}) {

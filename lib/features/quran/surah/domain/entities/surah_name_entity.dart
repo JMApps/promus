@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 
 class SurahNameEntity extends Equatable {
   final int surahNumber;
-  final String nameTranscriptionRu;
-  final String nameTranslationRu;
+  final String nameTranscription;
+  final String nameTranslation;
   final int revelationOrder;
   final int revelationPlace;
   final int ayahsCount;
@@ -12,8 +12,8 @@ class SurahNameEntity extends Equatable {
 
   const SurahNameEntity({
     required this.surahNumber,
-    required this.nameTranscriptionRu,
-    required this.nameTranslationRu,
+    required this.nameTranscription,
+    required this.nameTranslation,
     required this.revelationOrder,
     required this.revelationPlace,
     required this.ayahsCount,
@@ -24,8 +24,8 @@ class SurahNameEntity extends Equatable {
   @override
   List<Object?> get props => [
     surahNumber,
-    nameTranscriptionRu,
-    nameTranslationRu,
+    nameTranscription,
+    nameTranslation,
     revelationOrder,
     revelationPlace,
     ayahsCount,

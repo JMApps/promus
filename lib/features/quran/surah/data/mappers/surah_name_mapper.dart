@@ -5,8 +5,8 @@ extension SurahNameMapper on SurahNameModel {
   SurahNameEntity surahNameToEntity() {
     return SurahNameEntity(
       surahNumber: surahNumber,
-      nameTranscriptionRu: nameTranscriptionRu,
-      nameTranslationRu: nameTranslationRu,
+      nameTranscription: nameTranscription,
+      nameTranslation: nameTranslation,
       revelationOrder: revelationOrder,
       revelationPlace: revelationPlace,
       ayahsCount: ayahsCount,

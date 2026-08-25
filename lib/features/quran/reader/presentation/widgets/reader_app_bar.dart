@@ -49,7 +49,7 @@ class ReaderAppBar extends StatelessWidget {
                   crossAxisAlignment: .stretch,
                   children: [
                     Text(
-                      'Сура ${surahName?.nameTranscriptionRu ?? ''}',
+                      'Сура ${surahName?.nameTranscription ?? ''}',
                       style: AppTextStyles.medium,
                     ),
                     Text(

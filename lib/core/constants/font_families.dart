@@ -9,6 +9,5 @@ class FontFamilies {
 
   static String pageFont(int pageNumber) => 'p$pageNumber';
 
-  static String glyphForSurahNumber(int surahNumber) =>
-      String.fromCharCode(0xE000 + surahNumber);
+  static String glyphForSurahNumber(int surahNumber) => String.fromCharCode(0xE000 + surahNumber);
 }

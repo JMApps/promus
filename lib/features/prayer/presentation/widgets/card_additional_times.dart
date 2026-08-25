@@ -24,14 +24,14 @@ class CardAdditionalTimes extends StatelessWidget {
         size: 85,
         startAngle: 270,
         angleRange: 360,
-        counterClockwise: true,
+        counterClockwise: false,
         customWidths: CustomSliderWidths(
           progressBarWidth: AppSpacing.small,
           shadowWidth: 0,
         ),
         customColors: CustomSliderColors(
-          trackColor: appColors.primaryContainer,
-          progressBarColor: appColors.primary,
+          trackColor: appColors.tertiaryContainer,
+          progressBarColor: appColors.tertiary,
           dotColor: appColors.primaryContainer,
         ),
       ),
@@ -47,7 +47,7 @@ class CardAdditionalTimes extends StatelessWidget {
             style: AppTextStyles.small,
           ),
           Text(
-            timeText,
+            '-$timeText',
             style: AppTextStyles.small,
           ),
         ],

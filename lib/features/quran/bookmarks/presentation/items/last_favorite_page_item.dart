@@ -25,7 +25,7 @@ class LastFavoritePageItem extends StatelessWidget {
     final appColors = Theme.of(context).colorScheme;
     final itemOddColor = appColors.secondary.withAlpha(25);
     final itemEvenColor = appColors.secondary.withAlpha(05);
-    final surahNameTranscription = context.select<SurahNameState, String>((s) => s.surahByNumber(surahNumber: pageMetaModel.surahNumber)!.nameTranscriptionRu);
+    final surahNameTranscription = context.select<SurahNameState, String>((s) => s.surahByNumber(surahNumber: pageMetaModel.surahNumber)!.nameTranscription);
     return InkWell(
       onTap: () {
         context.read<PageNumberState>().setPageNumber(pageMetaModel.pageNumber);
