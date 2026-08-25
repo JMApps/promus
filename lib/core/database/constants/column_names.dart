@@ -38,4 +38,18 @@ class ColumnNames {
   static const String wordNumber = 'word_number';
   static const String glyph = 'glyph';
   static const String word = 'word';
+
+  static const String chapterId = 'chapter_id';
+  static const String chapterNumber = 'chapter_number';
+  static const String chapterTitle = 'chapter_title';
+
+  static const String bookContentId = 'book_content_id';
+  static const String bookContentTitle = 'book_content_title';
+  static const String bookContent = 'book_content';
+  static const String supplicationId = 'supplication_id';
+  static const String arabicText = 'arabic_text';
+  static const String transcriptionText = 'transcription_text';
+  static const String translationText = 'translation_text';
+  static const String nameAudio = 'name_audio';
+  static const String countNumber = 'count_number';
 }

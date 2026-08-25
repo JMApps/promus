@@ -25,8 +25,8 @@ class SurahNameItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final itemOddColor = appColors.secondary.withAlpha(25);
-    final itemEvenColor = appColors.secondary.withAlpha(05);
+    final itemOddColor = appColors.primary.withAlpha(25);
+    final itemEvenColor = appColors.primary.withAlpha(05);
     return InkWell(
       onTap: () {
         context.read<PageNumberState>().setPageNumber(surah.startPageNumber);

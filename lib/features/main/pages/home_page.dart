@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:promus/features/fortress/presentation/pages/fortress_page.dart';
 import 'package:promus/features/quran/surah/presentation/pages/surah_name_page.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -11,9 +11,7 @@ import '../../../core/constants/icon_paths.dart';
 import '../../../core/theme/app_paddings.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_shapes.dart';
-import '../../../core/theme/app_spacing.dart';
 import '../../prayer/presentation/pages/main_prayer_page.dart';
-import '../../prayer/presentation/widgets/main_icon_item.dart';
 import '../state/main_state.dart';
 import '../widgets/main_navigation_icon.dart';
 import '../widgets/main_navigation_label.dart';
@@ -27,16 +25,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final List<Widget> _mainPages;
+  final ScrollController mushafSurahsController = ScrollController();
+  final ScrollController fortressChaptersController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _mainPages = <Widget>[
       const MainPrayerPage(),
-      SurahNamePage(scrollController: ScrollController()),
-      const MainPrayerPage(),
+      SurahNamePage(scrollController: mushafSurahsController),
+      FortressPage(scrollController: fortressChaptersController),
       const MainPrayerPage(),
     ];
+  }
+
+  @override
+  void dispose() {
+    mushafSurahsController.dispose();
+    fortressChaptersController.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,28 +59,6 @@ class _HomePageState extends State<HomePage> {
         context.read<MainState>().resetToHome();
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('ПроМус'),
-          centerTitle: false,
-          actions: [
-            CupertinoButton(
-              padding: .zero,
-              child: MainIconItem(
-                iconPath: IconPaths.iconPathSetting,
-                iconColor: appColors.primary,
-              ),
-              onPressed: () {},
-            ),
-            CupertinoButton(
-              padding: const .only(right: AppSpacing.medium),
-              child: MainIconItem(
-                iconPath: IconPaths.iconPathLibrary,
-                iconColor: appColors.primary,
-              ),
-              onPressed: () {},
-            ),
-          ],
-        ),
         body: _mainPages[currentNavigatorIndex],
         extendBody: true,
         bottomNavigationBar: MediaQuery.removePadding(

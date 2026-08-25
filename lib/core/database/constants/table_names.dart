@@ -8,4 +8,6 @@ class TableNames {
   static const String tableOfTranslations = 'Table_of_translation';
   static const String tableOfLayout = 'Table_of_layout';
   static const String tableOfGlyph = 'Table_of_glyph';
+
+  static const String tableOfFortressChapters = 'Table_of_chapters';
 }

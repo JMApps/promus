@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/theme/app_spacing.dart';
-import '../../domain/entities/surah_name_entity.dart';
-import '../items/surah_name_item.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../domain/entities/fortress_chapter_entity.dart';
+import '../items/fortress_chapter_item.dart';
 
-class SurahNameList extends StatelessWidget {
-  const SurahNameList({
+class FortressChapterList extends StatelessWidget {
+  const FortressChapterList({
     super.key,
     required this.scrollController,
-    required this.surahs,
+    required this.chapters,
   });
 
   final ScrollController scrollController;
-  final List<SurahNameEntity> surahs;
+  final List<FortressChapterEntity> chapters;
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,11 @@ class SurahNameList extends StatelessWidget {
         controller: scrollController,
         primary: false,
         padding: .only(bottom: bottomHeight),
-        itemCount: surahs.length,
+        itemCount: chapters.length,
         itemBuilder: (context, index) {
-          final surah = surahs[index];
-          return SurahNameItem(
-            surah: surah,
+          final chapter = chapters[index];
+          return FortressChapterItem(
+            chapterModel: chapter,
             index: index,
           );
         },
