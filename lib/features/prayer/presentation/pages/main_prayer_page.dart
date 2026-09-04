@@ -190,7 +190,9 @@ class MainPrayerPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: AppSpacing.medium),
+            if (adhkarMessage != null) ...[
+              const SizedBox(height: AppSpacing.medium),
+            ],
             if (adhkarMessage != null) ...[
               CardAdhkarReminder(
                 message: adhkarMessage,

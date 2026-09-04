@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:promus/core/theme/app_text_styles.dart';
 
 import '../../domain/entities/fortress_chapter_entity.dart';
 
@@ -21,15 +22,22 @@ class FortressChapterItem extends StatelessWidget {
     return ListTile(
       tileColor: index.isOdd ? itemEvenColor : itemOddColor,
       onTap: () {},
-      title: Text(chapterModel.chapterNumber),
-      subtitle: Html(
+      horizontalTitleGap: 8,
+      title: Html(
         data: chapterModel.chapterTitle,
         style: {
           '#': Style(
-            padding: .zero,
+            padding: HtmlPaddings.all(4),
             margin: .zero,
           ),
         },
+      ),
+      leading: CircleAvatar(
+        radius: 17.5,
+        child: Text(
+          chapterModel.chapterId.toString(),
+          style: AppTextStyles.small.copyWith(fontSize: 14.0),
+        ),
       ),
     );
   }

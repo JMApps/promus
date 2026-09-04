@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
 import '../lists/fortress_chapter_list.dart';
@@ -24,10 +25,11 @@ class FortressPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: const Text('Крепость'),
+        title: const Text(AppStrings.titleFortress),
         actions: [
           IconButton.filledTonal(
             onPressed: () {},
+            tooltip: AppStrings.searchByChapters,
             icon: const Icon(Icons.search),
           ),
         ],

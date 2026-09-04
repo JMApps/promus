@@ -10,6 +10,9 @@ class AppStrings {
   static const String titleFortress = 'Крепость';
   static const String titleCounter = 'Счётчик';
 
+  static const String searchByChapters = 'Поиск по главам';
+  static const String searchBySurahs = 'Поиск по сурам';
+
   static const List weekDays = <String>[
     'Пн',
     'Вт',

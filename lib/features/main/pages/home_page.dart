@@ -25,24 +25,41 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final List<Widget> _mainPages;
-  final ScrollController mushafSurahsController = ScrollController();
-  final ScrollController fortressChaptersController = ScrollController();
+  final ScrollController _mushafSurahsController = ScrollController();
+  final ScrollController _fortressChaptersController = ScrollController();
+
+
+  void _scrollCurrentTabToTop(int index) {
+    final controller = switch (index) {
+      1 => _mushafSurahsController,
+      2 => _fortressChaptersController,
+      _ => null,
+    };
+
+    if (controller == null || !controller.hasClients) return;
+
+    controller.animateTo(
+      0,
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.bounceIn,
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     _mainPages = <Widget>[
       const MainPrayerPage(),
-      SurahNamePage(scrollController: mushafSurahsController),
-      FortressPage(scrollController: fortressChaptersController),
+      SurahNamePage(scrollController: _mushafSurahsController),
+      FortressPage(scrollController: _fortressChaptersController),
       const MainPrayerPage(),
     ];
   }
 
   @override
   void dispose() {
-    mushafSurahsController.dispose();
-    fortressChaptersController.dispose();
+    _mushafSurahsController.dispose();
+    _fortressChaptersController.dispose();
     super.dispose();
   }
 
@@ -119,7 +136,11 @@ class _HomePageState extends State<HomePage> {
                     ],
                     currentIndex: currentNavigatorIndex,
                     onTap: (int index) {
-                      context.read<MainState>().changeNavigationIndex(index);
+                      if (currentNavigatorIndex != index) {
+                        context.read<MainState>().changeNavigationIndex(index);
+                      } else {
+                        _scrollCurrentTabToTop(index);
+                      }
                     },
                   ),
                 ),
