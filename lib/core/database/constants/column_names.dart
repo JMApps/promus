@@ -43,6 +43,9 @@ class ColumnNames {
   static const String chapterNumber = 'chapter_number';
   static const String chapterTitle = 'chapter_title';
 
+  static const String footnoteId = 'footnote_id';
+  static const String footnote = 'footnote';
+
   static const String bookContentId = 'book_content_id';
   static const String bookContentTitle = 'book_content_title';
   static const String bookContent = 'book_content';

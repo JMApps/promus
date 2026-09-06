@@ -33,6 +33,8 @@ class AppStrings {
   static const String midnight = 'Полночь';
   static const String lastThirdNight = 'Треть';
 
+  static const String errorLoad = 'Ошибка загрузки';
+
   static String ayahsCount(int count) => Intl.plural(
     count,
     one: '$count аят',
@@ -52,7 +54,6 @@ class AppStrings {
     locale: 'ru',
   );
 
-  static String searchByQuery(String query, String matches) =>
-      'По запросу «$query»\n$matches';
+  static String searchByQuery(String query, String matches) => 'По запросу «$query»\n$matches';
   static String searchError(String error) => 'Ошибка поиска: $error';
 }

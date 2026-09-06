@@ -6,8 +6,11 @@ import 'package:provider/provider.dart';
 import 'core/constants/app_constants.dart';
 import 'core/database/database_helper.dart';
 import 'core/database/fortress_database_helper.dart';
+import 'features/counter/state/main_counter_state.dart';
 import 'features/fortress/data/repositories/fortress_chapter_repository_impl.dart';
+import 'features/fortress/data/repositories/fortress_footnote_repository_impl.dart';
 import 'features/fortress/presentation/states/fortress_chapters_state.dart';
+import 'features/fortress/presentation/states/fortress_footnote_state.dart';
 import 'features/main/pages/root_page.dart';
 import 'features/main/state/main_state.dart';
 import 'features/prayer/state/prayer_state.dart';
@@ -50,6 +53,14 @@ void main() async {
           create: (_) => FortressChapterState(
             FortressChapterRepositoryImpl(fortressDatabaseHelper),
           ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FortressFootnoteState(
+            FortressFootnoteRepositoryImpl(fortressDatabaseHelper),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MainCounterState(),
         ),
       ],
       child: const RootPage(),

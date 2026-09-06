@@ -10,4 +10,5 @@ class TableNames {
   static const String tableOfGlyph = 'Table_of_glyph';
 
   static const String tableOfFortressChapters = 'Table_of_chapters';
+  static const String tableOfFortressFootnotes = 'Table_of_footnotes';
 }

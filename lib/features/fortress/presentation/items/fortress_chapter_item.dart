@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:promus/core/theme/app_text_styles.dart';
 
+import '../../../../core/constants/font_families.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
+import '../widgets/footnote_container.dart';
 
 class FortressChapterItem extends StatelessWidget {
   const FortressChapterItem({
@@ -30,13 +32,32 @@ class FortressChapterItem extends StatelessWidget {
             padding: HtmlPaddings.all(4),
             margin: .zero,
           ),
+          'a': Style(
+            padding: HtmlPaddings.all(4),
+            margin: .zero,
+            color: appColors.primary,
+            fontFamily: FontFamilies.notoNaskh,
+            fontSize: FontSize(14.0),
+          ),
+        },
+        onLinkTap: (String? footnoteId, _, _) {
+          showModalBottomSheet(
+            context: (context),
+            useSafeArea: true,
+            isScrollControlled: true,
+            builder: (_) => FootnoteContainer(
+              footnoteId: int.parse(footnoteId!),
+            ),
+          );
         },
       ),
       leading: CircleAvatar(
         radius: 17.5,
         child: Text(
           chapterModel.chapterId.toString(),
-          style: AppTextStyles.small.copyWith(fontSize: 14.0),
+          style: AppTextStyles.small.copyWith(
+            fontSize: 14.0,
+          ),
         ),
       ),
     );

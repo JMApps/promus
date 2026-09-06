@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:promus/features/counter/pages/counter_main_page.dart';
 import 'package:promus/features/fortress/presentation/pages/fortress_page.dart';
 import 'package:promus/features/quran/surah/presentation/pages/surah_name_page.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       const MainPrayerPage(),
       SurahNamePage(scrollController: _mushafSurahsController),
       FortressPage(scrollController: _fortressChaptersController),
-      const MainPrayerPage(),
+      const CounterMainPage(),
     ];
   }
 
