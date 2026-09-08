@@ -17,6 +17,7 @@ class FortressPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = Theme.of(context).colorScheme;
     final isLoading = context.select<FortressChapterState, bool>((s) => s.isLoading);
     final error = context.select<FortressChapterState, Object?>((s) => s.error);
     final chapters = context.select<FortressChapterState, List<FortressChapterEntity>>(
@@ -35,10 +36,19 @@ class FortressPage extends StatelessWidget {
         ],
       ),
       body: switch ((isLoading, error)) {
-        (true, _) => const Center(child: CircularProgressIndicator.adaptive()),
+        (true, _) => const Center(
+          child: CircularProgressIndicator.adaptive(),
+        ),
         (_, final e?) => Padding(
           padding: AppPaddings.medium,
-          child: Center(child: Text('$e')),
+          child: Center(
+            child: Text(
+              '$e',
+              style: TextStyle(
+                color: appColors.error,
+              ),
+            ),
+          ),
         ),
         _ => FortressChapterList(
           scrollController: scrollController,
