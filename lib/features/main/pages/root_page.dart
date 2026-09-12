@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_strings.dart';
+import '../../../core/routes/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 import 'home_page.dart';
 
@@ -17,6 +18,7 @@ class RootPage extends StatelessWidget {
       title: AppStrings.appName,
       theme: appTheme.lightTheme,
       darkTheme: appTheme.darkTheme,
+      onGenerateRoute: AppRoutes.onRouteGenerator,
       builder: (context, child) {
         return SafeArea(
           top: false,

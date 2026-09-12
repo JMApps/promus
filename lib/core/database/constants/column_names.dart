@@ -54,5 +54,6 @@ class ColumnNames {
   static const String transcriptionText = 'transcription_text';
   static const String translationText = 'translation_text';
   static const String nameAudio = 'name_audio';
+  static const String sampleBy = 'sample_by';
   static const String countNumber = 'count_number';
 }

@@ -7,9 +7,8 @@ import '../mappers/fortress_footnote_mapper.dart';
 import '../models/fortress_footnote_model.dart';
 
 class FortressFootnoteRepositoryImpl implements FortressFootnoteRepository {
-  const FortressFootnoteRepositoryImpl(this._databaseHelper);
-
   final FortressDatabaseHelper _databaseHelper;
+  const FortressFootnoteRepositoryImpl(this._databaseHelper);
 
   @override
   Future<FortressFootnoteEntity> fetchFootnoteById({required int footnoteId}) async {

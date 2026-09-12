@@ -13,10 +13,22 @@ class AppPaddings {
     right: AppSpacing.medium,
     bottom: AppSpacing.medium,
   );
+
+  static const withoutTopSmall = EdgeInsets.only(
+    left: AppSpacing.small,
+    right: AppSpacing.small,
+    bottom: AppSpacing.small,
+  );
+
   static const withoutBottomMedium = EdgeInsets.only(
     left: AppSpacing.medium,
     top: AppSpacing.medium,
     right: AppSpacing.medium,
+  );
+  static const withoutBottomSmall = EdgeInsets.only(
+    left: AppSpacing.small,
+    top: AppSpacing.small,
+    right: AppSpacing.small,
   );
   static const mediumBottomSmall = EdgeInsets.only(
     left: AppSpacing.medium,
@@ -43,6 +55,7 @@ class AppPaddings {
   );
   static const hrMedium = EdgeInsets.symmetric(horizontal: AppSpacing.medium);
   static const bottomLarge = EdgeInsets.only(bottom: AppSpacing.large);
+  static const bottomMedium = EdgeInsets.only(bottom: AppSpacing.medium);
   static const rightMedium = EdgeInsets.only(right: AppSpacing.medium);
   static const topMediumSmallOther = EdgeInsets.only(
     left: AppSpacing.small,

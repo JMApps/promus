@@ -9,8 +9,10 @@ import 'core/database/fortress_database_helper.dart';
 import 'features/counter/state/main_counter_state.dart';
 import 'features/fortress/data/repositories/fortress_chapter_repository_impl.dart';
 import 'features/fortress/data/repositories/fortress_footnote_repository_impl.dart';
+import 'features/fortress/data/repositories/fortress_supplication_repository_impl.dart';
 import 'features/fortress/presentation/states/fortress_chapters_state.dart';
 import 'features/fortress/presentation/states/fortress_footnote_state.dart';
+import 'features/fortress/presentation/states/fortress_supplications_state.dart';
 import 'features/main/pages/root_page.dart';
 import 'features/main/state/main_state.dart';
 import 'features/prayer/state/prayer_state.dart';
@@ -52,6 +54,12 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => FortressChapterState(
             FortressChapterRepositoryImpl(fortressDatabaseHelper),
+          ),
+        ),
+        ChangeNotifierProvider(
+          lazy: true,
+          create: (_) => FortressSupplicationState(
+            FortressSupplicationRepositoryImpl(fortressDatabaseHelper),
           ),
         ),
         ChangeNotifierProvider(

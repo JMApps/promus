@@ -7,9 +7,8 @@ import '../mappers/fortress_chapter_mapper.dart';
 import '../models/fortress_chapter_model.dart';
 
 class FortressChapterRepositoryImpl implements FortressChapterRepository {
-  const FortressChapterRepositoryImpl(this._databaseHelper);
-
   final FortressDatabaseHelper _databaseHelper;
+  const FortressChapterRepositoryImpl(this._databaseHelper);
 
   @override
   Future<List<FortressChapterEntity>> fetchAllChapters() async {
