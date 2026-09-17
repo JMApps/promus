@@ -35,6 +35,12 @@ class AppStrings {
 
   static const String errorLoad = 'Ошибка загрузки';
 
+  static const String morning = 'Утром';
+  static const String evening = 'Вечером';
+  static const String beforeSleep = 'Перед сном';
+  static const String afterPrayer = 'После молитвы';
+  static const String istikhara = 'Истихара';
+
   static String ayahsCount(int count) => Intl.plural(
     count,
     one: '$count аят',

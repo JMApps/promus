@@ -12,6 +12,5 @@ extension FortressBookContentMapper on FortressBookContentModel {
 }
 
 extension FortressBookContentListMapper on List<FortressBookContentModel> {
-  List<FortressBookContentEntity> toEntities() =>
-      map((model) => model.toEntity()).toList(growable: false);
+  List<FortressBookContentEntity> toEntities() => map((model) => model.toEntity()).toList(growable: false);
 }

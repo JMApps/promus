@@ -49,7 +49,7 @@ class CounterMainPage extends StatelessWidget {
             },
             icon: const Icon(Icons.refresh_rounded),
           ),
-          Expanded(
+          const Expanded(
             flex: 3,
             child: SizedBox(),
           ),

@@ -15,6 +15,5 @@ extension FortressSupplicationMapper on FortressSupplicationModel {
 }
 
 extension FortressSupplicationListMapper on List<FortressSupplicationModel> {
-  List<FortressSupplicationEntity> toEntities() =>
-      map((model) => model.toEntity()).toList(growable: false);
+  List<FortressSupplicationEntity> toEntities() => map((model) => model.toEntity()).toList(growable: false);
 }

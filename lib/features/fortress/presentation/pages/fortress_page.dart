@@ -26,17 +26,6 @@ class FortressPage extends StatelessWidget {
       (s) => s.chapters,
     );
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text(AppStrings.titleFortress),
-        actions: [
-          IconButton.filledTonal(
-            onPressed: () {},
-            tooltip: AppStrings.searchByChapters,
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
       body: switch ((isLoading, error)) {
         (true, _) => const Center(
           child: CircularProgressIndicator.adaptive(),
@@ -52,17 +41,40 @@ class FortressPage extends StatelessWidget {
             ),
           ),
         ),
-        _ => Column(
-          children: [
-            const Padding(
-              padding: AppPaddings.withoutBottomSmall,
-              child: CustomChaptersList(),
+        _ => CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              snap: true,
+              pinned: false,
+              centerTitle: false,
+              title: const Text(AppStrings.titleFortress),
+              actions: [
+                IconButton.filledTonal(
+                  onPressed: () {
+                    // Search chapters
+                  },
+                  tooltip: AppStrings.searchByChapters,
+                  icon: const Icon(Icons.search),
+                ),
+              ],
             ),
-            const Divider(
-              indent: AppSpacing.medium,
-              endIndent: AppSpacing.medium,
+            const SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: AppPaddings.withoutBottomSmall,
+                    child: CustomChaptersList(),
+                  ),
+                  Divider(
+                    indent: AppSpacing.medium,
+                    endIndent: AppSpacing.medium,
+                  ),
+                ],
+              ),
             ),
-            Expanded(
+            SliverToBoxAdapter(
               child: FortressChapterList(
                 scrollController: scrollController,
                 chapters: chapters,

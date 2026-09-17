@@ -17,21 +17,20 @@ class FortressChapterList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double bottomHeight = kBottomNavigationBarHeight + AppSpacing.medium * 2;
-    return Scrollbar(
+    return ListView.builder(
       controller: scrollController,
-      child: ListView.builder(
-        controller: scrollController,
-        primary: false,
-        padding: .only(bottom: bottomHeight),
-        itemCount: chapters.length,
-        itemBuilder: (context, index) {
-          final chapter = chapters[index];
-          return FortressChapterItem(
-            chapterModel: chapter,
-            index: index,
-          );
-        },
-      ),
+      primary: false,
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      padding: .only(bottom: bottomHeight),
+      itemCount: chapters.length,
+      itemBuilder: (context, index) {
+        final chapter = chapters[index];
+        return FortressChapterItem(
+          chapterModel: chapter,
+          index: index,
+        );
+      },
     );
   }
 }

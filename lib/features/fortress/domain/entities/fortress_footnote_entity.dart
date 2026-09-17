@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-class FortressFootnoteEntity extends Equatable {
-  const FortressFootnoteEntity({
+class FortressFootnoteEntity extends Equatable
+{
+const FortressFootnoteEntity({
     required this.footnoteId,
-    required this.footnote,
-  });
+ required this.footnote
+});
 
   final int footnoteId;
   final String footnote;
