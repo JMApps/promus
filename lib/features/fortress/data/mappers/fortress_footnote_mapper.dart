@@ -9,3 +9,7 @@ extension FortressFootnoteMapper on FortressFootnoteModel {
     );
   }
 }
+
+extension FortressFootnoteListMapper on List<FortressFootnoteModel> {
+  List<FortressFootnoteEntity> toEntities() => map((model) => model.toEntity()).toList(growable: false);
+}

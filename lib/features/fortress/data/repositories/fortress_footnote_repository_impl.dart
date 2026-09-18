@@ -23,4 +23,17 @@ class FortressFootnoteRepositoryImpl implements FortressFootnoteRepository {
 
     return FortressFootnoteModel.fromMap(rows.first).toEntity();
   }
+
+  @override
+  Future<List<FortressFootnoteEntity>> fetchFootnotesBySupplication({required int supplicationId}) async {
+    final db = await _databaseHelper.db;
+
+    final rows = await db.query(
+      TableNames.tableOfFortressFootnotes,
+      where: '${ColumnNames.sampleBy} = ?',
+      whereArgs: [supplicationId],
+    );
+
+    return rows.map(FortressFootnoteModel.fromMap).toList(growable: false).toEntities();
+  }
 }

@@ -19,6 +19,7 @@ class FortressPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mqPadding = MediaQuery.of(context).padding;
     final appColors = Theme.of(context).colorScheme;
     final isLoading = context.select<FortressChapterState, bool>((s) => s.isLoading);
     final error = context.select<FortressChapterState, Object?>((s) => s.error);
@@ -41,46 +42,55 @@ class FortressPage extends StatelessWidget {
             ),
           ),
         ),
-        _ => CustomScrollView(
+        _ => RawScrollbar(
           controller: scrollController,
-          slivers: [
-            SliverAppBar(
-              floating: true,
-              snap: true,
-              pinned: false,
-              centerTitle: false,
-              title: const Text(AppStrings.titleFortress),
-              actions: [
-                IconButton.filledTonal(
-                  onPressed: () {
-                    // Search chapters
-                  },
-                  tooltip: AppStrings.searchByChapters,
-                  icon: const Icon(Icons.search),
-                ),
-              ],
-            ),
-            const SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: AppPaddings.withoutBottomSmall,
-                    child: CustomChaptersList(),
-                  ),
-                  Divider(
-                    indent: AppSpacing.medium,
-                    endIndent: AppSpacing.medium,
+          padding: EdgeInsets.only(
+            top: mqPadding.top + kToolbarHeight,
+            bottom: mqPadding.bottom,
+          ),
+          thickness: 2.75,
+          thumbColor: appColors.primary.withAlpha(125),
+          radius: const .circular(AppSpacing.medium),
+          child: CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              SliverAppBar(
+                floating: true,
+                pinned: false,
+                centerTitle: false,
+                title: const Text(AppStrings.titleFortress),
+                actions: [
+                  IconButton.filledTonal(
+                    onPressed: () {
+                      // Search chapters
+                    },
+                    tooltip: AppStrings.searchByChapters,
+                    icon: const Icon(Icons.search),
                   ),
                 ],
               ),
-            ),
-            SliverToBoxAdapter(
-              child: FortressChapterList(
-                scrollController: scrollController,
-                chapters: chapters,
+              const SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: AppPaddings.withoutBottomSmall,
+                      child: CustomChaptersList(),
+                    ),
+                    Divider(
+                      indent: AppSpacing.medium,
+                      endIndent: AppSpacing.medium,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              FortressChapterList(chapters: chapters),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: kBottomNavigationBarHeight + AppSpacing.medium * 2,
+                ),
+              ),
+            ],
+          ),
         ),
       },
     );

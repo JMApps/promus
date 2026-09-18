@@ -27,6 +27,7 @@ class CustomChapterCardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
+      color: cardColor.withAlpha(35),
       shape: AppShapes.medium,
       child: InkWell(
         borderRadius: AppRadius.medium,

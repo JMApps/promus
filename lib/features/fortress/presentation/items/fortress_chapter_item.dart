@@ -38,9 +38,12 @@ class FortressChapterItem extends StatelessWidget {
         horizontalTitleGap: 8,
         shape: AppShapes.medium,
         contentPadding: AppPaddings.hrMedium,
-        title: MainHtmlWidget(
-          htmlContent: chapterModel.chapterTitle,
-          textAlign: .start,
+        title: Padding(
+          padding: AppPaddings.leftXSmall,
+          child: MainHtmlWidget(
+            htmlContent: chapterModel.chapterTitle,
+            textAlign: .start,
+          ),
         ),
         leading: CircleAvatar(
           radius: 17.5,

@@ -52,6 +52,7 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
+          lazy: false,
           create: (_) => FortressChapterState(
             FortressChapterRepositoryImpl(fortressDatabaseHelper),
           ),

@@ -22,6 +22,8 @@ class MainHtmlWidget extends StatelessWidget {
       style: {
         '#': Style(
           fontSize: FontSize(16.0),
+          padding: .zero,
+          margin: .zero,
           textAlign: textAlign,
         ),
         'a': Style(
@@ -29,8 +31,12 @@ class MainHtmlWidget extends StatelessWidget {
           margin: .zero,
           color: appColors.primary,
           fontFamily: FontFamilies.notoNaskh,
-          fontSize: FontSize(16.0),
+          fontSize: FontSize(14.0),
         ),
+        'small': Style(
+          fontSize: FontSize(10.0),
+          color: appColors.secondary,
+        )
       },
       onLinkTap: (String? footnoteId, _, _) {
         showModalBottomSheet(
