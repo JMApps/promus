@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:promus/features/fortress/presentation/states/fortress_footnote_state.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
 
-class SupplicationOptionCard extends StatelessWidget {
+class SupplicationOptionCard extends StatefulWidget {
   const SupplicationOptionCard({
     super.key,
     required this.supplicationModel,
@@ -21,6 +18,11 @@ class SupplicationOptionCard extends StatelessWidget {
   final int index;
 
   @override
+  State<SupplicationOptionCard> createState() => _SupplicationOptionCardState();
+}
+
+class _SupplicationOptionCardState extends State<SupplicationOptionCard> {
+  @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
     return Card(
@@ -31,33 +33,6 @@ class SupplicationOptionCard extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () async {
-              final footnotes = await context.read<FortressFootnoteState>().loadFootnotesBySupplication(
-                supplicationModel.supplicationId,
-              );
-
-              final buffer = StringBuffer();
-
-              if (supplicationModel.arabicText != null) {
-                buffer.writeln(supplicationModel.arabicText);
-              }
-
-              if (footnotes != null && footnotes.isNotEmpty) {
-                if (buffer.isNotEmpty) buffer.writeln();
-                for (final footnote in footnotes) {
-                  buffer.writeln(footnote.footnote);
-                }
-              }
-
-              final text = buffer.toString().trim();
-              if (text.isEmpty) return;
-
-              await Clipboard.setData(ClipboardData(text: text));
-
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Скопировано')),
-                );
-              }
             },
             iconSize: 18.0,
             visualDensity: .compact,
@@ -77,7 +52,7 @@ class SupplicationOptionCard extends StatelessWidget {
             child: Padding(
               padding: AppPaddings.hrMediumVrXSmall,
               child: Text(
-                '$index/$supplicationsLength',
+                '${widget.index}/${widget.supplicationsLength}',
                 style: AppTextStyles.small,
               ),
             ),

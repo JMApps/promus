@@ -29,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   final ScrollController _mushafSurahsController = ScrollController();
   final ScrollController _fortressChaptersController = ScrollController();
 
-
   void _scrollCurrentTabToTop(int index) {
     final controller = switch (index) {
       1 => _mushafSurahsController,
@@ -39,13 +38,17 @@ class _HomePageState extends State<HomePage> {
 
     if (controller == null || !controller.hasClients) return;
 
+    final offset = controller.offset;
+    if (offset <= 0) return;
+
+    final ms = (offset / 4).clamp(300, 600).toInt();
+
     controller.animateTo(
       0,
-      duration: const Duration(milliseconds: 250),
-      curve: Curves.bounceIn,
+      duration: Duration(milliseconds: ms),
+      curve: Curves.easeOutCubic,
     );
   }
-
   @override
   void initState() {
     super.initState();

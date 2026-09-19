@@ -22,15 +22,22 @@ class _FootnoteContainerState extends State<FootnoteContainer> {
   @override
   void initState() {
     super.initState();
-    context.read<FortressFootnoteState>().loadFootnote(widget.footnoteId);
+    _load();
   }
 
   @override
   void didUpdateWidget(covariant FootnoteContainer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.footnoteId != widget.footnoteId) {
-      context.read<FortressFootnoteState>().loadFootnote(widget.footnoteId);
-    }
+    if (oldWidget.footnoteId != widget.footnoteId) _load();
+  }
+
+  void _load() {
+    final state = context.read<FortressFootnoteState>();
+    final id = widget.footnoteId;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      state.loadFootnote(id);
+    });
   }
 
   @override
