@@ -22,12 +22,10 @@ class FortressSupplicationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final itemOddColor = appColors.primary.withAlpha(35);
-    final itemEvenColor = appColors.primary.withAlpha(15);
     return Card(
-      margin: AppPaddings.withoutTopSmall,
-      elevation: 0,
-      color: index.isOdd ? itemEvenColor : itemOddColor,
+      margin: AppPaddings.withoutTopSmallBottomMedium,
+      color: appColors.surface,
+      elevation: 3,
       child: Padding(
         padding: AppPaddings.small,
         child: Column(

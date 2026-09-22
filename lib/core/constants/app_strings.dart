@@ -41,6 +41,8 @@ class AppStrings {
   static const String afterPrayer = 'После молитвы';
   static const String istikhara = 'Истихара';
 
+  static const String copied = 'Скопировано';
+
   static String ayahsCount(int count) => Intl.plural(
     count,
     one: '$count аят',

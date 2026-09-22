@@ -109,6 +109,12 @@ class FortressFootnoteState extends ChangeNotifier {
     }
   }
 
+  String? formattedFootnotesText(int supplicationId) {
+    final footnotes = _footnotesBySupplicationMap[supplicationId];
+    if (footnotes == null || footnotes.isEmpty) return null;
+
+    return footnotes.map((f) => '[${f.footnoteId}] - ${f.footnote}').join('\n');  }
+
   @override
   void dispose() {
     _footnoteByIdMap.clear();

@@ -32,6 +32,7 @@ class FortressFootnoteRepositoryImpl implements FortressFootnoteRepository {
       TableNames.tableOfFortressFootnotes,
       where: '${ColumnNames.sampleBy} = ?',
       whereArgs: [supplicationId],
+      orderBy: ColumnNames.footnoteId,
     );
 
     return rows.map(FortressFootnoteModel.fromMap).toList(growable: false).toEntities();
