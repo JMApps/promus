@@ -11,6 +11,7 @@ class AppStrings {
   static const String titleCounter = 'Счётчик';
 
   static const String searchByChapters = 'Поиск по главам';
+  static const String searchIsEmpty = 'По вашему запросу ничего не найдено';
   static const String searchBySurahs = 'Поиск по сурам';
 
   static const List weekDays = <String>[

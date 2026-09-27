@@ -8,6 +8,7 @@ import '../../domain/entities/fortress_chapter_entity.dart';
 import '../lists/fortress_chapter_list.dart';
 import '../states/fortress_chapters_state.dart';
 import '../widgets/custom_chapters_list.dart';
+import '../widgets/search_chapters_delegate.dart';
 
 class FortressPage extends StatelessWidget {
   const FortressPage({
@@ -62,7 +63,12 @@ class FortressPage extends StatelessWidget {
                 actions: [
                   IconButton.filledTonal(
                     onPressed: () {
-                      // Search chapters
+                      showSearch(
+                        context: context,
+                        delegate: SearchChaptersDelegate(
+                          chapters: chapters,
+                        ),
+                      );
                     },
                     tooltip: AppStrings.searchByChapters,
                     icon: const Icon(Icons.search),
