@@ -18,7 +18,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   scrollable_positioned_list: ^0.3.8
   flutter_material_color_picker: ^1.2.0
-  syncfusion_flutter_datepicker: ^34.2.8
+  syncfusion_flutter_datepicker: ^34.2.9
   home_widget: ^0.10.0
   sqflite: ^2.4.4
   hijri: ^3.0.1
@@ -40,6 +40,7 @@ dependencies:
   share_plus: ^13.3.0
   pasteboard: ^0.5.0
   html: ^0.15.4
+  responsive_builder: ^0.7.1
 
 dev_dependencies:
   flutter_test:
@@ -76,5 +77,6 @@ flutter:
     - family: Noto Naskh
       fonts:
         - asset: assets/fonts/noto_naskh.ttf
+
 dependency_overrides:
   html: 0.15.4

@@ -75,8 +75,9 @@ class SupplicationOptionCard extends StatelessWidget {
             icon: const Icon(Icons.ios_share),
           ),
           Card(
-            color: appColors.secondaryContainer,
+            color: appColors.inversePrimary,
             shape: AppShapes.small,
+            elevation: 0,
             child: Padding(
               padding: AppPaddings.hrMediumVrXSmall,
               child: Text(

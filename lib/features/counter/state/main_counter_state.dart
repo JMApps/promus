@@ -6,10 +6,9 @@ class MainCounterState extends ChangeNotifier {
   int get mainCountValue => _mainCountValue;
 
   void incrementCount() {
-    if (_mainCountValue < 1000) {
-      _mainCountValue++;
-      notifyListeners();
-    }
+    // условие на 1000 и другое
+    _mainCountValue++;
+    notifyListeners();
   }
 
   void decrementCount() {
