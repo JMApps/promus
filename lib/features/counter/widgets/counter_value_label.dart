@@ -9,15 +9,33 @@ class CounterValueLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appColors = Theme.of(context).colorScheme;
-    return Text(
-      context.watch<MainCounterState>().mainCountValue.toString(),
-      style: TextStyle(
-        fontFamily: FontFamilies.ptSans,
-        fontSize: 85.0,
-        color: appColors.primary,
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final count = context.select<MainCounterState, int>((s) => s.currentCount);
+    final isVisible =
+    context.select<MainCounterState, bool>((s) => s.countLabelVisible);
+
+    return AnimatedOpacity(
+      opacity: isVisible ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      child: ExcludeSemantics(
+        excluding: !isVisible,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              count.toString(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: FontFamilies.ptSans,
+                fontSize: 85.0,
+                color: primaryColor,
+              ),
+            ),
+          ),
+        ),
       ),
-      textAlign: .center,
     );
   }
 }

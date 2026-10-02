@@ -28,6 +28,9 @@ void main() async {
 
   await Hive.openBox(AppConstants.keySettingsPrayerTimeBox);
   await Hive.openBox(AppConstants.mainAppSettingsBox);
+  await Hive.openBox(AppConstants.keyMainCounterBox);
+
+  final _appCounterBox = Hive.box(AppConstants.keyMainCounterBox);
 
   final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
   final DatabaseHelper databaseHelper = DatabaseHelper.instance;
@@ -69,7 +72,7 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
-          create: (_) => MainCounterState(),
+          create: (_) => MainCounterState(box: _appCounterBox),
         ),
       ],
       child: const RootPage(),

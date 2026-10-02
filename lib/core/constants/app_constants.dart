@@ -4,6 +4,7 @@ class AppConstants {
   AppConstants._();
 
   static const String keySettingsPrayerTimeBox = 'key_settings_prayer_time_box';
+  static const String keyMainCounterBox = 'key_main_counter_box';
 
   static const String keyFajrAdjustment = 'key_fajr_adjustment';
   static const String keySunriseAdjustment = 'key_sunrise_adjustment';
@@ -20,6 +21,15 @@ class AppConstants {
   static const String keyHighLatitudeIndex = 'key_high_latitude_index';
   static const String keyMadhabIndex = 'key_madhab_index';
   static const String keyDST = 'key_dst';
+
+  static const String keyFreeCounterValue = 'key_free_counter_value';
+  static const String key33CounterValue = 'key_33_counter_value';
+  static const String key100CounterValue = 'key_100_counter_value';
+  static const String key1000CounterValue = 'key_1000_counter_value';
+
+  static const String keyCountFeetbackState = 'key_count_feetback_state';
+  static const String keyCountLabelIsShow = 'key_count_label_is_show';
+  static const String keyCounterMode = 'key_counter_mode';
 
   static const List<CalculationMethod> prayerCalculationMethods = [
     CalculationMethod.umm_al_qura,
@@ -119,6 +129,13 @@ class AppConstants {
     'Время утренних азкаров',
     'Время вечерних азкаров',
     'Время ночных азкаров',
+  ];
+
+  static const List<String> tasbeehCounts = [
+    '--/--',
+    '33',
+    '100',
+    '1000',
   ];
 
   static const String mainAppSettingsBox = 'main_app_settings_box';
