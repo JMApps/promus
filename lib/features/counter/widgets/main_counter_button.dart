@@ -9,13 +9,11 @@ class MainCounterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = Theme.of(context).colorScheme;
     final onCount = context.read<MainCounterState>().onCountClick;
-    final color = Theme.of(context).colorScheme.onSurfaceVariant;
-
     return LayoutBuilder(
       builder: (context, constraints) {
         final side = constraints.biggest.shortestSide;
-
         return Center(
           child: Semantics(
             button: true,
@@ -23,11 +21,24 @@ class MainCounterButton extends StatelessWidget {
             onTap: onCount,
             child: InkResponse(
               onTapDown: (_) => onCount(),
-              radius: side / 2,
-              child: Icon(
-                Icons.fingerprint_rounded,
-                size: side * 0.85,
-                color: color,
+              radius: side / 1.95,
+              child: ShaderMask(
+                blendMode: BlendMode.srcIn,
+                shaderCallback: (bounds) => LinearGradient(
+                  begin: .topLeft,
+                  end: .bottomRight,
+                  colors: [
+                    appColors.primary,
+                    appColors.secondary,
+                    appColors.tertiary,
+                    appColors.primaryContainer,
+                  ],
+                ).createShader(bounds),
+                child: Icon(
+                  Icons.fingerprint_rounded,
+                  size: side * 0.95,
+                  color: appColors.primary,
+                ),
               ),
             ),
           ),

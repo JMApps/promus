@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/font_families.dart';
+import '../../../core/theme/app_paddings.dart';
 import '../state/main_counter_state.dart';
 
 class CounterValueLabel extends StatelessWidget {
@@ -11,9 +12,7 @@ class CounterValueLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
     final count = context.select<MainCounterState, int>((s) => s.currentCount);
-    final isVisible =
-    context.select<MainCounterState, bool>((s) => s.countLabelVisible);
-
+    final isVisible = context.select<MainCounterState, bool>((s) => s.countLabelVisible);
     return AnimatedOpacity(
       opacity: isVisible ? 1.0 : 0.0,
       duration: const Duration(milliseconds: 300),
@@ -21,12 +20,12 @@ class CounterValueLabel extends StatelessWidget {
       child: ExcludeSemantics(
         excluding: !isVisible,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: AppPaddings.hrMedium,
           child: FittedBox(
-            fit: BoxFit.scaleDown,
+            fit: .scaleDown,
             child: Text(
               count.toString(),
-              textAlign: TextAlign.center,
+              textAlign: .center,
               style: TextStyle(
                 fontFamily: FontFamilies.ptSans,
                 fontSize: 85.0,

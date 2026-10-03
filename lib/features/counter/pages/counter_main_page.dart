@@ -17,13 +17,15 @@ class CounterMainPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppStrings.titleCounter),
-        actions: const [ResetCurrentCount()],
+        actions: const [
+          ResetCurrentCount(),
+        ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight),
+        padding: const .only(bottom: kBottomNavigationBarHeight),
         child: OrientationLayoutBuilder(
-          portrait: (_) => const _CounterLayout(axis: Axis.vertical),
-          landscape: (_) => const _CounterLayout(axis: Axis.horizontal),
+          portrait: (_) => const _CounterLayout(axis: .vertical),
+          landscape: (_) => const _CounterLayout(axis: .horizontal),
         ),
       ),
     );
@@ -37,37 +39,23 @@ class _CounterLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controlsAxis =
-    axis == Axis.vertical ? Axis.horizontal : Axis.vertical;
-
+    final controlsAxis = axis == .vertical ? Axis.horizontal : Axis.vertical;
     return Flex(
       direction: axis,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: .spaceEvenly,
       children: [
-        const Flexible(flex: 2, child: CounterValueLabel()),
-        const Expanded(flex: 5, child: MainCounterButton()),
-        _Controls(axis: controlsAxis),
-      ],
-    );
-  }
-}
-
-class _Controls extends StatelessWidget {
-  const _Controls({required this.axis});
-
-  final Axis axis;
-
-  @override
-  Widget build(BuildContext context) {
-    return Flex(
-      direction: axis,
-      mainAxisSize:
-      axis == Axis.horizontal ? MainAxisSize.max : MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: const [
-        ShowCountLabelButton(),
-        CounterModeSelector(),
-        CountVibrationButton(),
+        const Flexible(child: CounterValueLabel()),
+        const Expanded(child: MainCounterButton()),
+        Flex(
+          direction: controlsAxis,
+          mainAxisSize: .max,
+          mainAxisAlignment: .spaceEvenly,
+          children: const [
+            ShowCountLabelButton(),
+            CounterModeSelector(),
+            CountVibrationButton(),
+          ],
+        ),
       ],
     );
   }

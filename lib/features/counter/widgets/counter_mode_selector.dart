@@ -35,10 +35,10 @@ class CounterModeSelector extends StatelessWidget {
                     style: mode == currentMode ? TextStyle(
                       fontSize: 17.0,
                       color: primaryColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: .bold,
                     ) : AppTextStyles.medium,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
+                    overflow: .ellipsis,
+                    textAlign: .center,
                   ),
                 ),
               ),

@@ -9,9 +9,7 @@ class CountVibrationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEnabled =
-    context.select<MainCounterState, bool>((s) => s.tacticFeedback);
-
+    final isEnabled = context.select<MainCounterState, bool>((s) => s.tacticFeedback);
     return IconButton.filledTonal(
       onPressed: context.read<MainCounterState>().toggleTacticFeedback,
       tooltip: AppStrings.vibration,

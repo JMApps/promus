@@ -21,7 +21,7 @@ class ResetCurrentCount extends StatelessWidget {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          behavior: SnackBarBehavior.floating,
+          behavior: .floating,
           content: Text(
             AppStrings.countReset,
             style: AppTextStyles.medium.copyWith(color: appColors.onPrimary),
