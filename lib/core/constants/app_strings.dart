@@ -13,8 +13,12 @@ class AppStrings {
   static const String settings = 'Настройки';
 
   static const String searchByChapters = 'Поиск по главам';
-  static const String searchIsEmpty = 'По вашему запросу ничего не найдено';
   static const String searchBySurahs = 'Поиск по сурам';
+  static const String searchAyahs = 'Поиск аятов';
+  static const String strShort = 'Стр.';
+  static const String medina = 'Медина';
+  static const String mecca = 'Мекка';
+  static const String searchIsEmpty = 'По вашему запросу ничего не найдено';
   static const String reset = 'Сброс';
   static const String vibration = 'Цибрация';
   static const String showCountLabel = 'Показать количество';

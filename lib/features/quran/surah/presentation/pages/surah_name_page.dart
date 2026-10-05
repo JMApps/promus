@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/theme/app_paddings.dart';
+import '../../../../../core/theme/app_spacing.dart';
 import '../../../search/presentation/delegates/search_ayahs_delegate.dart';
 import '../../domain/entities/surah_name_entity.dart';
 import '../lists/surah_name_list.dart';
@@ -17,39 +19,67 @@ class SurahNamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mqPadding = MediaQuery.of(context).padding;
+    final appColors = Theme.of(context).colorScheme;
     final isLoading = context.select<SurahNameState, bool>((s) => s.isLoading);
     final error = context.select<SurahNameState, Object?>((s) => s.error);
-    final surahs = context.select<SurahNameState, List<SurahNameEntity>>(
-      (s) => s.surahs,
-    );
+    final surahs = context.select<SurahNameState, List<SurahNameEntity>>((s) => s.surahs);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text('Мусхаф'),
-        actions: [
-          IconButton.filledTonal(
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: SearchAyahsDelegate(
-                  searchField: 'Поиск аятов',
-                ),
-              );
-            },
-            tooltip: 'Поиск аятов',
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
       body: switch ((isLoading, error)) {
-        (true, _) => const Center(child: CircularProgressIndicator.adaptive()),
+        (true, _) => const Center(
+          child: CircularProgressIndicator.adaptive(),
+        ),
         (_, final e?) => Padding(
           padding: AppPaddings.medium,
-          child: Center(child: Text('$e')),
+          child: Center(
+            child: Text(
+              '$e',
+              style: TextStyle(
+                color: appColors.error,
+              ),
+            ),
+          ),
         ),
-        _ => SurahNameList(
-          scrollController: scrollController,
-          surahs: surahs,
+        _ => RawScrollbar(
+          controller: scrollController,
+          padding: EdgeInsets.only(
+            top: mqPadding.top + kToolbarHeight,
+            bottom: mqPadding.bottom,
+          ),
+          thickness: 2.75,
+          thumbColor: appColors.primary.withAlpha(125),
+          radius: const .circular(AppSpacing.medium),
+          child: CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              SliverAppBar(
+                floating: true,
+                pinned: false,
+                centerTitle: false,
+                title: const Text(AppStrings.titleMushaf),
+                actions: [
+                  IconButton.filledTonal(
+                    onPressed: () {
+                      showSearch(
+                        context: context,
+                        delegate: SearchAyahsDelegate(
+                          searchField: AppStrings.searchAyahs,
+                        ),
+                      );
+                    },
+                    tooltip: AppStrings.searchAyahs,
+                    icon: const Icon(Icons.search),
+                  ),
+                ],
+              ),
+              SurahNameList(surahs: surahs),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: kBottomNavigationBarHeight + AppSpacing.medium * 2,
+                ),
+              ),
+            ],
+          ),
         ),
       },
     );

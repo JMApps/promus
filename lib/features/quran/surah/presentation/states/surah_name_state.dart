@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../domain/entities/surah_name_entity.dart';
 import '../../domain/repositories/surah_name_repository.dart';
@@ -8,21 +8,32 @@ class SurahNameState extends ChangeNotifier {
     _loadAllSurahs();
   }
 
+  static const int expectedSurahsCount = 114;
+
   final SurahNameRepository _surahNameRepository;
 
   List<SurahNameEntity> _surahs = const [];
-
-  Map<int, SurahNameEntity> _surahByNumberMap = {};
+  Map<int, SurahNameEntity> _surahByNumberMap = const {};
 
   bool _isLoading = false;
   Object? _error;
+  StackTrace? _stackTrace;
 
-  List<SurahNameEntity> get surahs => List.unmodifiable(_surahs);
+  List<SurahNameEntity> get surahs => _surahs;
   bool get isLoading => _isLoading;
   Object? get error => _error;
-  bool get isReady => _surahs.isNotEmpty && !_isLoading;
+  StackTrace? get stackTrace => _stackTrace;
   bool get hasError => _error != null;
+  bool get isReady => _surahs.isNotEmpty && !_isLoading;
   int get totalSurahs => _surahs.length;
+
+  SurahNameEntity? surahByNumber({required int surahNumber}) =>
+      _surahByNumberMap[surahNumber];
+
+  SurahNameEntity? surahByIndex(int index) {
+    if (index < 0 || index >= _surahs.length) return null;
+    return _surahs[index];
+  }
 
   String? surahByVerseKey(String surahTitle, String verseKey, String ayahTitle) {
     if (!isReady) return null;
@@ -31,69 +42,54 @@ class SurahNameState extends ChangeNotifier {
     if (parts.length != 2) return null;
 
     final surahNumber = int.tryParse(parts[0]);
-    final ayahNumber = parts[1];
-
-    if (surahNumber == null || surahNumber < 1 || surahNumber > 114) {
-      return null;
-    }
+    if (surahNumber == null) return null;
 
     final surah = _surahByNumberMap[surahNumber];
     if (surah == null) return null;
 
-    return '$surahTitle ${surah.nameTranscription}, $ayahTitle $ayahNumber';
+    return '$surahTitle ${surah.nameTranscription}, $ayahTitle ${parts[1]}';
   }
 
-  SurahNameEntity? surahByNumber({required int surahNumber}) {
-    if (surahNumber < 1 || surahNumber > 114) return null;
-    return _surahByNumberMap[surahNumber];
-  }
-
-  SurahNameEntity? surahByIndex(int index) {
-    if (index < 0 || index >= _surahs.length) return null;
-    return _surahs[index];
-  }
-
-  Future<void> reload() async {
-    await _loadAllSurahs(force: true);
-  }
+  Future<void> reload() => _loadAllSurahs(force: true);
 
   Future<void> _loadAllSurahs({bool force = false}) async {
     if (!force && _surahs.isNotEmpty) return;
 
     _isLoading = true;
     _error = null;
+    _stackTrace = null;
     notifyListeners();
 
     try {
-      final loadedSurahs = await _surahNameRepository.fetchAllSurahs();
-      if (loadedSurahs.isEmpty) {
-        throw Exception('Loaded surahs list is empty');
-      }
-      if (loadedSurahs.length != 114) {
-        debugPrint('Warning: Expected 114 surahs, got ${loadedSurahs.length}');
-      }
-      _surahs = List.unmodifiable(loadedSurahs);
-      _buildSurahMap();
+      final loaded = await _surahNameRepository.fetchAllSurahs();
 
-    } catch (e, stackTrace) {
+      if (loaded.isEmpty) {
+        throw StateError('Surahs list is empty');
+      }
+      if (loaded.length != expectedSurahsCount) {
+        debugPrint(
+          'Warning: expected $expectedSurahsCount surahs, got ${loaded.length}',
+        );
+      }
+
+      _surahs = List.unmodifiable(loaded);
+      _surahByNumberMap = Map.unmodifiable({
+        for (var i = 0; i < _surahs.length; i++) i + 1: _surahs[i],
+      });
+    } catch (e, s) {
       _error = e;
-      debugPrint('Error loading surahs: $e\n$stackTrace');
+      _stackTrace = s;
+      debugPrint('Error loading surahs: $e\n$s');
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  void _buildSurahMap() {
-    _surahByNumberMap = {
-      for (var i = 0; i < _surahs.length; i++)
-        i + 1: _surahs[i],
-    };
-  }
-
   @override
   void dispose() {
-    _surahByNumberMap.clear();
+    _surahs = const [];
+    _surahByNumberMap = const {};
     super.dispose();
   }
 }

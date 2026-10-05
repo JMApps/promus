@@ -9,8 +9,7 @@ class ShowCountLabelButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isVisible =
-    context.select<MainCounterState, bool>((s) => s.countLabelVisible);
+    final isVisible = context.select<MainCounterState, bool>((s) => s.countLabelVisible);
     return IconButton.filledTonal(
       onPressed: context.read<MainCounterState>().toggleCountLabel,
       tooltip: AppStrings.showCountLabel,
