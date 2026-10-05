@@ -16,10 +16,10 @@ import 'features/fortress/presentation/states/fortress_supplications_state.dart'
 import 'features/main/pages/root_page.dart';
 import 'features/main/state/main_state.dart';
 import 'features/prayer/state/prayer_state.dart';
+import 'features/quran/data/data_sources/surah_local_data_source_impl.dart';
+import 'features/quran/data/repositories/surah_name_repository_impl.dart';
+import 'features/quran/surah/states/surah_name_state.dart';
 import 'features/quran/settings/states/reading_settings_state.dart';
-import 'features/quran/surah/data/data_sources/surah_local_data_source_impl.dart';
-import 'features/quran/surah/data/repositories/surah_name_repository_impl.dart';
-import 'features/quran/surah/presentation/states/surah_name_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ void main() async {
   await Hive.openBox(AppConstants.mainAppSettingsBox);
   await Hive.openBox(AppConstants.keyMainCounterBox);
 
-  final _appCounterBox = Hive.box(AppConstants.keyMainCounterBox);
+  final appCounterBox = Hive.box(AppConstants.keyMainCounterBox);
 
   final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
   final DatabaseHelper databaseHelper = DatabaseHelper.instance;
@@ -72,7 +72,7 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
-          create: (_) => MainCounterState(box: _appCounterBox),
+          create: (_) => MainCounterState(box: appCounterBox),
         ),
       ],
       child: const RootPage(),

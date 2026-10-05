@@ -1,9 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:promus/features/counter/pages/counter_main_page.dart';
-import 'package:promus/features/fortress/presentation/pages/fortress_page.dart';
-import 'package:promus/features/quran/surah/presentation/pages/surah_name_page.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -12,7 +9,10 @@ import '../../../core/constants/icon_paths.dart';
 import '../../../core/theme/app_paddings.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_shapes.dart';
+import '../../counter/pages/counter_main_page.dart';
+import '../../fortress/presentation/pages/fortress_page.dart';
 import '../../prayer/presentation/pages/main_prayer_page.dart';
+import '../../quran/surah/pages/surah_name_page.dart';
 import '../state/main_state.dart';
 import '../widgets/main_navigation_icon.dart';
 import '../widgets/main_navigation_label.dart';

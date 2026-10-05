@@ -89,11 +89,9 @@ class FortressPage extends StatelessWidget {
                   ],
                 ),
               ),
-              FortressChapterList(chapters: chapters),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: kBottomNavigationBarHeight + AppSpacing.medium * 2,
-                ),
+              SliverPadding(
+                padding: const .only(bottom: kBottomNavigationBarHeight + AppSpacing.medium * 1.5),
+                sliver: FortressChapterList(chapters: chapters),
               ),
             ],
           ),

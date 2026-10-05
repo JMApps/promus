@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:promus/features/fortress/data/arguments/fortress_chapter_args.dart';
-import 'package:promus/features/fortress/presentation/pages/fortress_supplications_page.dart';
-
-import '../../features/quran/reader/data/args/reader_args.dart';
-import '../../features/quran/reader/presentation/pages/reader_page.dart';
+import '../../features/fortress/data/arguments/fortress_chapter_args.dart';
+import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
+import '../../features/quran/data/args/reader_args.dart';
+import '../../features/quran/reader/pages/reader_page.dart';
 import 'names_router.dart';
 
 class AppRoutes {
