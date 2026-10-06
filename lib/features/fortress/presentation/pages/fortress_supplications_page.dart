@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
@@ -25,10 +26,14 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
   @override
   void initState() {
     super.initState();
+    final fortressSupplicationsState = context.read<FortressSupplicationState>();
+    final chapterId = widget.chapterModel.chapterId;
+
+    if (fortressSupplicationsState.cachedSupplicationsByChapter(chapterId) != null) return;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<FortressSupplicationState>().loadSupplicationsByChapter(
-        widget.chapterModel.chapterId,
-      );
+      if (!mounted) return;
+      fortressSupplicationsState.loadSupplicationsByChapter(chapterId);
     });
   }
 
@@ -38,19 +43,13 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
     final mqPadding = MediaQuery.of(context).padding;
     final chapterId = widget.chapterModel.chapterId;
 
-    final isLoading = context.select<FortressSupplicationState, bool>(
-      (s) => s.isLoadingChapter(chapterId),
-    );
-    final error = context.select<FortressSupplicationState, Object?>(
-      (s) => s.errorForChapter(chapterId),
-    );
-    final supplications = context.select<FortressSupplicationState, List<FortressSupplicationEntity>?>(
-      (s) => s.supplicationsByChapter(chapterId),
-    );
+    final isLoading = context.select<FortressSupplicationState, bool>((s) => s.isLoading);
+    final error = context.select<FortressSupplicationState, Object?>((s) => s.error);
+    final supplications = context.select<FortressSupplicationState, List<FortressSupplicationEntity>?>((s) => s.cachedSupplicationsByChapter(chapterId));
 
     return Scaffold(
       body: RawScrollbar(
-        padding: EdgeInsets.only(
+        padding: .only(
           top: mqPadding.top + kToolbarHeight,
         ),
         thickness: 2.75,
@@ -76,21 +75,17 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
                 ),
               ),
             ),
-            if (isLoading && supplications == null)
+            if (supplications != null)
+              FortressSupplicationList(chapterSupplications: supplications)
+            else if (error != null && !isLoading)
               const SliverFillRemaining(
                 hasScrollBody: false,
-                child: Center(
-                  child: CircularProgressIndicator.adaptive(),
-                ),
-              )
-            else if (error != null && supplications == null)
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(child: Text('$error')),
+                child: Center(child: Text(AppStrings.errorLoadData)),
               )
             else
-              FortressSupplicationList(
-                chapterSupplications: supplications ?? const [],
+              const SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(child: CircularProgressIndicator.adaptive()),
               ),
           ],
         ),

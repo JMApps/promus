@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/constants/app_strings.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
 import '../../domain/repositories/fortress_supplication_repository.dart';
 
@@ -9,120 +10,54 @@ class FortressSupplicationState extends ChangeNotifier {
   final FortressSupplicationRepository _supplicationRepository;
 
   final Map<int, FortressSupplicationEntity> _supplicationByIdMap = {};
-  final Map<int, Object> _errorByIdMap = {};
-  final Set<int> _loadingIds = {};
-  final Map<int, Future<void>> _inFlightRequestsById = {};
-
   final Map<int, List<FortressSupplicationEntity>> _supplicationsByChapterMap = {};
-  final Map<int, Object> _errorByChapterMap = {};
-  final Set<int> _loadingChapters = {};
-  final Map<int, Future<void>> _inFlightRequestsByChapter = {};
+  bool _isLoading = false;
+  Object? _error;
 
-  FortressSupplicationEntity? supplicationById(int supplicationId) => _supplicationByIdMap[supplicationId];
+  bool get isLoading => _isLoading;
 
-  bool isLoadingSupplication(int supplicationId) => _loadingIds.contains(supplicationId);
+  Object? get error => _error;
 
-  Object? errorForSupplication(int supplicationId) => _errorByIdMap[supplicationId];
+  FortressSupplicationEntity? cachedSupplicationById(int supplicationId) => _supplicationByIdMap[supplicationId];
 
-  bool hasErrorForSupplication(int supplicationId) => _errorByIdMap.containsKey(supplicationId);
+  List<FortressSupplicationEntity>? cachedSupplicationsByChapter(int chapterId) => _supplicationsByChapterMap[chapterId];
 
-  List<FortressSupplicationEntity>? supplicationsByChapter(int chapterId) => _supplicationsByChapterMap[chapterId];
-
-  bool isLoadingChapter(int chapterId) => _loadingChapters.contains(chapterId);
-
-  Object? errorForChapter(int chapterId) => _errorByChapterMap[chapterId];
-
-  bool hasErrorForChapter(int chapterId) => _errorByChapterMap.containsKey(chapterId);
-
-  Future<FortressSupplicationEntity?> loadSupplication(int supplicationId) async {
-    final cached = _supplicationByIdMap[supplicationId];
-    if (cached != null) return cached;
-
-    final inFlight = _inFlightRequestsById[supplicationId];
-    if (inFlight != null) {
-      await inFlight;
-      return _supplicationByIdMap[supplicationId];
-    }
-
-    final future = _fetchSupplicationById(supplicationId);
-    _inFlightRequestsById[supplicationId] = future;
-    await future;
-    _inFlightRequestsById.remove(supplicationId);
-
-    return _supplicationByIdMap[supplicationId];
+  Future<FortressSupplicationEntity?> loadSupplicationById(int supplicationId) async {
+    return _supplicationByIdMap[supplicationId] ??
+        await _fetch(() async {
+          return _supplicationByIdMap[supplicationId] = await _supplicationRepository.fetchSupplicationById(supplicationId: supplicationId);
+        });
   }
 
-  Future<void> _fetchSupplicationById(int supplicationId) async {
-    _loadingIds.add(supplicationId);
-    _errorByIdMap.remove(supplicationId);
+  Future<List<FortressSupplicationEntity>?> loadSupplicationsByChapter(int chapterId,) async {
+    return _supplicationsByChapterMap[chapterId] ??
+        await _fetch(() async {
+          final supplications = List<FortressSupplicationEntity>.unmodifiable(
+            await _supplicationRepository.fetchSupplicationsByChapter(
+              chapterId: chapterId,
+            ),
+          );
+          for (final s in supplications) {
+            _supplicationByIdMap[s.supplicationId] = s;
+          }
+          return _supplicationsByChapterMap[chapterId] = supplications;
+        });
+  }
+
+  Future<T?> _fetch<T>(Future<T> Function() request) async {
+    _isLoading = true;
+    _error = null;
     notifyListeners();
 
     try {
-      final supplication = await _supplicationRepository.fetchSupplicationById(
-        supplicationId: supplicationId,
-      );
-      _supplicationByIdMap[supplicationId] = supplication;
-    } catch (e) {
-      _errorByIdMap[supplicationId] = e;
-      debugPrint('Error loading fortress supplication $supplicationId: $e');
+      return await request();
+    } catch (e, s) {
+      _error = e;
+      debugPrint('${AppStrings.errorLoadData}: $e\n$s');
+      return null;
     } finally {
-      _loadingIds.remove(supplicationId);
+      _isLoading = false;
       notifyListeners();
     }
-  }
-
-  Future<List<FortressSupplicationEntity>?> loadSupplicationsByChapter(int chapterId) async {
-    final cached = _supplicationsByChapterMap[chapterId];
-    if (cached != null) return cached;
-
-    final inFlight = _inFlightRequestsByChapter[chapterId];
-    if (inFlight != null) {
-      await inFlight;
-      return _supplicationsByChapterMap[chapterId];
-    }
-
-    final future = _fetchSupplicationsByChapter(chapterId);
-    _inFlightRequestsByChapter[chapterId] = future;
-    await future;
-    _inFlightRequestsByChapter.remove(chapterId);
-
-    return _supplicationsByChapterMap[chapterId];
-  }
-
-  Future<void> _fetchSupplicationsByChapter(int chapterId) async {
-    _loadingChapters.add(chapterId);
-    _errorByChapterMap.remove(chapterId);
-    notifyListeners();
-
-    try {
-      final supplications = await _supplicationRepository.fetchSupplicationsByChapter(
-        chapterId: chapterId,
-      );
-      _supplicationsByChapterMap[chapterId] = supplications;
-      for (final supplication in supplications) {
-        _supplicationByIdMap[supplication.supplicationId] = supplication;
-      }
-    } catch (e) {
-      _errorByChapterMap[chapterId] = e;
-      debugPrint('Error loading fortress supplications for chapter $chapterId: $e');
-    } finally {
-      _loadingChapters.remove(chapterId);
-      notifyListeners();
-    }
-  }
-
-  @override
-  void dispose() {
-    _supplicationByIdMap.clear();
-    _errorByIdMap.clear();
-    _loadingIds.clear();
-    _inFlightRequestsById.clear();
-
-    _supplicationsByChapterMap.clear();
-    _errorByChapterMap.clear();
-    _loadingChapters.clear();
-    _inFlightRequestsByChapter.clear();
-
-    super.dispose();
   }
 }

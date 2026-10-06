@@ -25,7 +25,7 @@ class FortressPage extends StatelessWidget {
     final isLoading = context.select<FortressChapterState, bool>((s) => s.isLoading);
     final error = context.select<FortressChapterState, Object?>((s) => s.error);
     final chapters = context.select<FortressChapterState, List<FortressChapterEntity>>(
-      (s) => s.chapters,
+      (s) => s.fortressChapters,
     );
     return Scaffold(
       body: switch ((isLoading, error)) {
