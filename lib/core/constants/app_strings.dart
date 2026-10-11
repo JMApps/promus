@@ -18,7 +18,11 @@ class AppStrings {
   static const String strShort = 'Стр.';
   static const String medina = 'Медина';
   static const String mecca = 'Мекка';
+  static const String favorites = 'Избранное';
+  static const String lastSurahs = 'Последнее';
+  static const String surahs = 'Суры';
   static const String searchIsEmpty = 'По вашему запросу ничего не найдено';
+  static const String errorLoadData = 'Ошибка загрузки данных';
   static const String reset = 'Сброс';
   static const String vibration = 'Цибрация';
   static const String showCountLabel = 'Показать количество';

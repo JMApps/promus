@@ -32,7 +32,6 @@ class SurahNameItem extends StatelessWidget {
       color: index.isOdd ? itemEvenColor : itemOddColor,
       child: ListTile(
         onTap: () {
-          //context.read<PageNumberState>().setPageNumber(surah.startPageNumber);
           Navigator.pushNamed(
             context,
             NamesRouter.pageReader,

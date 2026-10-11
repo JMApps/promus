@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/theme/app_paddings.dart';
 import '../../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/surah_name_entity.dart';
 import '../lists/surah_name_list.dart';
 import '../states/surah_name_state.dart';
@@ -22,7 +23,7 @@ class SurahNamePage extends StatelessWidget {
     final appColors = Theme.of(context).colorScheme;
     final isLoading = context.select<SurahNameState, bool>((s) => s.isLoading);
     final error = context.select<SurahNameState, Object?>((s) => s.error);
-    final surahs = context.select<SurahNameState, List<SurahNameEntity>>((s) => s.surahs);
+    final surahs = context.select<SurahNameState, List<SurahNameEntity>>((s) => s.allSurahs);
     return Scaffold(
       body: switch ((isLoading, error)) {
         (true, _) => const Center(
@@ -64,8 +65,50 @@ class SurahNamePage extends StatelessWidget {
                   ),
                 ],
               ),
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: AppPaddings.withoutBottomMedium,
+                  child: Text(
+                    AppStrings.lastSurahs,
+                    style: AppTextStyles.medium,
+                  ),
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: AppPaddings.verticalSmall,
+                  child: Divider(
+                    indent: AppSpacing.medium,
+                    endIndent: AppSpacing.medium,
+                    height: AppSpacing.medium,
+                    thickness: 1.75,
+                  ),
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: AppPaddings.bottomSmall,
+                  child: Divider(
+                    indent: AppSpacing.medium,
+                    endIndent: AppSpacing.medium,
+                    height: AppSpacing.medium,
+                    thickness: 1.75,
+                  ),
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: AppPaddings.withoutTopMedium,
+                  child: Text(
+                    AppStrings.surahs,
+                    style: AppTextStyles.medium,
+                  ),
+                ),
+              ),
               SliverPadding(
-                padding: const .only(bottom: kBottomNavigationBarHeight + AppSpacing.medium * 1.5),
+                padding: const .only(
+                  bottom: kBottomNavigationBarHeight + AppSpacing.medium * 1.5,
+                ),
                 sliver: SurahNameList(surahs: surahs),
               ),
             ],

@@ -32,7 +32,7 @@ class CustomChapterCardItem extends StatelessWidget {
       child: InkWell(
         borderRadius: AppRadius.medium,
         onTap: () async {
-          final chapter = context.read<FortressChapterState>().chapters[chapterNumber - 1];
+          final chapter = context.read<FortressChapterState>().fortressChapters[chapterNumber - 1];
           await Navigator.pushNamed(
             context,
             NamesRouter.fortressSupplicationsPage,

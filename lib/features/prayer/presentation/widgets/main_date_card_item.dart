@@ -18,26 +18,46 @@ class MainDateCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      tileColor: itemColor,
-      visualDensity: .compact,
+    final appColors = Theme.of(context).colorScheme;
+    return Material(
+      type: MaterialType.transparency,
       shape: AppShapes.medium,
-      dense: true,
-      minVerticalPadding: 0,
-      minTileHeight: 0,
-      horizontalTitleGap: 8,
-      contentPadding: AppPaddings.hrMediumVrSmall,
-      title: Text(
-        dateText,
-        style: AppTextStyles.small,
-        overflow: .ellipsis,
+      clipBehavior: Clip.antiAlias,
+      child: Ink(
+        decoration: ShapeDecoration(
+          shape: AppShapes.medium,
+          gradient: LinearGradient(
+            begin: .topLeft,
+            end: .bottomRight,
+            colors: [
+              appColors.inversePrimary,
+              appColors.tertiaryContainer,
+              appColors.secondaryContainer,
+            ],
+          ),
+        ),
+        child: ListTile(
+          onTap: onTap,
+          visualDensity: VisualDensity.compact,
+          shape: AppShapes.medium,
+          dense: true,
+          minVerticalPadding: 0,
+          minTileHeight: 0,
+          horizontalTitleGap: 8,
+          contentPadding: AppPaddings.hrMediumVrSmall,
+          title: Text(
+            dateText,
+            style: AppTextStyles.small,
+            overflow: TextOverflow.ellipsis,
+          ),
+          leading: Icon(
+            Icons.calendar_month_rounded,
+            color: itemColor,
+            size: 17.5,
+          ),
+          trailing: const Icon(Icons.keyboard_arrow_right_rounded),
+        ),
       ),
-      leading: const Icon(
-        Icons.calendar_month_rounded,
-        size: 17.5,
-      ),
-      trailing: const Icon(Icons.keyboard_arrow_right_rounded),
     );
   }
 }

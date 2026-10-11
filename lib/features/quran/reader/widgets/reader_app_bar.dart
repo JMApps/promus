@@ -16,7 +16,6 @@ class ReaderAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appColors = Theme.of(context).colorScheme;
     final showAppBar = context.select<ReaderAppBarState, bool>(
       (s) => s.showAppBar,
     );
