@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MushafPageNumberState extends ChangeNotifier {
-  int _pageNumber = 0;
+  int _pageNumber = 1;
 
   int get pageNumber => _pageNumber;
 

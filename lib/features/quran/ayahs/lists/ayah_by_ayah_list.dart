@@ -11,12 +11,10 @@ import '../items/surah_header_item.dart';
 class AyahByAyahList extends StatelessWidget {
   const AyahByAyahList({
     super.key,
-    required this.pageNumber,
     required this.rows,
     this.ayahPosition,
   });
 
-  final int pageNumber;
   final List<MushafPageEntity> rows;
   final int? ayahPosition;
 

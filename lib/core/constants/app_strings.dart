@@ -22,6 +22,7 @@ class AppStrings {
   static const String lastSurahs = 'Последнее';
   static const String surahs = 'Суры';
   static const String surah = 'Сура';
+  static const String ayah = 'Аят';
   static const String page = 'страница';
   static const String jumpToPage = 'Перейти к странице';
   static const String goTo = 'Перейти';

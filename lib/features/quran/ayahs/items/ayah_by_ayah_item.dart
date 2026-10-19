@@ -50,7 +50,7 @@ class AyahByAyahItem extends StatelessWidget {
             ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               Container(
                 width: 65,
@@ -68,9 +68,9 @@ class AyahByAyahItem extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Text(
                     row.arabicAyah!,
-                    textDirection: TextDirection.rtl,
+                    textDirection: .rtl,
                     style: const TextStyle(
-                      fontSize: 25.0,
+                      fontSize: 22.0,
                       fontFamily: FontFamilies.uthmanic,
                       height: 2.25,
                       letterSpacing: 0,
@@ -83,7 +83,7 @@ class AyahByAyahItem extends StatelessWidget {
                 Text(
                   row.translation!,
                   style: const TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 17.0,
                     fontFamily: FontFamilies.ptSans,
                   ),
                 ),

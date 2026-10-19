@@ -29,7 +29,7 @@ class MainPrayerPage extends StatelessWidget {
     final adhkarMessage = prayer.adhkarMessage;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ПроМус'),
+        title: const Text(AppStrings.appName),
         centerTitle: false,
         actions: [
           CupertinoButton(

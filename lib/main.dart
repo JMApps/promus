@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:promus/features/quran/reader/states/reader_app_bar_state.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/app_constants.dart';
@@ -17,10 +16,15 @@ import 'features/fortress/presentation/states/fortress_supplications_state.dart'
 import 'features/main/pages/root_page.dart';
 import 'features/main/state/main_state.dart';
 import 'features/prayer/state/prayer_state.dart';
+import 'features/quran/ayahs/states/ayah_by_ayah_state.dart';
+import 'features/quran/data/repositories/ayah_by_ayah_repository_impl.dart';
+import 'features/quran/data/repositories/mushaf_page_repository_impl.dart';
 import 'features/quran/data/repositories/page_meta_repository_impl.dart';
 import 'features/quran/data/repositories/surah_name_repository_impl.dart';
+import 'features/quran/reader/states/reader_app_bar_state.dart';
 import 'features/quran/states/mushaf_page_meta_state.dart';
 import 'features/quran/states/mushaf_page_number_state.dart';
+import 'features/quran/states/mushaf_page_state.dart';
 import 'features/quran/surah/states/surah_name_state.dart';
 
 void main() async {
@@ -53,6 +57,11 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
+          create: (_) => MushafPageState(
+            MushafPageRepositoryImpl(mushafDatabaseHelper)
+          ),
+        ),
+        ChangeNotifierProvider(
           create: (_) => MushafPageNumberState(),
         ),
         ChangeNotifierProvider(
@@ -61,6 +70,11 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => MushafPageMetaState(
             MushafPageMetaRepositoryImpl(mushafDatabaseHelper),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AyahByAyahState(
+            AyahByAyahRepositoryImpl(mushafDatabaseHelper),
           ),
         ),
         ChangeNotifierProvider(

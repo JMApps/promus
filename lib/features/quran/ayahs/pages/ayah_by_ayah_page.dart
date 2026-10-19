@@ -8,8 +8,7 @@ class AyahByAyahPage extends StatelessWidget {
   const AyahByAyahPage({super.key, required this.pageNumber});
 
   @override
-  Widget build(BuildContext context) => AyahByAyahList(
-    pageNumber: pageNumber,
-    rows: const [],
+  Widget build(BuildContext context) => const AyahByAyahList(
+    rows: [],
   );
 }

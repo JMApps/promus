@@ -52,8 +52,7 @@ class _MushafReaderPageState extends State<MushafReaderPage> {
             ),
             body: GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: () =>
-                  context.read<ReaderAppBarState>().toggleShowAppBar(),
+              onTap: () => context.read<ReaderAppBarState>().toggleShowAppBar(),
               child: ReaderPageList(
                 pageController: _pageController,
                 pageNumber: widget.initialPage,
