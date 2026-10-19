@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class PageMetaEntity extends Equatable {
+class MushafPageMetaEntity extends Equatable {
   final int pageNumber;
   final int surahNumber;
   final int juzNumber;
   final int? hizbNumber;
 
-  const PageMetaEntity({
+  const MushafPageMetaEntity({
     required this.pageNumber,
     required this.surahNumber,
     required this.juzNumber,

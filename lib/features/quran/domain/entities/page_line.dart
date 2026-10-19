@@ -1,4 +1,4 @@
-import 'mushaf_page_row_entity.dart';
+import 'mushaf_page_entity.dart';
 
 sealed class PageLine {
   const PageLine();
@@ -15,7 +15,7 @@ final class BasmallahLine extends PageLine {
 }
 
 final class AyahLine extends PageLine {
-  final MushafPageRowEntity row;
+  final MushafPageEntity row;
   final int index;
 
   const AyahLine(this.row, this.index);

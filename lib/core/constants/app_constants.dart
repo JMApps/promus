@@ -3,6 +3,8 @@ import 'package:adhan/adhan.dart';
 class AppConstants {
   AppConstants._();
 
+  static const int totalMushafPageCount = 604;
+
   static const String keySettingsPrayerTimeBox = 'key_settings_prayer_time_box';
   static const String keyMainCounterBox = 'key_main_counter_box';
 

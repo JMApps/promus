@@ -1,7 +1,7 @@
-import '../entities/mushaf_page_row_entity.dart';
+import '../entities/mushaf_page_entity.dart';
 
 abstract interface class MushafPageRepository {
-  Future<List<MushafPageRowEntity>> fetchMushafPageData({
+  Future<List<MushafPageEntity>> fetchMushafPageData({
     required int pageNumber,
     required String translationColumn,
   });

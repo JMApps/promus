@@ -9,7 +9,7 @@ import '../../../../../core/theme/app_shapes.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../data/args/reader_args.dart';
 import '../../domain/entities/surah_name_entity.dart';
-import '../../settings/states/reading_settings_state.dart';
+import '../../states/mushaf_page_number_state.dart';
 
 class SurahNameItem extends StatelessWidget {
   const SurahNameItem({
@@ -32,6 +32,7 @@ class SurahNameItem extends StatelessWidget {
       color: index.isOdd ? itemEvenColor : itemOddColor,
       child: ListTile(
         onTap: () {
+          context.read<MushafPageNumberState>().setPageNumber(surah.startPageNumber);
           Navigator.pushNamed(
             context,
             NamesRouter.pageReader,
@@ -50,49 +51,39 @@ class SurahNameItem extends StatelessWidget {
             ),
           ),
         ),
-        title: Selector<ReadingSettingsState, ({bool arabic, bool translation})>(
-          selector: (_, state) => (
-            arabic: state.arabicNameSurah,
-            translation: state.translationNameSurah,
-          ),
-          builder: (context, settings, _) {
-            return Column(
-              crossAxisAlignment: .stretch,
+        title: Column(
+          crossAxisAlignment: .stretch,
+          children: [
+            Text(
+              FontFamilies.glyphForSurahNumber(surah.surahNumber),
+              style: TextStyle(
+                color: appColors.primary,
+                fontFamily: FontFamilies.surahHeader,
+                fontSize: 25.0,
+                height: 1,
+              ),
+            ),
+            Row(
               children: [
-                if (settings.arabic)
-                  Text(
-                    FontFamilies.glyphForSurahNumber(surah.surahNumber),
-                    style: TextStyle(
-                      color: appColors.primary,
-                      fontFamily: FontFamilies.surahHeader,
-                      fontSize: 25.0,
-                      height: 1,
-                    ),
+                Flexible(
+                  child: Text(
+                    surah.nameTranscription,
+                    style: AppTextStyles.medium.copyWith(fontSize: 16),
+                    maxLines: 1,
+                    overflow: .ellipsis,
                   ),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        surah.nameTranscription,
-                        style: AppTextStyles.medium.copyWith(fontSize: 16),
-                        maxLines: 1,
-                        overflow: .ellipsis,
-                      ),
-                    ),
-                    if (settings.translation)
-                      Flexible(
-                        child: Text(
-                          ' (${surah.nameTranslation})',
-                          style: AppTextStyles.medium,
-                          maxLines: 1,
-                          overflow: .ellipsis,
-                        ),
-                      ),
-                  ],
+                ),
+                Flexible(
+                  child: Text(
+                    ' (${surah.nameTranslation})',
+                    style: AppTextStyles.medium,
+                    maxLines: 1,
+                    overflow: .ellipsis,
+                  ),
                 ),
               ],
-            );
-          },
+            ),
+          ],
         ),
         subtitle: Text(
           '${AppStrings.ayahsCount(surah.ayahsCount)} • '

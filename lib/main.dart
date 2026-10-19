@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:promus/features/quran/reader/states/reader_app_bar_state.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/app_constants.dart';
-import 'core/database/database_helper.dart';
 import 'core/database/fortress_database_helper.dart';
+import 'core/database/mushaf_database_helper.dart';
 import 'features/counter/state/main_counter_state.dart';
 import 'features/fortress/data/repositories/fortress_chapter_repository_impl.dart';
 import 'features/fortress/data/repositories/fortress_footnote_repository_impl.dart';
@@ -16,10 +17,11 @@ import 'features/fortress/presentation/states/fortress_supplications_state.dart'
 import 'features/main/pages/root_page.dart';
 import 'features/main/state/main_state.dart';
 import 'features/prayer/state/prayer_state.dart';
-import 'features/quran/data/data_sources/surah_local_data_source_impl.dart';
+import 'features/quran/data/repositories/page_meta_repository_impl.dart';
 import 'features/quran/data/repositories/surah_name_repository_impl.dart';
+import 'features/quran/states/mushaf_page_meta_state.dart';
+import 'features/quran/states/mushaf_page_number_state.dart';
 import 'features/quran/surah/states/surah_name_state.dart';
-import 'features/quran/settings/states/reading_settings_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +35,7 @@ void main() async {
   final appCounterBox = Hive.box(AppConstants.keyMainCounterBox);
 
   final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
-  final DatabaseHelper databaseHelper = DatabaseHelper.instance;
+  final MushafDatabaseHelper mushafDatabaseHelper = MushafDatabaseHelper.instance;
 
   runApp(
     MultiProvider(
@@ -42,16 +44,23 @@ void main() async {
           create: (_) => MainState(),
         ),
         ChangeNotifierProvider(
-          create: (_) => PrayerState(Hive.box(AppConstants.keySettingsPrayerTimeBox)),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ReadingSettingsState(),
+          create: (_) =>
+              PrayerState(Hive.box(AppConstants.keySettingsPrayerTimeBox)),
         ),
         ChangeNotifierProvider(
           create: (_) => SurahNameState(
-            SurahNameRepositoryImpl(
-              SurahLocalDataSourceImpl(databaseHelper),
-            ),
+            SurahNameRepositoryImpl(mushafDatabaseHelper),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MushafPageNumberState(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ReaderAppBarState(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MushafPageMetaState(
+            MushafPageMetaRepositoryImpl(mushafDatabaseHelper),
           ),
         ),
         ChangeNotifierProvider(

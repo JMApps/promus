@@ -5,10 +5,10 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
-class DatabaseHelper {
-  DatabaseHelper._();
+class MushafDatabaseHelper {
+  MushafDatabaseHelper._();
 
-  static final DatabaseHelper instance = DatabaseHelper._();
+  static final MushafDatabaseHelper instance = MushafDatabaseHelper._();
 
   static const String _dbFileName = 'mushaf_database.db';
   static const String _assetPath = 'assets/databases/$_dbFileName';

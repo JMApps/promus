@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../../core/theme/app_paddings.dart';
-import '../../settings/states/reading_settings_state.dart';
 
 class BasmallahItem extends StatelessWidget {
   const BasmallahItem({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return const Padding(
       padding: AppPaddings.bottomLarge,
       child: Text(
         'ﲚﲛﲞﲤ',
         textDirection: .ltr,
         style: TextStyle(
-          fontSize: context.read<ReadingSettingsState>().ayahArabicTextSize,
+          fontSize: 25.0,
           fontFamily: 'QCF_BSML',
           height: 1,
         ),

@@ -11,10 +11,7 @@ class AyahByAyahDataSourceImpl implements AyahByAyahLocalDataSource {
   const AyahByAyahDataSourceImpl(this._database);
 
   @override
-  Future<List<AyahByAyahModel>> searchAyahs({
-    required String query,
-    required String translationColumn,
-  }) async {
+  Future<List<AyahByAyahModel>> searchAyahs({required String query}) async {
     final trimmed = query.trim();
     if (trimmed.isEmpty) return const [];
 
@@ -32,7 +29,7 @@ class AyahByAyahDataSourceImpl implements AyahByAyahLocalDataSource {
           a.${ColumnNames.ayahNormalized} AS ${ColumnNames.ayahArabic},
           a.${ColumnNames.ayahPageNumber},
           a.${ColumnNames.ayahPosition},
-          COALESCE(t.$translationColumn, '') AS ${ColumnNames.ayahTranslation}
+          COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
         FROM ${TableNames.tableOfAyah} fts
         JOIN ${TableNames.tableOfAyah} a ON a.${ColumnNames.ayahId} = fts.rowid
         LEFT JOIN ${TableNames.tableOfTranslations} t ON t.id = a.${ColumnNames.ayahId}
@@ -54,23 +51,20 @@ class AyahByAyahDataSourceImpl implements AyahByAyahLocalDataSource {
         a.${ColumnNames.ayah} AS ${ColumnNames.ayahArabic},
         a.${ColumnNames.ayahPageNumber},
         a.${ColumnNames.ayahPosition},
-        COALESCE(t.$translationColumn, '') AS ${ColumnNames.ayahTranslation}
+        COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
       FROM ${TableNames.tableOfTranslations} fts
       JOIN ${TableNames.tableOfAyah} a ON a.${ColumnNames.ayahId} = fts.rowid
       LEFT JOIN ${TableNames.tableOfTranslations} t ON t.id = a.${ColumnNames.ayahId}
       WHERE ${TableNames.tableOfTranslations} MATCH ?
       ORDER BY a.${ColumnNames.surahNumber}, a.${ColumnNames.ayahNumber}
       ''',
-      ['$translationColumn:$matchExpr'],
+      ['${ColumnNames.ayahRuKuliev}:$matchExpr'],
     );
     return result.map(AyahByAyahModel.fromMap).toList(growable: false);
   }
 
   @override
-  Future<List<AyahByAyahModel>> fetchAyahsByIds({
-    required List<int> ayahIds,
-    required String translationColumn,
-  }) async {
+  Future<List<AyahByAyahModel>> fetchAyahsByIds({required List<int> ayahIds}) async {
     if (ayahIds.isEmpty) return const [];
 
     final placeholders = List.filled(ayahIds.length, '?').join(',');
@@ -84,7 +78,7 @@ class AyahByAyahDataSourceImpl implements AyahByAyahLocalDataSource {
         a.${ColumnNames.ayah} AS ${ColumnNames.ayahArabic},
         a.${ColumnNames.ayahPageNumber},
         a.${ColumnNames.ayahPosition},
-        COALESCE(t.$translationColumn, '') AS ${ColumnNames.ayahTranslation}
+        COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
       FROM ${TableNames.tableOfAyah} a
       LEFT JOIN ${TableNames.tableOfTranslations} t
         ON t.id = a.${ColumnNames.ayahId}

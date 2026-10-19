@@ -21,6 +21,11 @@ class AppStrings {
   static const String favorites = 'Избранное';
   static const String lastSurahs = 'Последнее';
   static const String surahs = 'Суры';
+  static const String surah = 'Сура';
+  static const String page = 'страница';
+  static const String jumpToPage = 'Перейти к странице';
+  static const String goTo = 'Перейти';
+  static const String juz = 'джуз';
   static const String searchIsEmpty = 'По вашему запросу ничего не найдено';
   static const String errorLoadData = 'Ошибка загрузки данных';
   static const String reset = 'Сброс';

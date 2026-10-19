@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/font_families.dart';
 import '../../../../../core/theme/app_paddings.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../../core/theme/app_spacing.dart';
-import '../../domain/entities/mushaf_page_row_entity.dart';
-import '../../settings/states/reading_settings_state.dart';
+import '../../domain/entities/mushaf_page_entity.dart';
 import '../widgets/ayah_item_option.dart';
 
 class AyahByAyahItem extends StatelessWidget {
@@ -16,21 +14,17 @@ class AyahByAyahItem extends StatelessWidget {
     required this.index,
   });
 
-  final MushafPageRowEntity row;
+  final MushafPageEntity row;
   final int index;
 
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
 
-    final readingSettingsState = context.watch<ReadingSettingsState>();
-
     final surahNumber = row.glyphSurahNumber ?? row.surahNumber;
     final ayahNumber = row.glyphAyahNumber;
 
-    final verseKey = surahNumber != null && ayahNumber != null
-        ? '$surahNumber:$ayahNumber'
-        : '';
+    final verseKey = surahNumber != null && ayahNumber != null ? '$surahNumber:$ayahNumber' : '';
 
     return RepaintBoundary(
       child: GestureDetector(
@@ -68,17 +62,15 @@ class AyahByAyahItem extends StatelessWidget {
                 ),
                 child: Text(verseKey),
               ),
-              if (readingSettingsState.isArabicAyahShow &&
-                  row.arabicAyah != null &&
-                  row.arabicAyah!.isNotEmpty) ...[
+              if (row.arabicAyah != null && row.arabicAyah!.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.medium),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
                     row.arabicAyah!,
                     textDirection: TextDirection.rtl,
-                    style: TextStyle(
-                      fontSize: readingSettingsState.ayahArabicTextSize,
+                    style: const TextStyle(
+                      fontSize: 25.0,
                       fontFamily: FontFamilies.uthmanic,
                       height: 2.25,
                       letterSpacing: 0,
@@ -86,14 +78,12 @@ class AyahByAyahItem extends StatelessWidget {
                   ),
                 ),
               ],
-              if (readingSettingsState.isTranslationAyahShow &&
-                  row.translation != null &&
-                  row.translation!.isNotEmpty) ...[
+              if (row.translation != null && row.translation!.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.medium),
                 Text(
                   row.translation!,
-                  style: TextStyle(
-                    fontSize: readingSettingsState.ayahTranslationTextSize,
+                  style: const TextStyle(
+                    fontSize: 20.0,
                     fontFamily: FontFamilies.ptSans,
                   ),
                 ),

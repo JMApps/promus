@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/enums/line_type.dart';
 import '../../../../../core/theme/app_paddings.dart';
-import '../../domain/entities/mushaf_page_row_entity.dart';
+import '../../domain/entities/mushaf_page_entity.dart';
 import '../../domain/entities/page_line.dart';
 import '../items/ayah_by_ayah_item.dart';
 import '../items/basmallah_item.dart';
@@ -17,7 +17,7 @@ class AyahByAyahList extends StatelessWidget {
   });
 
   final int pageNumber;
-  final List<MushafPageRowEntity> rows;
+  final List<MushafPageEntity> rows;
   final int? ayahPosition;
 
   @override
@@ -51,7 +51,7 @@ class AyahByAyahList extends StatelessWidget {
   }
 
   static List<PageLine> _buildLines({
-    required List<MushafPageRowEntity> rows,
+    required List<MushafPageEntity> rows,
   }) {
     final lines = <PageLine>[];
 

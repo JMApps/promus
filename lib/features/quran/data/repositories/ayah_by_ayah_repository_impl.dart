@@ -9,14 +9,14 @@ class AyahByAyahRepositoryImpl implements AyahByAyahRepository {
   const AyahByAyahRepositoryImpl(this._dataSource);
 
   @override
-  Future<List<AyahByAyahEntity>> searchAyahs({required String query, required String translationColumn}) async {
-    final searchResultAyahs = await _dataSource.searchAyahs(query: query, translationColumn: translationColumn);
+  Future<List<AyahByAyahEntity>> searchAyahs({required String query}) async {
+    final searchResultAyahs = await _dataSource.searchAyahs(query: query);
     return searchResultAyahs.map((m) => m.toEntity()).toList(growable: false);
   }
 
   @override
-  Future<List<AyahByAyahEntity>> fetchAyahsByIds({required List<int> ayahIds, required String translationColumn}) async {
-    final ayahsByIds = await _dataSource.fetchAyahsByIds(ayahIds: ayahIds, translationColumn: translationColumn);
+  Future<List<AyahByAyahEntity>> fetchAyahsByIds({required List<int> ayahIds}) async {
+    final ayahsByIds = await _dataSource.fetchAyahsByIds(ayahIds: ayahIds);
     return ayahsByIds.map((m) => m.toEntity()).toList(growable: false);
   }
 }

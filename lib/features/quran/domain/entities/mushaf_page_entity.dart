@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/enums/line_type.dart';
 
-class MushafPageRowEntity extends Equatable {
+class MushafPageEntity extends Equatable {
   final int lineNumber;
   final LineType lineType;
   final bool isCentered;
@@ -19,7 +19,7 @@ class MushafPageRowEntity extends Equatable {
   final String? arabicAyah;
   final String? translation;
 
-  const MushafPageRowEntity({
+  const MushafPageEntity({
     required this.lineNumber,
     required this.lineType,
     required this.isCentered,

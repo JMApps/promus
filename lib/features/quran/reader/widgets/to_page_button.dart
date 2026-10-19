@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/theme/app_paddings.dart';
-import '../../../../../core/theme/app_spacing.dart';
-import '../../../../../core/theme/app_text_styles.dart';
-import '../../states/page_number_state.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/theme/app_paddings.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../states/mushaf_page_number_state.dart';
 
 class ToPageButton extends StatelessWidget {
   const ToPageButton({
@@ -28,7 +30,7 @@ class ToPageButton extends StatelessWidget {
               child: Column(
                 mainAxisSize: .min,
                 children: [
-                  Consumer<PageNumberState>(
+                  Consumer<MushafPageNumberState>(
                     builder: (context, pageNumberState, _) {
                       return SliderTheme(
                         data: SliderTheme.of(context).copyWith(
@@ -44,8 +46,8 @@ class ToPageButton extends StatelessWidget {
                             value: pageNumberState.pageNumber.toDouble(),
                             label: '${pageNumberState.pageNumber}',
                             min: 1,
-                            max: 604,
-                            divisions: 604,
+                            max: AppConstants.totalMushafPageCount.toDouble(),
+                            divisions: AppConstants.totalMushafPageCount,
                             onChanged: (double value) {
                               pageNumberState.setPageNumber(value.round());
                             },
@@ -61,7 +63,7 @@ class ToPageButton extends StatelessWidget {
                     },
                   ),
                   const Text(
-                    'Перейти к странице',
+                    AppStrings.jumpToPage,
                     style: AppTextStyles.medium,
                   ),
                   const SizedBox(height: AppSpacing.small),
@@ -72,7 +74,7 @@ class ToPageButton extends StatelessWidget {
         );
       },
       padding: .zero,
-      tooltip: 'Перейти',
+      tooltip: AppStrings.goTo,
       color: appColors.secondary,
       icon: const Icon(Icons.auto_stories_outlined),
     );

@@ -1,19 +1,12 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../../../core/constants/app_device_locales.dart';
 import '../../domain/entities/ayah_by_ayah_entity.dart';
 import '../../domain/repositories/ayah_by_ayah_repository.dart';
-import '../../settings/states/locale_settings_state.dart';
 
 class AyahByAyahState extends ChangeNotifier {
-  AyahByAyahState(this._ayahByAyahRepository, this._localeSettingsState) {
-    _localeSettingsState.addListener(_onSettingsChanged);
-  }
+  AyahByAyahState(this._ayahByAyahRepository);
 
   final AyahByAyahRepository _ayahByAyahRepository;
-  final LocaleSettingsState _localeSettingsState;
-
-  List<int> _lastFavoriteAyahIds = const [];
 
   List<AyahByAyahEntity> _favoriteAyahs = const [];
   bool _isFavoritesLoading = false;
@@ -25,15 +18,7 @@ class AyahByAyahState extends ChangeNotifier {
 
   Object? get favoritesError => _favoritesError;
 
-  String get translationsColumn {
-    return AppDeviceLocales
-        .ayahTranslations[_localeSettingsState.translationNameIndex]
-        .column;
-  }
-
   Future<void> loadFavoriteAyahs(List<int> ayahIds) async {
-    _lastFavoriteAyahIds = List.unmodifiable(ayahIds);
-
     if (ayahIds.isEmpty) {
       _favoriteAyahs = const [];
       _favoritesError = null;
@@ -49,7 +34,6 @@ class AyahByAyahState extends ChangeNotifier {
     try {
       final result = await _ayahByAyahRepository.fetchAyahsByIds(
         ayahIds: ayahIds,
-        translationColumn: translationsColumn,
       );
 
       _favoriteAyahs = result;
@@ -70,35 +54,13 @@ class AyahByAyahState extends ChangeNotifier {
       return Future.value(const []);
     }
 
-    return _ayahByAyahRepository.searchAyahs(
-      query: normalizedQuery,
-      translationColumn: translationsColumn,
-    );
+    return _ayahByAyahRepository.searchAyahs(query: normalizedQuery);
   }
 
   void clearFavorites() {
-    _lastFavoriteAyahIds = const [];
     _favoriteAyahs = const [];
     _favoritesError = null;
     _isFavoritesLoading = false;
     notifyListeners();
-  }
-
-  void _onSettingsChanged() {
-    if (_lastFavoriteAyahIds.isEmpty) {
-      _favoriteAyahs = const [];
-      _favoritesError = null;
-      _isFavoritesLoading = false;
-      notifyListeners();
-      return;
-    }
-
-    loadFavoriteAyahs(_lastFavoriteAyahIds);
-  }
-
-  @override
-  void dispose() {
-    _localeSettingsState.removeListener(_onSettingsChanged);
-    super.dispose();
   }
 }

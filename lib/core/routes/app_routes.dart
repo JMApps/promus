@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../../features/fortress/data/arguments/fortress_chapter_args.dart';
 import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
 import '../../features/quran/data/args/reader_args.dart';
-import '../../features/quran/reader/pages/reader_page.dart';
+import '../../features/quran/reader/pages/mushaf_reader_page.dart';
 import 'names_router.dart';
 
 class AppRoutes {
@@ -22,11 +23,13 @@ class AppRoutes {
   static Map<String, Widget Function(BuildContext, dynamic)> routes = {
     NamesRouter.pageReader: (context, args) {
       final ReaderArgs readerArgs = ReaderArgs(pageNumber: args.pageNumber);
-      return ReaderPage(initialPage: readerArgs.pageNumber);
+      return MushafReaderPage(initialPage: readerArgs.pageNumber);
     },
     NamesRouter.fortressSupplicationsPage: (context, args) {
       final FortressChapterArgs fortressChapterArgs = FortressChapterArgs(args);
-      return FortressSupplicationsPage(chapterModel: fortressChapterArgs.chapterEntity);
+      return FortressSupplicationsPage(
+        chapterModel: fortressChapterArgs.chapterEntity,
+      );
     },
   };
 }

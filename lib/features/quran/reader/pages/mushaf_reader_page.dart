@@ -5,16 +5,19 @@ import '../lists/reader_page_list.dart';
 import '../states/reader_app_bar_state.dart';
 import '../widgets/reader_app_bar.dart';
 
-class ReaderPage extends StatefulWidget {
+class MushafReaderPage extends StatefulWidget {
+  const MushafReaderPage({
+    super.key,
+    required this.initialPage,
+  });
+
   final int initialPage;
 
-  const ReaderPage({super.key, required this.initialPage});
-
   @override
-  State<ReaderPage> createState() => _ReaderPageState();
+  State<MushafReaderPage> createState() => _MushafReaderPageState();
 }
 
-class _ReaderPageState extends State<ReaderPage> {
+class _MushafReaderPageState extends State<MushafReaderPage> {
   late final ReaderAppBarState _appBarState;
   late final PageController _pageController;
 
@@ -38,9 +41,7 @@ class _ReaderPageState extends State<ReaderPage> {
       builder: (context) {
         return PopScope(
           onPopInvokedWithResult: (didPop, result) {
-            //context.read<BookmarksState>().addLastOpenedPage(
-              //context.read<PageNumberState>().pageNumber,
-            //);
+            // Сохранять избранное
           },
           child: Scaffold(
             extendBody: true,
@@ -51,7 +52,8 @@ class _ReaderPageState extends State<ReaderPage> {
             ),
             body: GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: () => context.read<ReaderAppBarState>().toggleShowAppBar(),
+              onTap: () =>
+                  context.read<ReaderAppBarState>().toggleShowAppBar(),
               child: ReaderPageList(
                 pageController: _pageController,
                 pageNumber: widget.initialPage,

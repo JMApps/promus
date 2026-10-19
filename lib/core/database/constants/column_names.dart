@@ -32,6 +32,7 @@ class ColumnNames {
   static const String firstWordId = 'first_word_id';
   static const String lastWordId = 'last_word_id';
   static const String isCentered = 'is_centered';
+  static const String ayahRuKuliev = 'ayah_ru_kuliev';
 
   static const String id = 'id';
   static const String location = 'location';

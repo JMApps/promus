@@ -1,16 +1,25 @@
+import 'package:sqflite/sqflite.dart';
+
+import '../../../../core/database/constants/column_names.dart';
+import '../../../../core/database/constants/table_names.dart';
+import '../../../../core/database/mushaf_database_helper.dart';
 import '../../domain/entities/surah_name_entity.dart';
 import '../../domain/repositories/surah_name_repository.dart';
-import '../data_sources/surah_local_data_source.dart';
 import '../mappers/surah_name_mapper.dart';
+import '../models/surah_name_model.dart';
 
 class SurahNameRepositoryImpl implements SurahNameRepository {
-  final SurahLocalDataSource _localDataSource;
+  final MushafDatabaseHelper _databaseHelper;
 
-  const SurahNameRepositoryImpl(this._localDataSource);
+  const SurahNameRepositoryImpl(this._databaseHelper);
 
   @override
   Future<List<SurahNameEntity>> fetchAllSurahs() async {
-    final allSurahs = await _localDataSource.fetchAllSurahs();
-    return allSurahs.map((m) => m.surahNameToEntity()).toList();
+    final Database database = await _databaseHelper.db;
+    final rows = await database.query(
+      TableNames.tableOfSurahs,
+      orderBy: '${ColumnNames.surahNumber} ASC',
+    );
+    return rows.map((row) => SurahNameModel.fromMap(row).surahNameToEntity()).toList();
   }
 }

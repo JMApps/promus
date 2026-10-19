@@ -1,7 +1,7 @@
 import '../../../../core/database/constants/column_names.dart';
 import '../../../../core/enums/line_type.dart';
 
-class MushafPageRowModel {
+class MushafPageModel {
   final int lineNumber;
   final LineType lineType;
   final bool isCentered;
@@ -18,7 +18,7 @@ class MushafPageRowModel {
   final String? arabicAyah;
   final String? translation;
 
-  const MushafPageRowModel({
+  const MushafPageModel({
     required this.lineNumber,
     required this.lineType,
     required this.isCentered,
@@ -36,8 +36,8 @@ class MushafPageRowModel {
     this.translation,
   });
 
-  factory MushafPageRowModel.fromMap(Map<String, Object?> map) {
-    return MushafPageRowModel(
+  factory MushafPageModel.fromMap(Map<String, Object?> map) {
+    return MushafPageModel(
       lineNumber: map[ColumnNames.lineNumber] as int,
       lineType: LineType.fromDb(map[ColumnNames.lineType] as String),
       isCentered: (map[ColumnNames.isCentered] as int) == 1,

@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 
-import '../domain/entities/page_meta_entity.dart';
-import '../domain/repositories/page_meta_repository.dart';
+import '../domain/entities/mushaf_page_meta_entity.dart';
+import '../domain/repositories/mushaf_page_meta_repository.dart';
 
-class PageMetaState extends ChangeNotifier {
-  PageMetaState(this._pageMetaRepository) {
+class MushafPageMetaState extends ChangeNotifier {
+  MushafPageMetaState(this._pageMetaRepository) {
     loadAllPagesMeta();
   }
 
-  final PageMetaRepository _pageMetaRepository;
+  final MushafPageMetaRepository _pageMetaRepository;
 
-  Map<int, PageMetaEntity> _pageMetaById = const {};
+  Map<int, MushafPageMetaEntity> _pageMetaById = const {};
 
   bool _isLoading = false;
   bool _isLoaded = false;
@@ -35,7 +35,7 @@ class PageMetaState extends ChangeNotifier {
     _error = null;
 
     try {
-      final List<PageMetaEntity> result = await _pageMetaRepository.fetchAppPagesMeta();
+      final List<MushafPageMetaEntity> result = await _pageMetaRepository.fetchMushafPagesMeta();
       _pageMetaById = {
         for (final item in result) item.pageNumber: item,
       };
@@ -49,9 +49,9 @@ class PageMetaState extends ChangeNotifier {
     }
   }
 
-  PageMetaEntity? metaByPageNumber(int pageNumber) => _pageMetaById[pageNumber];
+  MushafPageMetaEntity? metaByPageNumber(int pageNumber) => _pageMetaById[pageNumber];
 
-  List<PageMetaEntity> resolvePages(List<int> pageIds) {
+  List<MushafPageMetaEntity> resolvePages(List<int> pageIds) {
     if (_pageMetaById.isEmpty || pageIds.isEmpty) return const [];
 
     return List.unmodifiable([

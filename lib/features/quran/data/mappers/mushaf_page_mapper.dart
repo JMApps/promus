@@ -1,9 +1,9 @@
-import '../../domain/entities/mushaf_page_row_entity.dart';
-import '../models/mushaf_page_row_model.dart';
+import '../../domain/entities/mushaf_page_entity.dart';
+import '../models/mushaf_page_model.dart';
 
-extension MushafPageRowMapper on MushafPageRowModel {
-  MushafPageRowEntity mushafPageRowToEntity() {
-    return MushafPageRowEntity(
+extension MushafPageMapper on MushafPageModel {
+  MushafPageEntity mushafPageToEntity() {
+    return MushafPageEntity(
       lineNumber: lineNumber,
       lineType: lineType,
       isCentered: isCentered,
