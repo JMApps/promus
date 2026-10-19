@@ -21,7 +21,7 @@ class ReaderAppBar extends StatelessWidget {
     final showAppBar = context.select<ReaderAppBarState, bool>((s) => s.showAppBar);
     final page = context.select<MushafPageNumberState, int>((s) => s.pageNumber);
     final pageMeta = context.select<MushafPageMetaState, MushafPageMetaEntity?>((s) => s.metaByPageNumber(page));
-    final surahName = context.select<SurahNameState, SurahNameEntity?>((s) => pageMeta == null ? null : s.surahByNumber(surahNumber: pageMeta.surahNumber - 1));
+    final surahName = context.select<SurahNameState, SurahNameEntity?>((s) => pageMeta == null ? null : s.surahByNumber(surahNumber: pageMeta.surahNumber));
     return AnimatedSlide(
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeInOut,
