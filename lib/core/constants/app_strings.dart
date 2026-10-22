@@ -19,6 +19,7 @@ class AppStrings {
   static const String medina = 'Медина';
   static const String mecca = 'Мекка';
   static const String favorites = 'Избранное';
+  static const String retry = 'Повторить';
   static const String lastSurahs = 'Последнее';
   static const String surahs = 'Суры';
   static const String surah = 'Сура';

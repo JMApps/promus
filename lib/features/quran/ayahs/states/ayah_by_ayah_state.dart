@@ -52,7 +52,9 @@ class AyahByAyahState extends ChangeNotifier {
       return Future.value(const []);
     }
 
-    return _ayahByAyahRepository.searchAyahs(query: normalizedQuery);
+    return _ayahByAyahRepository.searchAyahs(
+      query: normalizedQuery,
+    );
   }
 
   void clearFavorites() {

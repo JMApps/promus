@@ -6,7 +6,6 @@ import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/theme/app_paddings.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../ayahs/states/ayah_by_ayah_state.dart';
 import '../../domain/entities/surah_name_entity.dart';
 import '../lists/favorite_surah_list.dart';
 import '../lists/surah_name_list.dart';
@@ -65,12 +64,9 @@ class SurahNamePage extends StatelessWidget {
                 actions: [
                   IconButton.filledTonal(
                     onPressed: () {
-                      final ayahState = context.read<AyahByAyahState>();
                       showSearch<void>(
                         context: context,
-                        delegate: SearchAyahsDelegate(
-                          search: (query) => ayahState.searchAyahs(query: query),
-                        ),
+                        delegate: SearchAyahsDelegate(),
                       );
                     },
                     tooltip: AppStrings.searchAyahs,
