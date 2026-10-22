@@ -10,6 +10,7 @@ import '../../../../../core/theme/app_text_styles.dart';
 import '../../data/args/reader_args.dart';
 import '../../domain/entities/surah_name_entity.dart';
 import '../../states/mushaf_page_number_state.dart';
+import '../states/surah_bookmark_state.dart';
 
 class SurahNameItem extends StatelessWidget {
   const SurahNameItem({
@@ -33,6 +34,7 @@ class SurahNameItem extends StatelessWidget {
       child: ListTile(
         onTap: () {
           context.read<MushafPageNumberState>().setPageNumber(surah.startPageNumber);
+          context.read<SurahBookmarkState>().addLastOpenedPage(surah.startPageNumber);
           Navigator.pushNamed(
             context,
             NamesRouter.pageReader,

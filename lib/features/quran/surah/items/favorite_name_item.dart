@@ -15,89 +15,101 @@ class FavoriteSurahNameItem extends StatelessWidget {
   const FavoriteSurahNameItem({
     super.key,
     required this.surah,
-    required this.index,
+    this.pageNumber,
   });
 
   final SurahNameEntity surah;
-  final int index;
+
+  final int? pageNumber;
 
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final itemOddColor = appColors.tertiary.withAlpha(50);
-    final itemEvenColor = appColors.tertiary.withAlpha(25);
-    return Card(
-      margin: AppPaddings.withoutTopSmall,
-      elevation: 0,
-      color: index.isOdd ? itemEvenColor : itemOddColor,
-      child: ListTile(
-        onTap: () {
-          context.read<MushafPageNumberState>().setPageNumber(surah.startPageNumber);
-          Navigator.pushNamed(
-            context,
-            NamesRouter.pageReader,
-            arguments: ReaderArgs(pageNumber: surah.startPageNumber),
-          );
-        },
-        shape: AppShapes.medium,
-        contentPadding: AppPaddings.hrMedium,
-        leading: CircleAvatar(
-          radius: 17.5,
-          backgroundColor: appColors.inversePrimary,
-          child: Text(
-            surah.surahNumber.toString(),
-            style: AppTextStyles.small.copyWith(
-              fontSize: 14.0,
-            ),
+    final page = pageNumber ?? surah.startPageNumber;
+    return Padding(
+      padding: AppPaddings.withoutTopSmall,
+      child: Ink(
+        decoration: ShapeDecoration(
+          shape: AppShapes.medium,
+          gradient: LinearGradient(
+            begin: .centerLeft,
+            colors: [
+              appColors.inversePrimary.withAlpha(125),
+              appColors.tertiaryContainer.withAlpha(125),
+              appColors.secondaryContainer.withAlpha(125),
+            ],
           ),
         ),
-        title: Column(
-          crossAxisAlignment: .stretch,
-          children: [
-            Text(
-              FontFamilies.glyphForSurahNumber(surah.surahNumber),
-              style: TextStyle(
+        child: Card(
+          elevation: 0,
+          color: Colors.transparent,
+          child: ListTile(
+            onTap: () {
+              context.read<MushafPageNumberState>().setPageNumber(page);
+              Navigator.pushNamed(
+                context,
+                NamesRouter.pageReader,
+                arguments: ReaderArgs(pageNumber: page),
+              );
+            },
+            shape: AppShapes.medium,
+            contentPadding: AppPaddings.hrMedium,
+            leading: CircleAvatar(
+              radius: 17.5,
+              backgroundColor: appColors.inversePrimary,
+              child: Icon(
+                Icons.history_rounded,
                 color: appColors.primary,
-                fontFamily: FontFamilies.surahHeader,
-                fontSize: 25.0,
-                height: 1,
               ),
             ),
-            Row(
+            title: Column(
+              crossAxisAlignment: .stretch,
               children: [
-                Flexible(
-                  child: Text(
-                    surah.nameTranscription,
-                    style: AppTextStyles.medium.copyWith(fontSize: 16),
-                    maxLines: 1,
-                    overflow: .ellipsis,
+                Text(
+                  FontFamilies.glyphForSurahNumber(surah.surahNumber),
+                  style: TextStyle(
+                    color: appColors.primary,
+                    fontFamily: FontFamilies.surahHeader,
+                    fontSize: 25.0,
+                    height: 1,
                   ),
                 ),
-                Flexible(
-                  child: Text(
-                    ' (${surah.nameTranslation})',
-                    style: AppTextStyles.medium,
-                    maxLines: 1,
-                    overflow: .ellipsis,
-                  ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        surah.nameTranscription,
+                        style: AppTextStyles.medium.copyWith(fontSize: 16),
+                        maxLines: 1,
+                        overflow: .ellipsis,
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        ' (${surah.nameTranslation})',
+                        style: AppTextStyles.medium,
+                        maxLines: 1,
+                        overflow: .ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-        subtitle: Text(
-          '${AppStrings.ayahsCount(surah.ayahsCount)} • '
-          '${surah.revelationPlace == 0 ? AppStrings.mecca : AppStrings.medina}',
-          style: AppTextStyles.small,
-          maxLines: 1,
-          overflow: .ellipsis,
-        ),
-        trailing: Text(
-          '${AppStrings.strShort}\n${surah.startPageNumber}',
-          style: AppTextStyles.small.copyWith(
-            color: appColors.secondary,
+            subtitle: Text(
+              '${AppStrings.ayahsCount(surah.ayahsCount)} • ${surah.revelationPlace == 0 ? AppStrings.mecca : AppStrings.medina}',
+              style: AppTextStyles.small,
+              maxLines: 1,
+              overflow: .ellipsis,
+            ),
+            trailing: Text(
+              '${AppStrings.strShort}\n$pageNumber',
+              style: AppTextStyles.small.copyWith(
+                color: appColors.secondary,
+              ),
+              textAlign: .center,
+            ),
           ),
-          textAlign: .center,
         ),
       ),
     );

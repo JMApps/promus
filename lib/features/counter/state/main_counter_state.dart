@@ -9,14 +9,14 @@ import '../../../core/constants/app_constants.dart';
 import '../../../core/enums/counter_mode.dart';
 
 class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
-  MainCounterState({required this._box}) {
+  MainCounterState({required this._appCounterBox}) {
     _loadValues();
     WidgetsBinding.instance.addObserver(this);
   }
 
   static const _saveDelay = Duration(milliseconds: 400);
 
-  final Box _box;
+  final Box _appCounterBox;
   final Map<CounterMode, int> _values = {};
   final Map<String, Object> _pending = {};
   late final Future<bool> _canVibrate = _detectVibrator();
@@ -75,7 +75,7 @@ class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
 
   void toggleTacticFeedback() {
     _tacticFeedback = !_tacticFeedback;
-    _save(AppConstants.keyCountFeetbackState, _tacticFeedback);
+    _save(AppConstants.keyCountFeedbackState, _tacticFeedback);
     notifyListeners();
   }
 
@@ -86,9 +86,9 @@ class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   void _loadValues() {
-    _tacticFeedback = _read(AppConstants.keyCountFeetbackState, true);
+    _tacticFeedback = _read(AppConstants.keyCountFeedbackState, true);
     _countLabelVisible = _read(AppConstants.keyCountLabelIsShow, true);
-    _mode = CounterMode.values.asNameMap()[_box.get(AppConstants.keyCounterMode)] ??
+    _mode = CounterMode.values.asNameMap()[_appCounterBox.get(AppConstants.keyCounterMode)] ??
         CounterMode.free;
 
     for (final mode in CounterMode.values) {
@@ -97,7 +97,7 @@ class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   T _read<T>(String key, T fallback) {
-    final value = _box.get(key);
+    final value = _appCounterBox.get(key);
     return value is T ? value : fallback;
   }
 
@@ -120,7 +120,7 @@ class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
     final batch = Map<String, Object>.of(_pending);
     _pending.clear();
     try {
-      await _box.putAll(batch);
+      await _appCounterBox.putAll(batch);
     } catch (e, st) {
       debugPrint('MainCounterState: не удалось сохранить $batch: $e\n$st');
     }

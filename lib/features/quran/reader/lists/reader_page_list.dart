@@ -6,6 +6,7 @@ import '../../../../core/theme/app_paddings.dart';
 import '../../states/mushaf_page_load_state.dart';
 import '../../states/mushaf_page_number_state.dart';
 import '../../states/mushaf_page_state.dart';
+import '../../surah/states/surah_bookmark_state.dart';
 import '../items/read_item.dart';
 
 class ReaderPageList extends StatefulWidget {
@@ -22,10 +23,10 @@ class ReaderPageList extends StatefulWidget {
   State<ReaderPageList> createState() => _ReaderPageListState();
 }
 
-class _ReaderPageListState extends State<ReaderPageList>
-    with WidgetsBindingObserver {
+class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObserver {
   late final MushafPageNumberState _pageNumberState;
   late final MushafPageState _mushafPageState;
+  late final SurahBookmarkState _bookmarkState;
 
   late int _currentPage;
 
@@ -35,15 +36,18 @@ class _ReaderPageListState extends State<ReaderPageList>
 
     _pageNumberState = context.read<MushafPageNumberState>();
     _mushafPageState = context.read<MushafPageState>();
+    _bookmarkState = context.read<SurahBookmarkState>();
 
     WidgetsBinding.instance.addObserver(this);
 
     _currentPage = widget.pageNumber;
     _pageNumberState.setPageNumber(_currentPage);
 
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _mushafPageState.loadWindow(_currentPage);
+      _bookmarkState.addLastOpenedPage(_currentPage);
     });
   }
 
@@ -66,6 +70,7 @@ class _ReaderPageListState extends State<ReaderPageList>
 
         _pageNumberState.setPageNumber(page);
         _mushafPageState.loadWindow(page);
+        _bookmarkState.addLastOpenedPage(page);
       },
       itemBuilder: (context, index) {
         final page = index + 1;
@@ -83,6 +88,7 @@ class _ReaderPageListState extends State<ReaderPageList>
                 child: CircularProgressIndicator.adaptive(),
               );
             }
+
             return ReadItem(
               rows: mushafPageState.data!,
             );

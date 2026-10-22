@@ -26,6 +26,12 @@ class AppPaddings {
     bottom: AppSpacing.small,
   );
 
+  static const withoutTopLeftMediumOtherSmall = EdgeInsets.only(
+    left: AppSpacing.medium,
+    right: AppSpacing.small,
+    bottom: AppSpacing.small,
+  );
+
   static const withoutBottomMedium = EdgeInsets.only(
     left: AppSpacing.medium,
     top: AppSpacing.medium,

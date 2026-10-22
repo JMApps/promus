@@ -17,11 +17,12 @@ class SurahNameState extends ChangeNotifier {
   Object? _error;
 
   List<SurahNameEntity> get allSurahs => _allSurahs;
+
   bool get isLoading => _isLoading;
+
   Object? get error => _error;
 
-  SurahNameEntity? surahByNumber({required int surahNumber}) =>
-      _byNumber[surahNumber];
+  SurahNameEntity? surahByNumber({required int surahNumber}) => _byNumber[surahNumber];
 
   String? surahByVerseKey(String surahTitle, String verseKey, String ayahTitle) {
     final parts = verseKey.split(':');

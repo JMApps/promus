@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:promus/features/quran/surah/states/surah_bookmark_state.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/app_constants.dart';
@@ -35,8 +36,10 @@ void main() async {
   await Hive.openBox(AppConstants.keySettingsPrayerTimeBox);
   await Hive.openBox(AppConstants.mainAppSettingsBox);
   await Hive.openBox(AppConstants.keyMainCounterBox);
+  await Hive.openBox(AppConstants.keyBookmarksSurahsBox);
 
   final appCounterBox = Hive.box(AppConstants.keyMainCounterBox);
+  final bookmarksSurahsBox = Hive.box(AppConstants.keyBookmarksSurahsBox);
 
   final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
   final MushafDatabaseHelper mushafDatabaseHelper = MushafDatabaseHelper.instance;
@@ -60,6 +63,9 @@ void main() async {
           create: (_) => MushafPageState(
             MushafPageRepositoryImpl(mushafDatabaseHelper)
           ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SurahBookmarkState(bookmarksSurahsBox),
         ),
         ChangeNotifierProvider(
           create: (_) => MushafPageNumberState(),
@@ -95,7 +101,7 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
-          create: (_) => MainCounterState(box: appCounterBox),
+          create: (_) => MainCounterState(appCounterBox: appCounterBox),
         ),
       ],
       child: const RootPage(),
