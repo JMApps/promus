@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
+import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
@@ -63,14 +64,30 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
               title: Text(widget.chapterModel.chapterNumber),
             ),
             SliverToBoxAdapter(
-              child: Card(
-                margin: AppPaddings.topMediumSmallOther,
-                color: appColors.inversePrimary,
-                child: Padding(
-                  padding: AppPaddings.small,
-                  child: MainHtmlWidget(
-                    htmlContent: widget.chapterModel.chapterTitle,
-                    textAlign: .center,
+              child: Padding(
+                padding: AppPaddings.topMediumSmallOther,
+                child: Ink(
+                  decoration: ShapeDecoration(
+                    shape: AppShapes.medium,
+                    gradient: LinearGradient(
+                      begin: .centerLeft,
+                      colors: [
+                        appColors.inversePrimary,
+                        appColors.tertiaryContainer,
+                        appColors.secondaryContainer,
+                      ],
+                    ),
+                  ),
+                  child: Card(
+                    color: Colors.transparent,
+                    elevation: 0,
+                    child: Padding(
+                      padding: AppPaddings.small,
+                      child: MainHtmlWidget(
+                        htmlContent: widget.chapterModel.chapterTitle,
+                        textAlign: .center,
+                      ),
+                    ),
                   ),
                 ),
               ),

@@ -25,35 +25,49 @@ class CustomChapterCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: cardColor.withAlpha(35),
-      shape: AppShapes.medium,
-      child: InkWell(
-        borderRadius: AppRadius.medium,
-        onTap: () async {
-          final chapter = context.read<FortressChapterState>().fortressChapters[chapterNumber - 1];
-          await Navigator.pushNamed(
-            context,
-            NamesRouter.fortressSupplicationsPage,
-            arguments: chapter,
-          );
-        },
-        child: Padding(
-          padding: AppPaddings.small,
-          child: Row(
-            mainAxisAlignment: .center,
-            children: [
-              Icon(icon, color: cardColor),
-              const SizedBox(width: AppSpacing.small),
-              Text(
-                title,
-                style: AppTextStyles.medium,
-                textAlign: .center,
-                overflow: .ellipsis,
-                maxLines: 1,
-              ),
-            ],
+    final appColors = Theme.of(context).colorScheme;
+    return Ink(
+      decoration: ShapeDecoration(
+        shape: AppShapes.medium,
+        gradient: LinearGradient(
+          begin: .centerLeft,
+          colors: [
+            appColors.inversePrimary,
+            appColors.tertiaryContainer,
+            appColors.secondaryContainer,
+          ],
+        ),
+      ),
+      child: Card(
+        color: Colors.transparent,
+        elevation: 0,
+        shape: AppShapes.medium,
+        child: InkWell(
+          borderRadius: AppRadius.medium,
+          onTap: () async {
+            final chapter = context.read<FortressChapterState>().fortressChapters[chapterNumber - 1];
+            await Navigator.pushNamed(
+              context,
+              NamesRouter.fortressSupplicationsPage,
+              arguments: chapter,
+            );
+          },
+          child: Padding(
+            padding: AppPaddings.small,
+            child: Row(
+              mainAxisAlignment: .center,
+              children: [
+                Icon(icon, color: cardColor),
+                const SizedBox(width: AppSpacing.small),
+                Text(
+                  title,
+                  style: AppTextStyles.medium,
+                  textAlign: .center,
+                  overflow: .ellipsis,
+                  maxLines: 1,
+                ),
+              ],
+            ),
           ),
         ),
       ),
