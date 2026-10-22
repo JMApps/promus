@@ -6,6 +6,9 @@ class AppConstants {
   static const int totalMushafPageCount = 604;
   static const int maxStoredPages = 10;
 
+  static const String mushafDatabaseName = 'mushaf_database.db';
+  static const String databasesPath = 'assets/databases/';
+
   static const String keySettingsPrayerTimeBox = 'key_settings_prayer_time_box';
   static const String keyMainCounterBox = 'key_main_counter_box';
   static const String keyBookmarksSurahsBox = 'key_bookmarks_surahs_box';

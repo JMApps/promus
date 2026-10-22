@@ -30,11 +30,11 @@ class CustomChapterCardItem extends StatelessWidget {
       decoration: ShapeDecoration(
         shape: AppShapes.medium,
         gradient: LinearGradient(
-          begin: .centerStart,
+          begin: .centerLeft,
           colors: [
-            appColors.inversePrimary,
-            appColors.tertiaryContainer,
-            appColors.secondaryContainer,
+            appColors.inversePrimary.withAlpha(125),
+            appColors.tertiaryContainer.withAlpha(125),
+            appColors.secondaryContainer.withAlpha(125),
           ],
         ),
       ),

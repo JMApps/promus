@@ -42,7 +42,7 @@ class AyahByAyahItem extends StatelessWidget {
         child: Container(
           padding: AppPaddings.hrSmallVrLarge,
           decoration: const BoxDecoration(
-            border: Border.symmetric(
+            border: .symmetric(
               horizontal: BorderSide(
                 width: 0.25,
                 color: Colors.grey,
@@ -55,7 +55,7 @@ class AyahByAyahItem extends StatelessWidget {
               Container(
                 width: 65,
                 padding: AppPaddings.small,
-                alignment: Alignment.center,
+                alignment: .center,
                 decoration: BoxDecoration(
                   color: appColors.secondaryContainer.withAlpha(155),
                   borderRadius: AppRadius.small,
@@ -65,7 +65,7 @@ class AyahByAyahItem extends StatelessWidget {
               if (row.arabicAyah != null && row.arabicAyah!.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.medium),
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment: .centerRight,
                   child: Text(
                     row.arabicAyah!,
                     textDirection: .rtl,

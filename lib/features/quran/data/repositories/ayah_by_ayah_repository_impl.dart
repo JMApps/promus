@@ -13,57 +13,54 @@ class AyahByAyahRepositoryImpl implements AyahByAyahRepository {
 
   @override
   Future<List<AyahByAyahEntity>> searchAyahs({required String query}) async {
-    final database = await _databaseHelper.db;
-
     final trimmed = query.trim();
     if (trimmed.isEmpty) return const [];
 
     final isArabic = RegExp(r'[\u0600-\u06FF]').hasMatch(trimmed);
-    final matchExpr = trimmed.split(RegExp(r'\s+')).map((w) => '$w*').join(' ');
 
-    if (isArabic) {
-      final result = await database.rawQuery(
-        '''
-        SELECT
-          a.${ColumnNames.ayahId},
-          a.${ColumnNames.verseKey},
-          a.${ColumnNames.surahNumber},
-          a.${ColumnNames.ayahNumber},
-          a.${ColumnNames.ayahNormalized} AS ${ColumnNames.ayahArabic},
-          a.${ColumnNames.ayahPageNumber},
-          a.${ColumnNames.ayahPosition},
-          COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
-        FROM ${TableNames.tableOfAyah} fts
-        JOIN ${TableNames.tableOfAyah} a ON a.${ColumnNames.ayahId} = fts.rowid
-        LEFT JOIN ${TableNames.tableOfTranslations} t ON t.id = a.${ColumnNames.ayahId}
-        WHERE ${TableNames.tableOfAyah} MATCH ?
-        ORDER BY a.${ColumnNames.surahNumber}, a.${ColumnNames.ayahNumber}
-        ''',
-        [matchExpr],
-      );
-      return result.map((row) => AyahByAyahModel.fromMap(row).ayahByAyahToEntity()).toList(growable: false);
-    }
+    final words = (isArabic ? _normalizeArabic(trimmed) : trimmed)
+        .split(RegExp(r'\s+'))
+        .map((w) => w.replaceAll(RegExp(r'["*]'), ''))
+        .where((w) => w.isNotEmpty)
+        .toList();
+    if (words.isEmpty) return const [];
+
+    final column = isArabic ? ColumnNames.ayahNormalized : ColumnNames.ayahRuKuliev;
+    final matchExpr = words.map((w) => '$column:"$w"*').join(' ');
+
+    final database = await _databaseHelper.db;
 
     final result = await database.rawQuery(
       '''
-      SELECT
-        a.${ColumnNames.ayahId},
-        a.${ColumnNames.verseKey},
-        a.${ColumnNames.surahNumber},
-        a.${ColumnNames.ayahNumber},
-        a.${ColumnNames.ayah} AS ${ColumnNames.ayahArabic},
-        a.${ColumnNames.ayahPageNumber},
-        a.${ColumnNames.ayahPosition},
-        COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
-      FROM ${TableNames.tableOfTranslations} fts
-      JOIN ${TableNames.tableOfAyah} a ON a.${ColumnNames.ayahId} = fts.rowid
-      LEFT JOIN ${TableNames.tableOfTranslations} t ON t.id = a.${ColumnNames.ayahId}
-      WHERE ${TableNames.tableOfTranslations} MATCH ?
-      ORDER BY a.${ColumnNames.surahNumber}, a.${ColumnNames.ayahNumber}
-      ''',
-      ['${ColumnNames.ayahRuKuliev}:$matchExpr'],
+    SELECT
+      a.${ColumnNames.ayahId},
+      a.${ColumnNames.verseKey},
+      a.${ColumnNames.surahNumber},
+      a.${ColumnNames.ayahNumber},
+      a.${ColumnNames.ayah} AS ${ColumnNames.ayahArabic},
+      a.${ColumnNames.ayahPageNumber},
+      a.${ColumnNames.ayahPosition},
+      COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
+    FROM fts_ayahs
+    JOIN ${TableNames.tableOfAyah} a ON a.${ColumnNames.ayahId} = fts_ayahs.rowid
+    LEFT JOIN ${TableNames.tableOfTranslations} t ON t.ayah_key = a.${ColumnNames.verseKey}
+    WHERE fts_ayahs MATCH ?
+    ORDER BY a.${ColumnNames.surahNumber}, a.${ColumnNames.ayahNumber}
+    ''',
+      [matchExpr],
     );
-    return result.map((row) => AyahByAyahModel.fromMap(row).ayahByAyahToEntity()).toList(growable: false);  }
+
+    return result
+        .map((row) => AyahByAyahModel.fromMap(row).ayahByAyahToEntity())
+        .toList(growable: false);
+  }
+
+  static String _normalizeArabic(String s) {
+    return s
+        .replaceAll(RegExp(r'[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]'), '')
+        .replaceAll(RegExp(r'[\u0622\u0623\u0625\u0671]'), '\u0627')
+        .replaceAll('\u0649', '\u0649');
+  }
 
   @override
   Future<List<AyahByAyahEntity>> fetchAyahsByIds({required List<int> ayahIds}) async {

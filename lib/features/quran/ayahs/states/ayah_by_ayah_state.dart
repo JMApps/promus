@@ -45,9 +45,7 @@ class AyahByAyahState extends ChangeNotifier {
     }
   }
 
-  Future<List<AyahByAyahEntity>> searchAyahs({
-    required String query,
-  }) {
+  Future<List<AyahByAyahEntity>> searchAyahs({required String query}) {
     final normalizedQuery = query.trim();
 
     if (normalizedQuery.isEmpty) {

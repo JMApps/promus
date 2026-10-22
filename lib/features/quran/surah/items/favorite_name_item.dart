@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promus/core/theme/app_spacing.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/app_strings.dart';
@@ -55,10 +56,11 @@ class FavoriteSurahNameItem extends StatelessWidget {
             shape: AppShapes.medium,
             contentPadding: AppPaddings.hrMedium,
             leading: CircleAvatar(
-              radius: 17.5,
+              radius: AppSpacing.medium + 3.5,
               backgroundColor: appColors.inversePrimary,
               child: Icon(
                 Icons.history_rounded,
+                size: AppSpacing.large,
                 color: appColors.primary,
               ),
             ),

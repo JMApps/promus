@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:promus/features/quran/search/delegates/search_ayahs_delegate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/app_strings.dart';
 import '../../../../../core/theme/app_paddings.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../ayahs/states/ayah_by_ayah_state.dart';
 import '../../domain/entities/surah_name_entity.dart';
 import '../lists/favorite_surah_list.dart';
 import '../lists/surah_name_list.dart';
@@ -24,7 +26,9 @@ class SurahNamePage extends StatelessWidget {
     final appColors = Theme.of(context).colorScheme;
     final isLoading = context.select<SurahNameState, bool>((s) => s.isLoading);
     final error = context.select<SurahNameState, Object?>((s) => s.error);
-    final surahs = context.select<SurahNameState, List<SurahNameEntity>>((s) => s.allSurahs);
+    final surahs = context.select<SurahNameState, List<SurahNameEntity>>(
+      (s) => s.allSurahs,
+    );
     return Scaffold(
       body: switch ((isLoading, error)) {
         (true, _) => const Center(
@@ -60,7 +64,15 @@ class SurahNamePage extends StatelessWidget {
                 title: const Text(AppStrings.titleMushaf),
                 actions: [
                   IconButton.filledTonal(
-                    onPressed: () {},
+                    onPressed: () {
+                      final ayahState = context.read<AyahByAyahState>();
+                      showSearch<void>(
+                        context: context,
+                        delegate: SearchAyahsDelegate(
+                          search: (query) => ayahState.searchAyahs(query: query),
+                        ),
+                      );
+                    },
                     tooltip: AppStrings.searchAyahs,
                     icon: const Icon(Icons.search),
                   ),

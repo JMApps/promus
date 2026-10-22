@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart' as p;
+import 'package:promus/core/constants/app_constants.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MushafDatabaseHelper {
@@ -10,8 +11,6 @@ class MushafDatabaseHelper {
 
   static final MushafDatabaseHelper instance = MushafDatabaseHelper._();
 
-  static const String _dbFileName = 'mushaf_database.db';
-  static const String _assetPath = 'assets/databases/$_dbFileName';
 
   static const int _dbVersion = 1;
 
@@ -35,7 +34,7 @@ class MushafDatabaseHelper {
   Future<Database> _open() async {
     try {
       final dbDir = await getDatabasesPath();
-      final dbPath = p.join(dbDir, _dbFileName);
+      final dbPath = p.join(dbDir, AppConstants.mushafDatabaseName);
 
       await Directory(p.dirname(dbPath)).create(recursive: true);
 
@@ -140,6 +139,8 @@ class MushafDatabaseHelper {
         readOnly: false,
       );
 
+      await rw.transaction(_createSearchFts);
+
       await rw.execute('ANALYZE');
       await rw.setVersion(_dbVersion);
     } catch (e, s) {
@@ -154,8 +155,37 @@ class MushafDatabaseHelper {
     }
   }
 
+  Future<void> _createSearchFts(Transaction txn) async {
+    await txn.execute('DROP TABLE IF EXISTS fts_ayahs');
+
+    await txn.execute(
+      '''
+    CREATE VIRTUAL TABLE fts_ayahs
+    USING fts4(
+      ayah_normalized,
+      ayah_ru_kuliev,
+      ayah_ru_adel,
+      tokenize=unicode61
+    )
+    ''',
+    );
+
+    await txn.execute(
+      '''
+    INSERT INTO fts_ayahs(rowid, ayah_normalized, ayah_ru_kuliev, ayah_ru_adel)
+    SELECT
+      a.ayah_id,
+      a.ayah_normalized,
+      COALESCE(t.ayah_ru_kuliev, ''),
+      COALESCE(t.ayah_ru_adel, '')
+    FROM Table_of_ayah_by_ayah a
+    LEFT JOIN Table_of_translation t ON t.ayah_key = a.verse_key
+    ''',
+    );
+  }
+
   Future<void> _copyAssetDbTo(String dbPath) async {
-    final data = await rootBundle.load(_assetPath);
+    final data = await rootBundle.load('${AppConstants.databasesPath}${AppConstants.mushafDatabaseName}');
 
     final bytes = data.buffer.asUint8List(
       data.offsetInBytes,
@@ -189,7 +219,7 @@ class MushafDatabaseHelper {
 
   Future<Database> reinstallFromAssets() async {
     final dbDir = await getDatabasesPath();
-    final dbPath = p.join(dbDir, _dbFileName);
+    final dbPath = p.join(dbDir, AppConstants.mushafDatabaseName);
 
     await _deleteCopiedDatabase(dbPath);
     await _installFreshFromAssets(dbPath);

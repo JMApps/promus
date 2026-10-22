@@ -60,6 +60,9 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
+          create: (_) => AyahByAyahState(AyahByAyahRepositoryImpl(mushafDatabaseHelper)),
+        ),
+        ChangeNotifierProvider(
           create: (_) => MushafPageState(
             MushafPageRepositoryImpl(mushafDatabaseHelper)
           ),
