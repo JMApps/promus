@@ -3,7 +3,7 @@ import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'core/constants/app_constants.dart';
+import 'core/constants/app_constant_keys.dart';
 import 'core/database/fortress_database_helper.dart';
 import 'core/database/mushaf_database_helper.dart';
 import 'features/counter/state/main_counter_state.dart';
@@ -34,18 +34,18 @@ void main() async {
   Hive.init(dir.path);
 
   await Future.wait([
-    Hive.openBox(AppConstants.keySettingsPrayerTimeBox),
-    Hive.openBox(AppConstants.mainAppSettingsBox),
-    Hive.openBox(AppConstants.keyMainCounterBox),
-    Hive.openBox(AppConstants.keyBookmarksSurahsBox),
+    Hive.openBox(AppConstantKeys.keySettingsPrayerTimeBox),
+    Hive.openBox(AppConstantKeys.mainAppSettingsBox),
+    Hive.openBox(AppConstantKeys.keyMainCounterBox),
+    Hive.openBox(AppConstantKeys.keyBookmarksSurahsBox),
   ]);
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
     MushafDatabaseHelper.instance.db.then((_) {}, onError: (_) {});
   });
 
-  final appCounterBox = Hive.box(AppConstants.keyMainCounterBox);
-  final bookmarksSurahsBox = Hive.box(AppConstants.keyBookmarksSurahsBox);
+  final appCounterBox = Hive.box(AppConstantKeys.keyMainCounterBox);
+  final bookmarksSurahsBox = Hive.box(AppConstantKeys.keyBookmarksSurahsBox);
 
   final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
   final MushafDatabaseHelper mushafDatabaseHelper = MushafDatabaseHelper.instance;
@@ -58,7 +58,7 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (_) =>
-              PrayerState(Hive.box(AppConstants.keySettingsPrayerTimeBox)),
+              PrayerState(Hive.box(AppConstantKeys.keySettingsPrayerTimeBox)),
         ),
         ChangeNotifierProvider(
           create: (_) => SurahNameState(

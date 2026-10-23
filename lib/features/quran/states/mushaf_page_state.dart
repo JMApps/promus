@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_constant_keys.dart';
 import '../../../core/database/constants/column_names.dart';
 import '../domain/entities/mushaf_page_entity.dart';
 import '../domain/repositories/mushaf_page_repository.dart';
@@ -118,7 +118,7 @@ class MushafPageState extends ChangeNotifier {
   }
 
   bool _isValidPage(int page) {
-    return page >= 1 && page <= AppConstants.totalMushafPageCount;
+    return page >= 1 && page <= AppConstantKeys.totalMushafPageCount;
   }
 
   void clear() {

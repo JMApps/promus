@@ -5,7 +5,7 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:intl/intl.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_constant_keys.dart';
 import '../../../core/constants/app_strings.dart';
 
 /// Готовые данные одного круга: имя, длительность и прогресс 0..1.
@@ -73,59 +73,59 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     _fajrAdjustment = _settingsPrayerTimeBox.get(
-      AppConstants.keyFajrAdjustment,
+      AppConstantKeys.keyFajrAdjustment,
       defaultValue: 0,
     );
     _sunriseAdjustment = _settingsPrayerTimeBox.get(
-      AppConstants.keySunriseAdjustment,
+      AppConstantKeys.keySunriseAdjustment,
       defaultValue: 0,
     );
     _dhuhrAdjustment = _settingsPrayerTimeBox.get(
-      AppConstants.keyDhuhrAdjustment,
+      AppConstantKeys.keyDhuhrAdjustment,
       defaultValue: 0,
     );
     _asrAdjustment = _settingsPrayerTimeBox.get(
-      AppConstants.keyAsrAdjustment,
+      AppConstantKeys.keyAsrAdjustment,
       defaultValue: 0,
     );
     _maghribAdjustment = _settingsPrayerTimeBox.get(
-      AppConstants.keyMaghribAdjustment,
+      AppConstantKeys.keyMaghribAdjustment,
       defaultValue: 0,
     );
     _ishaAdjustment = _settingsPrayerTimeBox.get(
-      AppConstants.keyIshaAdjustment,
+      AppConstantKeys.keyIshaAdjustment,
       defaultValue: 0,
     );
 
     _country = _settingsPrayerTimeBox.get(
-      AppConstants.keyCountry,
+      AppConstantKeys.keyCountry,
       defaultValue: 'Saudi Arabia',
     );
     _city = _settingsPrayerTimeBox.get(
-      AppConstants.keyCity,
+      AppConstantKeys.keyCity,
       defaultValue: 'Mecca',
     );
     _latitude = _settingsPrayerTimeBox.get(
-      AppConstants.keyCurrentLatitude,
+      AppConstantKeys.keyCurrentLatitude,
       defaultValue: 21.42580,
     );
     _longitude = _settingsPrayerTimeBox.get(
-      AppConstants.keyCurrentLongitude,
+      AppConstantKeys.keyCurrentLongitude,
       defaultValue: 39.82410,
     );
     _calculationMethodIndex = _settingsPrayerTimeBox.get(
-      AppConstants.keyCalculationIndex,
+      AppConstantKeys.keyCalculationIndex,
       defaultValue: 10,
     );
     _highLatitudeMethodIndex = _settingsPrayerTimeBox.get(
-      AppConstants.keyHighLatitudeIndex,
+      AppConstantKeys.keyHighLatitudeIndex,
       defaultValue: 0,
     );
     _madhabIndex = _settingsPrayerTimeBox.get(
-      AppConstants.keyMadhabIndex,
+      AppConstantKeys.keyMadhabIndex,
       defaultValue: 0,
     );
-    _dst = _settingsPrayerTimeBox.get(AppConstants.keyDST, defaultValue: false);
+    _dst = _settingsPrayerTimeBox.get(AppConstantKeys.keyDST, defaultValue: false);
 
     _startCron();
     initPrayerTime();
@@ -139,11 +139,9 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     _coordinates = Coordinates(_latitude, _longitude);
 
     _prayerParams =
-        AppConstants.prayerCalculationMethods[_calculationMethodIndex]
-            .getParameters()
-          ..highLatitudeRule =
-              AppConstants.highLatitude[_highLatitudeMethodIndex]
-          ..madhab = AppConstants.calculationMadhab[_madhabIndex];
+    AppStrings.prayerCalculationMethods[_calculationMethodIndex].getParameters()
+      ..highLatitudeRule = AppStrings.highLatitude[_highLatitudeMethodIndex]
+      ..madhab = AppStrings.calculationMadhab[_madhabIndex];
 
     // ИСПРАВЛЕНО: знак DST. Тумблер нужен, когда устройство живёт в поясе
     // без перевода часов, а официальные времена летом сдвинуты ВПЕРЁД,
@@ -230,7 +228,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   String? get adhkarMessage {
     final index = currentAdhkarIndex;
-    return index == null ? null : AppConstants.adhkarList[index];
+    return index == null ? null : AppStrings.adhkarList[index];
   }
 
   void _updateDateTime() {
@@ -375,10 +373,10 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   double get longitude => _longitude;
 
   String get gregorianDateText =>
-      '${_dateTime.day} ${AppConstants.gregorianMonths[_dateTime.month - 1]}, ${_dateTime.year}';
+      '${_dateTime.day} ${AppStrings.gregorianMonths[_dateTime.month - 1]}, ${_dateTime.year}';
   String get hijriDateText {
     final h = HijriCalendar.fromDate(_dateTime);
-    return '${h.hDay} ${AppConstants.hijriMonths[h.hMonth - 1]}, ${h.hYear}';
+    return '${h.hDay} ${AppStrings.hijriMonths[h.hMonth - 1]}, ${h.hYear}';
   }
 
   // ---------------------------------------------------------------------------
@@ -400,10 +398,10 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     _latitude = latitude;
     _longitude = longitude;
 
-    _settingsPrayerTimeBox.put(AppConstants.keyCountry, country);
-    _settingsPrayerTimeBox.put(AppConstants.keyCity, city);
-    _settingsPrayerTimeBox.put(AppConstants.keyCurrentLatitude, latitude);
-    _settingsPrayerTimeBox.put(AppConstants.keyCurrentLongitude, longitude);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyCountry, country);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyCity, city);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyCurrentLatitude, latitude);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyCurrentLongitude, longitude);
 
     initPrayerTime();
   }
@@ -416,7 +414,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   set setCalculationIndex(int index) {
     _calculationMethodIndex = index;
-    _settingsPrayerTimeBox.put(AppConstants.keyCalculationIndex, index);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyCalculationIndex, index);
     initPrayerTime();
   }
 
@@ -424,7 +422,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   set setHighLatitudeIndex(int index) {
     _highLatitudeMethodIndex = index;
-    _settingsPrayerTimeBox.put(AppConstants.keyHighLatitudeIndex, index);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyHighLatitudeIndex, index);
     initPrayerTime();
   }
 
@@ -432,7 +430,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   set setMadhabIndex(int index) {
     _madhabIndex = index;
-    _settingsPrayerTimeBox.put(AppConstants.keyMadhabIndex, index);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyMadhabIndex, index);
     initPrayerTime();
   }
 
@@ -440,7 +438,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   set setDst(bool dstState) {
     _dst = dstState;
-    _settingsPrayerTimeBox.put(AppConstants.keyDST, dstState);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyDST, dstState);
     initPrayerTime();
   }
 
@@ -493,7 +491,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set fajrAdjustment(int value) {
     if (_fajrAdjustment != value) {
       _fajrAdjustment = value;
-      _settingsPrayerTimeBox.put(AppConstants.keyFajrAdjustment, value);
+      _settingsPrayerTimeBox.put(AppConstantKeys.keyFajrAdjustment, value);
       initPrayerTime();
     }
   }
@@ -501,7 +499,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set sunriseAdjustment(int value) {
     if (_sunriseAdjustment != value) {
       _sunriseAdjustment = value;
-      _settingsPrayerTimeBox.put(AppConstants.keySunriseAdjustment, value);
+      _settingsPrayerTimeBox.put(AppConstantKeys.keySunriseAdjustment, value);
       initPrayerTime();
     }
   }
@@ -509,7 +507,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set dhuhrAdjustment(int value) {
     if (_dhuhrAdjustment != value) {
       _dhuhrAdjustment = value;
-      _settingsPrayerTimeBox.put(AppConstants.keyDhuhrAdjustment, value);
+      _settingsPrayerTimeBox.put(AppConstantKeys.keyDhuhrAdjustment, value);
       initPrayerTime();
     }
   }
@@ -517,7 +515,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set asrAdjustment(int value) {
     if (_asrAdjustment != value) {
       _asrAdjustment = value;
-      _settingsPrayerTimeBox.put(AppConstants.keyAsrAdjustment, value);
+      _settingsPrayerTimeBox.put(AppConstantKeys.keyAsrAdjustment, value);
       initPrayerTime();
     }
   }
@@ -525,7 +523,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set maghribAdjustment(int value) {
     if (_maghribAdjustment != value) {
       _maghribAdjustment = value;
-      _settingsPrayerTimeBox.put(AppConstants.keyMaghribAdjustment, value);
+      _settingsPrayerTimeBox.put(AppConstantKeys.keyMaghribAdjustment, value);
       initPrayerTime();
     }
   }
@@ -533,7 +531,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set ishaAdjustment(int value) {
     if (_ishaAdjustment != value) {
       _ishaAdjustment = value;
-      _settingsPrayerTimeBox.put(AppConstants.keyIshaAdjustment, value);
+      _settingsPrayerTimeBox.put(AppConstantKeys.keyIshaAdjustment, value);
       initPrayerTime();
     }
   }
@@ -548,12 +546,12 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     _maghribAdjustment = 0;
     _ishaAdjustment = 0;
 
-    _settingsPrayerTimeBox.put(AppConstants.keyFajrAdjustment, 0);
-    _settingsPrayerTimeBox.put(AppConstants.keySunriseAdjustment, 0);
-    _settingsPrayerTimeBox.put(AppConstants.keyDhuhrAdjustment, 0);
-    _settingsPrayerTimeBox.put(AppConstants.keyAsrAdjustment, 0);
-    _settingsPrayerTimeBox.put(AppConstants.keyMaghribAdjustment, 0);
-    _settingsPrayerTimeBox.put(AppConstants.keyIshaAdjustment, 0);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyFajrAdjustment, 0);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keySunriseAdjustment, 0);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyDhuhrAdjustment, 0);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyAsrAdjustment, 0);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyMaghribAdjustment, 0);
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyIshaAdjustment, 0);
 
     initPrayerTime();
   }

@@ -1,4 +1,4 @@
-import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_constant_keys.dart';
 import '../../../../core/database/constants/column_names.dart';
 import '../../../../core/database/constants/table_names.dart';
 import '../../../../core/database/mushaf_database_helper.dart';
@@ -40,7 +40,7 @@ class MushafPageMetaRepositoryImpl implements MushafPageMetaRepository {
       ''',
     );
 
-    final int totalPages = AppConstants.totalMushafPageCount;
+    final int totalPages = AppConstantKeys.totalMushafPageCount;
 
     final List<int> surahPerPage = _expandRanges(
       rows: surahRows,

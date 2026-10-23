@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_strings.dart';
 import '../../../core/enums/counter_mode.dart';
 import '../../../core/theme/app_paddings.dart';
 import '../../../core/theme/app_radius.dart';
@@ -31,7 +31,7 @@ class CounterModeSelector extends StatelessWidget {
                 value: mode,
                 child: Center(
                   child: Text(
-                    AppConstants.tasbeehCounts[mode.index],
+                    AppStrings.tasbeehCounts[mode.index],
                     style: mode == currentMode ? TextStyle(
                       fontSize: 17.0,
                       color: primaryColor,

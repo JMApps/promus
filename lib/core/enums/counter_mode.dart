@@ -1,25 +1,25 @@
-import '../constants/app_constants.dart';
+import '../constants/app_constant_keys.dart';
 
 enum CounterMode {
   free(
     initialValue: 0,
     countsDown: false,
-    storageKey: AppConstants.keyFreeCounterValue,
+    storageKey: AppConstantKeys.keyFreeCounterValue,
   ),
   count33(
     initialValue: 33,
     countsDown: true,
-    storageKey: AppConstants.key33CounterValue,
+    storageKey: AppConstantKeys.key33CounterValue,
   ),
   count100(
     initialValue: 100,
     countsDown: true,
-    storageKey: AppConstants.key100CounterValue,
+    storageKey: AppConstantKeys.key100CounterValue,
   ),
   count1000(
     initialValue: 1000,
     countsDown: true,
-    storageKey: AppConstants.key1000CounterValue,
+    storageKey: AppConstantKeys.key1000CounterValue,
   );
 
   const CounterMode({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_constant_keys.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -46,8 +46,8 @@ class ToPageButton extends StatelessWidget {
                             value: pageNumberState.pageNumber.toDouble(),
                             label: '${pageNumberState.pageNumber}',
                             min: 1,
-                            max: AppConstants.totalMushafPageCount.toDouble(),
-                            divisions: AppConstants.totalMushafPageCount,
+                            max: AppConstantKeys.totalMushafPageCount.toDouble(),
+                            divisions: AppConstantKeys.totalMushafPageCount,
                             onChanged: (double value) {
                               pageNumberState.setPageNumber(value.round());
                             },

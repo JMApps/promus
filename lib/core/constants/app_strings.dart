@@ -1,3 +1,4 @@
+import 'package:adhan/adhan.dart';
 import 'package:intl/intl.dart';
 
 class AppStrings {
@@ -86,6 +87,115 @@ class AppStrings {
     locale: 'ru',
   );
 
-  static String searchByQuery(String query, String matches) => 'По запросу «$query»\n$matches';
+  static const List<CalculationMethod> prayerCalculationMethods = [
+    CalculationMethod.umm_al_qura,
+    CalculationMethod.north_america,
+    CalculationMethod.russia,
+    CalculationMethod.tatarstan,
+    CalculationMethod.france,
+    CalculationMethod.dubai,
+    CalculationMethod.egyptian,
+    CalculationMethod.karachi,
+    CalculationMethod.kuwait,
+    CalculationMethod.moon_sighting_committee,
+    CalculationMethod.muslim_world_league,
+    CalculationMethod.qatar,
+    CalculationMethod.turkey,
+    CalculationMethod.singapore,
+  ];
+
+  static const List<HighLatitudeRule> highLatitude = [
+    HighLatitudeRule.middle_of_the_night,
+    HighLatitudeRule.seventh_of_the_night,
+    HighLatitudeRule.twilight_angle,
+  ];
+
+  static const List<Madhab> calculationMadhab = [
+    Madhab.shafi,
+    Madhab.hanafi,
+  ];
+
+  static const List<String> prayerCalculationNames = [
+    'Umm al-Qura',
+    'North America (ISNA)',
+    'Russia',
+    'Tatarstan',
+    'France',
+    'Dubai',
+    'Egyptian',
+    'Karachi',
+    'Kuwait',
+    'Moon sighting committee (MSC)',
+    'Muslim world league (MWL)',
+    'Qatar',
+    'Turkey',
+    'Singapore',
+  ];
+
+  static const List<String> highLatitudeNames = [
+    'Middle of the night',
+    'Seventh of the night',
+    'Twilight angle',
+  ];
+
+  static const List<String> asrMethodNames = [
+    'Shafi',
+    'Hanafi',
+  ];
+
+  static final List<Duration> calculationUtcOffset = [
+    const Duration(hours: -1),
+    const Duration(),
+    const Duration(hours: 1),
+  ];
+
+  static const List<String> gregorianMonths = <String>[
+    'января',
+    'февраля',
+    'марта',
+    'апреля',
+    'мая',
+    'июня',
+    'июля',
+    'августа',
+    'сентября',
+    'октября',
+    'ноября',
+    'декабря',
+  ];
+
+  static const List<String> hijriMonths = <String>[
+    'мухаррам',
+    'сафар',
+    'раби аль-авваль',
+    'раби ас-сани',
+    'джумада аль-уля',
+    'джумада ас-сани',
+    'раджаб',
+    'шаабан',
+    'рамадан',
+    'шавваль',
+    'зуль-каада',
+    'зуль-хиджа',
+  ];
+
+  static const List<String> adhkarList = [
+    'Слова поминания во время азана',
+    'Слова поминания после молитвы',
+    'Время утренних азкаров',
+    'Время вечерних азкаров',
+    'Время ночных азкаров',
+  ];
+
+  static const List<String> tasbeehCounts = [
+    '--/--',
+    '33',
+    '100',
+    '1000',
+  ];
+
+  static String searchByQuery(String query, String matches) =>
+      'По запросу «$query»\n$matches';
+
   static String searchError(String error) => 'Ошибка поиска: $error';
 }

@@ -1,6 +1,10 @@
 class TableNames {
   TableNames._();
 
+  static const String mushafDatabaseName = 'mushaf_database.db';
+  static const String fortressDatabaseName = 'fortress_database.db';
+  static const String databasesPath = 'assets/databases/';
+
   static const String tableOfSurahs = 'Table_of_surah';
   static const String tableOfJuz = 'Table_of_juz';
   static const String tableOfHizb = 'Table_of_hizb';

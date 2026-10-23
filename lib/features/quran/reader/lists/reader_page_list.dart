@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_constant_keys.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../states/mushaf_page_load_state.dart';
 import '../../states/mushaf_page_number_state.dart';
@@ -67,7 +67,7 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
     return PageView.builder(
       controller: widget.pageController,
       reverse: true,
-      itemCount: AppConstants.totalMushafPageCount,
+      itemCount: AppConstantKeys.totalMushafPageCount,
       onPageChanged: (index) {
 
         _jumpVerseKey = null;

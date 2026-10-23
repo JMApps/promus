@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart' as p;
-import 'package:promus/core/constants/app_constants.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'constants/table_names.dart';
@@ -14,7 +13,6 @@ class MushafDatabaseHelper {
   static final MushafDatabaseHelper instance = MushafDatabaseHelper._();
 
   static const int _dbVersion = 1;
-
 
   Database? _db;
   Future<Database>? _opening;
@@ -35,7 +33,7 @@ class MushafDatabaseHelper {
 
   Future<String> _resolveDbPath() async {
     final dbDir = await getDatabasesPath();
-    return p.join(dbDir, AppConstants.mushafDatabaseName);
+    return p.join(dbDir, TableNames.mushafDatabaseName);
   }
 
   Future<Database> _open() async {
@@ -72,7 +70,6 @@ class MushafDatabaseHelper {
     await _installFreshFromAssets(dbPath);
   }
 
-  /// Одна проба: файл открывается, версия актуальна, обе FTS-таблицы на месте.
   Future<bool> _isInstalledAndCurrent(String dbPath) async {
     Database? probe;
 
@@ -122,8 +119,6 @@ class MushafDatabaseHelper {
 
       await rw.execute('ANALYZE');
 
-      // Версия ставится ПОСЛЕДНЕЙ: если установка оборвётся,
-      // при следующем запуске БД будет пересоздана.
       await rw.setVersion(_dbVersion);
     } catch (e, s) {
       log('Fresh database install failed', error: e, stackTrace: s);
@@ -188,7 +183,6 @@ class MushafDatabaseHelper {
   }
 
   Future<void> _createFts(Transaction txn) async {
-    // ---------- Арабский ----------
     await txn.execute('DROP TABLE IF EXISTS ${TableNames.ftsArabicTable}');
 
     await txn.execute(
@@ -214,8 +208,9 @@ class MushafDatabaseHelper {
       "INSERT INTO ${TableNames.ftsArabicTable}(${TableNames.ftsArabicTable}) VALUES('optimize')",
     );
 
-    // ---------- Переводы ----------
-    await txn.execute('DROP TABLE IF EXISTS ${TableNames.ftsTranslationsTable}');
+    await txn.execute(
+      'DROP TABLE IF EXISTS ${TableNames.ftsTranslationsTable}',
+    );
 
     await txn.execute(
       '''
@@ -248,7 +243,7 @@ class MushafDatabaseHelper {
 
   Future<void> _copyAssetDbTo(String dbPath) async {
     final data = await rootBundle.load(
-      '${AppConstants.databasesPath}${AppConstants.mushafDatabaseName}',
+      '${TableNames.databasesPath}${TableNames.mushafDatabaseName}',
     );
 
     final bytes = data.buffer.asUint8List(
@@ -280,7 +275,6 @@ class MushafDatabaseHelper {
   }
 
   Future<Database> reinstallFromAssets() async {
-    // дождаться уже идущего открытия, чтобы не было двух параллельных установок
     final pending = _opening;
     if (pending != null) {
       try {

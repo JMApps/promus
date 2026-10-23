@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hive_ce/hive_ce.dart';
 import 'package:vibration/vibration.dart';
 
-import '../../../core/constants/app_constants.dart';
+import '../../../core/constants/app_constant_keys.dart';
 import '../../../core/enums/counter_mode.dart';
 
 class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
@@ -38,7 +38,7 @@ class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
   void changeMode(CounterMode newMode) {
     if (_mode == newMode) return;
     _mode = newMode;
-    _save(AppConstants.keyCounterMode, newMode.name);
+    _save(AppConstantKeys.keyCounterMode, newMode.name);
     notifyListeners();
   }
 
@@ -75,20 +75,20 @@ class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
 
   void toggleTacticFeedback() {
     _tacticFeedback = !_tacticFeedback;
-    _save(AppConstants.keyCountFeedbackState, _tacticFeedback);
+    _save(AppConstantKeys.keyCountFeedbackState, _tacticFeedback);
     notifyListeners();
   }
 
   void toggleCountLabel() {
     _countLabelVisible = !_countLabelVisible;
-    _save(AppConstants.keyCountLabelIsShow, _countLabelVisible);
+    _save(AppConstantKeys.keyCountLabelIsShow, _countLabelVisible);
     notifyListeners();
   }
 
   void _loadValues() {
-    _tacticFeedback = _read(AppConstants.keyCountFeedbackState, true);
-    _countLabelVisible = _read(AppConstants.keyCountLabelIsShow, true);
-    _mode = CounterMode.values.asNameMap()[_appCounterBox.get(AppConstants.keyCounterMode)] ??
+    _tacticFeedback = _read(AppConstantKeys.keyCountFeedbackState, true);
+    _countLabelVisible = _read(AppConstantKeys.keyCountLabelIsShow, true);
+    _mode = CounterMode.values.asNameMap()[_appCounterBox.get(AppConstantKeys.keyCounterMode)] ??
         CounterMode.free;
 
     for (final mode in CounterMode.values) {
