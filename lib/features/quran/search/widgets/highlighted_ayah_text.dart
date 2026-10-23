@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/font_families.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/text_matcher.dart';
 
-/// Текст аята с подсветкой найденных совпадений
 class HighlightedAyahText extends StatelessWidget {
   const HighlightedAyahText({
     super.key,
@@ -20,79 +20,62 @@ class HighlightedAyahText extends StatelessWidget {
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
 
-    final style = isArabic ? TextStyle(
+    final style = isArabic
+        ? const TextStyle(
       fontSize: 21.0,
-      fontFamily: isArabic ? FontFamilies.uthmanic : FontFamilies.notoNaskh,
+      fontFamily: FontFamilies.uthmanic,
       height: 2.5,
       letterSpacing: 0,
-    ) : AppTextStyles.medium;
+    )
+        : AppTextStyles.medium;
 
     final highlightStyle = style.copyWith(
-      fontWeight: .bold,
+      fontWeight: isArabic ? null : FontWeight.bold,
       backgroundColor: appColors.primaryContainer,
     );
 
     return Text.rich(
       _buildHighlightedSpan(
         fullText: text,
-        query: query,
         normalStyle: style,
         highlightStyle: highlightStyle,
-        caseSensitive: isArabic,
       ),
-      textDirection: isArabic ? .rtl : .ltr,
+      textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
     );
   }
 
   TextSpan _buildHighlightedSpan({
     required String fullText,
-    required String query,
     required TextStyle normalStyle,
     required TextStyle highlightStyle,
-    required bool caseSensitive,
   }) {
-    if (fullText.isEmpty || query.trim().isEmpty) {
+    final ranges = TextMatcher.findRanges(
+      text: fullText,
+      query: query,
+      isArabic: isArabic,
+    );
+
+    if (ranges.isEmpty) {
       return TextSpan(text: fullText, style: normalStyle);
     }
 
-    final source = caseSensitive ? fullText : fullText.toLowerCase();
-    final target = caseSensitive ? query.trim() : query.toLowerCase().trim();
-
     final children = <TextSpan>[];
-    int start = 0;
+    var cursor = 0;
 
-    while (true) {
-      final index = source.indexOf(target, start);
-
-      if (index == -1) {
-        if (start < fullText.length) {
-          children.add(
-            TextSpan(
-              text: fullText.substring(start),
-              style: normalStyle,
-            ),
-          );
-        }
-        break;
-      }
-
-      if (index > start) {
+    for (final r in ranges) {
+      if (r.start > cursor) {
         children.add(
-          TextSpan(
-            text: fullText.substring(start, index),
-            style: normalStyle,
-          ),
+          TextSpan(text: fullText.substring(cursor, r.start), style: normalStyle),
         );
       }
-
       children.add(
-        TextSpan(
-          text: fullText.substring(index, index + target.length),
-          style: highlightStyle,
-        ),
+        TextSpan(text: fullText.substring(r.start, r.end), style: highlightStyle),
       );
+      cursor = r.end;
+    }
 
-      start = index + target.length;
+    if (cursor < fullText.length) {
+      children.add(TextSpan(text: fullText.substring(cursor), style: normalStyle));
     }
 
     return TextSpan(children: children);

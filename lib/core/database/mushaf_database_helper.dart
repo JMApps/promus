@@ -6,13 +6,15 @@ import 'package:path/path.dart' as p;
 import 'package:promus/core/constants/app_constants.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'constants/table_names.dart';
+
 class MushafDatabaseHelper {
   MushafDatabaseHelper._();
 
   static final MushafDatabaseHelper instance = MushafDatabaseHelper._();
 
-
   static const int _dbVersion = 1;
+
 
   Database? _db;
   Future<Database>? _opening;
@@ -31,10 +33,14 @@ class MushafDatabaseHelper {
     return future;
   }
 
+  Future<String> _resolveDbPath() async {
+    final dbDir = await getDatabasesPath();
+    return p.join(dbDir, AppConstants.mushafDatabaseName);
+  }
+
   Future<Database> _open() async {
     try {
-      final dbDir = await getDatabasesPath();
-      final dbPath = p.join(dbDir, AppConstants.mushafDatabaseName);
+      final dbPath = await _resolveDbPath();
 
       await Directory(p.dirname(dbPath)).create(recursive: true);
 
@@ -58,24 +64,7 @@ class MushafDatabaseHelper {
   }
 
   Future<void> _ensureDatabaseInstalled(String dbPath) async {
-    final file = File(dbPath);
-
-    if (!await file.exists()) {
-      await _installFreshFromAssets(dbPath);
-      return;
-    }
-
-    final isValid = await _isExistingDatabaseValid(dbPath);
-
-    if (!isValid) {
-      await _deleteCopiedDatabase(dbPath);
-      await _installFreshFromAssets(dbPath);
-      return;
-    }
-
-    final currentVersion = await _readDatabaseVersion(dbPath);
-
-    if (currentVersion == _dbVersion) {
+    if (await File(dbPath).exists() && await _isInstalledAndCurrent(dbPath)) {
       return;
     }
 
@@ -83,7 +72,8 @@ class MushafDatabaseHelper {
     await _installFreshFromAssets(dbPath);
   }
 
-  Future<bool> _isExistingDatabaseValid(String dbPath) async {
+  /// Одна проба: файл открывается, версия актуальна, обе FTS-таблицы на месте.
+  Future<bool> _isInstalledAndCurrent(String dbPath) async {
     Database? probe;
 
     try {
@@ -93,35 +83,21 @@ class MushafDatabaseHelper {
         readOnly: true,
       );
 
-      await probe.rawQuery(
+      final version = await probe.getVersion();
+      if (version != _dbVersion) return false;
+
+      final rows = await probe.rawQuery(
         '''
-        SELECT name
+        SELECT COUNT(*) AS c
         FROM sqlite_master
-        WHERE type = ?
-        LIMIT 1
+        WHERE name IN (?, ?)
         ''',
-        ['table'],
+        [TableNames.ftsArabicTable, TableNames.ftsTranslationsTable],
       );
 
-      return true;
+      return (Sqflite.firstIntValue(rows) ?? 0) == 2;
     } catch (_) {
       return false;
-    } finally {
-      await probe?.close();
-    }
-  }
-
-  Future<int> _readDatabaseVersion(String dbPath) async {
-    Database? probe;
-
-    try {
-      probe = await openDatabase(
-        dbPath,
-        singleInstance: false,
-        readOnly: true,
-      );
-
-      return await probe.getVersion();
     } finally {
       await probe?.close();
     }
@@ -139,14 +115,21 @@ class MushafDatabaseHelper {
         readOnly: false,
       );
 
-      await rw.transaction(_createSearchFts);
+      await rw.transaction((txn) async {
+        await _createIndexes(txn);
+        await _createFts(txn);
+      });
 
       await rw.execute('ANALYZE');
+
+      // Версия ставится ПОСЛЕДНЕЙ: если установка оборвётся,
+      // при следующем запуске БД будет пересоздана.
       await rw.setVersion(_dbVersion);
     } catch (e, s) {
       log('Fresh database install failed', error: e, stackTrace: s);
 
       await rw?.close();
+      rw = null;
       await _deleteCopiedDatabase(dbPath);
 
       rethrow;
@@ -155,37 +138,118 @@ class MushafDatabaseHelper {
     }
   }
 
-  Future<void> _createSearchFts(Transaction txn) async {
-    await txn.execute('DROP TABLE IF EXISTS fts_ayahs');
-
+  Future<void> _createIndexes(Transaction txn) async {
     await txn.execute(
       '''
-    CREATE VIRTUAL TABLE fts_ayahs
-    USING fts4(
-      ayah_normalized,
-      ayah_ru_kuliev,
-      ayah_ru_adel,
-      tokenize=unicode61
-    )
-    ''',
+      CREATE INDEX IF NOT EXISTS idx_glyphs_surah_ayah
+      ON Table_of_glyph(surah_number, ayah_number)
+      ''',
     );
 
     await txn.execute(
       '''
-    INSERT INTO fts_ayahs(rowid, ayah_normalized, ayah_ru_kuliev, ayah_ru_adel)
-    SELECT
-      a.ayah_id,
-      a.ayah_normalized,
-      COALESCE(t.ayah_ru_kuliev, ''),
-      COALESCE(t.ayah_ru_adel, '')
-    FROM Table_of_ayah_by_ayah a
-    LEFT JOIN Table_of_translation t ON t.ayah_key = a.verse_key
-    ''',
+      CREATE INDEX IF NOT EXISTS idx_glyphs_location
+      ON Table_of_glyph(location)
+      ''',
+    );
+
+    await txn.execute(
+      '''
+      CREATE INDEX IF NOT EXISTS idx_layout_page_line_words
+      ON Table_of_layout(
+        page_number,
+        line_number,
+        first_word_id,
+        last_word_id
+      )
+      ''',
+    );
+
+    await txn.execute(
+      '''
+      CREATE INDEX IF NOT EXISTS idx_ayahs_page_position
+      ON Table_of_ayah_by_ayah(ayah_page_number, ayah_position)
+      ''',
+    );
+
+    await txn.execute(
+      '''
+      CREATE INDEX IF NOT EXISTS idx_ayahs_verse_key
+      ON Table_of_ayah_by_ayah(verse_key)
+      ''',
+    );
+
+    await txn.execute(
+      '''
+      CREATE INDEX IF NOT EXISTS idx_translations_ayah_key
+      ON Table_of_translation(ayah_key)
+      ''',
+    );
+  }
+
+  Future<void> _createFts(Transaction txn) async {
+    // ---------- Арабский ----------
+    await txn.execute('DROP TABLE IF EXISTS ${TableNames.ftsArabicTable}');
+
+    await txn.execute(
+      '''
+      CREATE VIRTUAL TABLE ${TableNames.ftsArabicTable}
+      USING fts4(
+        ayah_normalized,
+        tokenize=unicode61,
+        prefix="2,3"
+      )
+      ''',
+    );
+
+    await txn.execute(
+      '''
+      INSERT INTO ${TableNames.ftsArabicTable}(rowid, ayah_normalized)
+      SELECT ayah_id, COALESCE(ayah_normalized, '')
+      FROM Table_of_ayah_by_ayah
+      ''',
+    );
+
+    await txn.execute(
+      "INSERT INTO ${TableNames.ftsArabicTable}(${TableNames.ftsArabicTable}) VALUES('optimize')",
+    );
+
+    // ---------- Переводы ----------
+    await txn.execute('DROP TABLE IF EXISTS ${TableNames.ftsTranslationsTable}');
+
+    await txn.execute(
+      '''
+      CREATE VIRTUAL TABLE ${TableNames.ftsTranslationsTable}
+      USING fts4(
+        ayah_ru_kuliev,
+        ayah_ru_adel,
+        tokenize=unicode61,
+        prefix="2,3"
+      )
+      ''',
+    );
+
+    await txn.execute(
+      '''
+      INSERT INTO ${TableNames.ftsTranslationsTable}(rowid, ayah_ru_kuliev, ayah_ru_adel)
+      SELECT
+        a.ayah_id,
+        COALESCE(t.ayah_ru_kuliev, ''),
+        COALESCE(t.ayah_ru_adel, '')
+      FROM Table_of_ayah_by_ayah a
+      JOIN Table_of_translation t ON t.ayah_key = a.verse_key
+      ''',
+    );
+
+    await txn.execute(
+      "INSERT INTO ${TableNames.ftsTranslationsTable}(${TableNames.ftsTranslationsTable}) VALUES('optimize')",
     );
   }
 
   Future<void> _copyAssetDbTo(String dbPath) async {
-    final data = await rootBundle.load('${AppConstants.databasesPath}${AppConstants.mushafDatabaseName}');
+    final data = await rootBundle.load(
+      '${AppConstants.databasesPath}${AppConstants.mushafDatabaseName}',
+    );
 
     final bytes = data.buffer.asUint8List(
       data.offsetInBytes,
@@ -207,8 +271,6 @@ class MushafDatabaseHelper {
   }
 
   Future<void> close() async {
-    _opening = null;
-
     final database = _db;
     _db = null;
 
@@ -218,8 +280,15 @@ class MushafDatabaseHelper {
   }
 
   Future<Database> reinstallFromAssets() async {
-    final dbDir = await getDatabasesPath();
-    final dbPath = p.join(dbDir, AppConstants.mushafDatabaseName);
+    // дождаться уже идущего открытия, чтобы не было двух параллельных установок
+    final pending = _opening;
+    if (pending != null) {
+      try {
+        await pending;
+      } catch (_) {}
+    }
+
+    final dbPath = await _resolveDbPath();
 
     await _deleteCopiedDatabase(dbPath);
     await _installFreshFromAssets(dbPath);

@@ -9,6 +9,9 @@ class TableNames {
   static const String tableOfLayout = 'Table_of_layout';
   static const String tableOfGlyph = 'Table_of_glyph';
 
+  static const String ftsArabicTable = 'fts_ayahs_arabic';
+  static const String ftsTranslationsTable = 'fts_translations';
+
   static const String tableOfFortressChapters = 'Table_of_chapters';
   static const String tableOfSupplications = 'Table_of_supplications';
   static const String tableOfFortressFootnotes = 'Table_of_footnotes';

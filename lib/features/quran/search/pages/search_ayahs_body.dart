@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/utils/text_matcher.dart';
 import '../../ayahs/states/ayah_by_ayah_state.dart';
 import '../../domain/entities/ayah_by_ayah_entity.dart';
 import '../lists/ayahs_search_chapter_list.dart';
@@ -23,7 +24,7 @@ class SearchAyahsBody extends StatelessWidget {
 
     if (trimmedQuery.isEmpty) {
       return const SearchEmptyState(
-        message: AppStrings.searchAyahs,
+        message: AppStrings.startSearch,
       );
     }
 
@@ -77,27 +78,24 @@ class SearchAyahsBody extends StatelessWidget {
     );
   }
 
-  int _countMatches({required List<AyahByAyahEntity> results, required String query}) {
+  int _countMatches({
+    required List<AyahByAyahEntity> results,
+    required String query,
+  }) {
     if (query.isEmpty) return 0;
 
-    final isArabic = _containsArabic(query);
+    final isArabic = TextMatcher.containsArabic(query);
 
-    int total = 0;
-    final regex = RegExp(
-      RegExp.escape(query),
-      caseSensitive: isArabic,
-      unicode: true,
-    );
-
+    var total = 0;
     for (final ayah in results) {
       final text = isArabic ? ayah.ayahArabic : ayah.ayahTranslation;
-      total += regex.allMatches(text).length;
+      total += TextMatcher.findRanges(
+        text: text,
+        query: query,
+        isArabic: isArabic,
+      ).length;
     }
 
     return total;
-  }
-
-  bool _containsArabic(String text) {
-    return RegExp(r'[\u0600-\u06FF]').hasMatch(text);
   }
 }

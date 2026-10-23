@@ -14,6 +14,7 @@ class AppStrings {
 
   static const String searchByChapters = 'Поиск по главам';
   static const String searchBySurahs = 'Поиск по сурам';
+  static const String startSearch = 'Начните поиск';
   static const String searchAyahs = 'Поиск аятов';
   static const String strShort = 'Стр.';
   static const String medina = 'Медина';
