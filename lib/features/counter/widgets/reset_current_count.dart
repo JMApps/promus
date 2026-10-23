@@ -16,7 +16,6 @@ class ResetCurrentCount extends StatelessWidget {
     final mode = state.mode;
     final previous = state.resetCurrent();
     if (previous == null) return;
-
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
@@ -24,7 +23,9 @@ class ResetCurrentCount extends StatelessWidget {
           behavior: .floating,
           content: Text(
             AppStrings.countReset,
-            style: AppTextStyles.medium.copyWith(color: appColors.onPrimary),
+            style: AppTextStyles.medium.copyWith(
+              color: appColors.onPrimary,
+            ),
           ),
           duration: const Duration(seconds: 5),
           persist: false,

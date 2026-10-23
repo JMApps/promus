@@ -14,15 +14,14 @@ class CounterModeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).colorScheme.primary;
-
     return Selector<MainCounterState, CounterMode>(
       selector: (_, state) => state.mode,
       builder: (context, currentMode, _) {
         return DropdownButton<CounterMode>(
-          padding: AppPaddings.hrSmallVrMedium,
+          padding: AppPaddings.hrMedium,
           borderRadius: AppRadius.medium,
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
-          alignment: Alignment.center,
+          alignment: .center,
           underline: const SizedBox(),
           value: currentMode,
           items: [

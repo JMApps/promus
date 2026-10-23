@@ -23,7 +23,7 @@ class MainCounterButton extends StatelessWidget {
               onTapDown: (_) => onCount(),
               radius: side / 1.95,
               child: ShaderMask(
-                blendMode: BlendMode.srcIn,
+                blendMode: .srcIn,
                 shaderCallback: (bounds) => LinearGradient(
                   begin: .topLeft,
                   end: .bottomRight,
@@ -36,7 +36,7 @@ class MainCounterButton extends StatelessWidget {
                 ).createShader(bounds),
                 child: Icon(
                   Icons.fingerprint_rounded,
-                  size: side * 0.95,
+                  size: side * 0.99,
                   color: appColors.primary,
                 ),
               ),

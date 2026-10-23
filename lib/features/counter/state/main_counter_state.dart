@@ -88,8 +88,7 @@ class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
   void _loadValues() {
     _tacticFeedback = _read(AppConstantKeys.keyCountFeedbackState, true);
     _countLabelVisible = _read(AppConstantKeys.keyCountLabelIsShow, true);
-    _mode = CounterMode.values.asNameMap()[_appCounterBox.get(AppConstantKeys.keyCounterMode)] ??
-        CounterMode.free;
+    _mode = .values.asNameMap()[_appCounterBox.get(AppConstantKeys.keyCounterMode)] ?? .free;
 
     for (final mode in CounterMode.values) {
       _values[mode] = _read(mode.storageKey, mode.initialValue);
