@@ -7,14 +7,17 @@ class ReadItem extends StatelessWidget {
   const ReadItem({
     super.key,
     required this.rows,
+    this.scrollToVerseKey,
   });
 
   final List<MushafPageEntity> rows;
+  final String? scrollToVerseKey;
 
   @override
   Widget build(BuildContext context) {
     return AyahByAyahList(
       rows: rows,
+      scrollToVerseKey: scrollToVerseKey,
     );
   }
 }

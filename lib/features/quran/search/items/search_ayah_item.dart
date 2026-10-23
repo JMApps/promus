@@ -28,11 +28,16 @@ class SearchAyahItem extends StatelessWidget {
     final appColors = Theme.of(context).colorScheme;
     return InkWell(
       onTap: () {
-        context.read<MushafPageNumberState>().setPageNumber(ayah.ayahPageNumber);
+        context.read<MushafPageNumberState>().setPageNumber(
+          ayah.ayahPageNumber,
+        );
         Navigator.pushNamed(
           context,
           NamesRouter.pageReader,
-          arguments: ReaderArgs(pageNumber: ayah.ayahPageNumber),
+          arguments: ReaderArgs(
+            pageNumber: ayah.ayahPageNumber,
+            verseKey: ayah.verseKey,
+          ),
         );
       },
       onLongPress: () {

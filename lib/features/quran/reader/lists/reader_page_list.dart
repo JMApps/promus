@@ -14,10 +14,12 @@ class ReaderPageList extends StatefulWidget {
     super.key,
     required this.pageNumber,
     required this.pageController,
+    this.initialVerseKey,
   });
 
   final int pageNumber;
   final PageController pageController;
+  final String? initialVerseKey;
 
   @override
   State<ReaderPageList> createState() => _ReaderPageListState();
@@ -30,9 +32,12 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
 
   late int _currentPage;
 
+  String? _jumpVerseKey;
+
   @override
   void initState() {
     super.initState();
+    _jumpVerseKey = widget.initialVerseKey;
 
     _pageNumberState = context.read<MushafPageNumberState>();
     _mushafPageState = context.read<MushafPageState>();
@@ -64,6 +69,9 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
       reverse: true,
       itemCount: AppConstants.totalMushafPageCount,
       onPageChanged: (index) {
+
+        _jumpVerseKey = null;
+
         final page = index + 1;
         if (_currentPage == page) return;
         _currentPage = page;
@@ -91,6 +99,7 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
 
             return ReadItem(
               rows: mushafPageState.data!,
+              scrollToVerseKey: page == widget.pageNumber ? _jumpVerseKey : null,
             );
           },
         );

@@ -22,8 +22,14 @@ class AppRoutes {
 
   static Map<String, Widget Function(BuildContext, dynamic)> routes = {
     NamesRouter.pageReader: (context, args) {
-      final ReaderArgs readerArgs = ReaderArgs(pageNumber: args.pageNumber);
-      return MushafReaderPage(initialPage: readerArgs.pageNumber);
+      final ReaderArgs readerArgs = ReaderArgs(
+        pageNumber: args.pageNumber,
+        verseKey: args.verseKey,
+      );
+      return MushafReaderPage(
+        initialPage: readerArgs.pageNumber,
+        initialVerseKey: readerArgs.verseKey,
+      );
     },
     NamesRouter.fortressSupplicationsPage: (context, args) {
       final FortressChapterArgs fortressChapterArgs = FortressChapterArgs(args);
