@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:promus/features/quran/surah/states/surah_bookmark_state.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/app_constants.dart';
@@ -26,6 +25,7 @@ import 'features/quran/reader/states/reader_app_bar_state.dart';
 import 'features/quran/states/mushaf_page_meta_state.dart';
 import 'features/quran/states/mushaf_page_number_state.dart';
 import 'features/quran/states/mushaf_page_state.dart';
+import 'features/quran/surah/states/surah_bookmark_state.dart';
 import 'features/quran/surah/states/surah_name_state.dart';
 
 void main() async {
@@ -33,10 +33,16 @@ void main() async {
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
 
-  await Hive.openBox(AppConstants.keySettingsPrayerTimeBox);
-  await Hive.openBox(AppConstants.mainAppSettingsBox);
-  await Hive.openBox(AppConstants.keyMainCounterBox);
-  await Hive.openBox(AppConstants.keyBookmarksSurahsBox);
+  await Future.wait([
+    Hive.openBox(AppConstants.keySettingsPrayerTimeBox),
+    Hive.openBox(AppConstants.mainAppSettingsBox),
+    Hive.openBox(AppConstants.keyMainCounterBox),
+    Hive.openBox(AppConstants.keyBookmarksSurahsBox),
+  ]);
+
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    MushafDatabaseHelper.instance.db.then((_) {}, onError: (_) {});
+  });
 
   final appCounterBox = Hive.box(AppConstants.keyMainCounterBox);
   final bookmarksSurahsBox = Hive.box(AppConstants.keyBookmarksSurahsBox);
@@ -60,12 +66,8 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
-          create: (_) => AyahByAyahState(AyahByAyahRepositoryImpl(mushafDatabaseHelper)),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => MushafPageState(
-            MushafPageRepositoryImpl(mushafDatabaseHelper)
-          ),
+          create: (_) =>
+              MushafPageState(MushafPageRepositoryImpl(mushafDatabaseHelper)),
         ),
         ChangeNotifierProvider(
           create: (_) => SurahBookmarkState(bookmarksSurahsBox),
@@ -87,13 +89,11 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
-          lazy: false,
           create: (_) => FortressChapterState(
             FortressChapterRepositoryImpl(fortressDatabaseHelper),
           ),
         ),
         ChangeNotifierProvider(
-          lazy: true,
           create: (_) => FortressSupplicationState(
             FortressSupplicationRepositoryImpl(fortressDatabaseHelper),
           ),
