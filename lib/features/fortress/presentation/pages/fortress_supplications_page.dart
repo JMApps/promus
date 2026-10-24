@@ -14,10 +14,10 @@ import '../widgets/main_html_widget.dart';
 class FortressSupplicationsPage extends StatefulWidget {
   const FortressSupplicationsPage({
     super.key,
-    required this.chapterModel,
+    required this.fortressChapterModel,
   });
 
-  final FortressChapterEntity chapterModel;
+  final FortressChapterEntity fortressChapterModel;
 
   @override
   State<FortressSupplicationsPage> createState() => _FortressSupplicationsPageState();
@@ -28,7 +28,7 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
   void initState() {
     super.initState();
     final fortressSupplicationsState = context.read<FortressSupplicationState>();
-    final chapterId = widget.chapterModel.chapterId;
+    final chapterId = widget.fortressChapterModel.chapterId;
 
     if (fortressSupplicationsState.cachedSupplicationsByChapter(chapterId) != null) return;
 
@@ -42,11 +42,14 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
     final mqPadding = MediaQuery.of(context).padding;
-    final chapterId = widget.chapterModel.chapterId;
+    final chapterId = widget.fortressChapterModel.chapterId;
 
     final isLoading = context.select<FortressSupplicationState, bool>((s) => s.isLoading);
     final error = context.select<FortressSupplicationState, Object?>((s) => s.error);
-    final supplications = context.select<FortressSupplicationState, List<FortressSupplicationEntity>?>((s) => s.cachedSupplicationsByChapter(chapterId));
+    final supplications = context
+        .select<FortressSupplicationState, List<FortressSupplicationEntity>?>(
+          (s) => s.cachedSupplicationsByChapter(chapterId),
+        );
 
     return Scaffold(
       body: RawScrollbar(
@@ -61,7 +64,7 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
             SliverAppBar(
               floating: true,
               pinned: false,
-              title: Text(widget.chapterModel.chapterNumber),
+              title: Text(widget.fortressChapterModel.chapterNumber),
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -78,31 +81,31 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
                       ],
                     ),
                   ),
-                  child: Card(
-                    color: Colors.transparent,
-                    elevation: 0,
-                    child: Padding(
-                      padding: AppPaddings.small,
-                      child: MainHtmlWidget(
-                        htmlContent: widget.chapterModel.chapterTitle,
-                        textAlign: .center,
-                      ),
+                  child: Padding(
+                    padding: AppPaddings.small,
+                    child: MainHtmlWidget(
+                      htmlContent: widget.fortressChapterModel.chapterTitle,
+                      textAlign: .center,
                     ),
                   ),
                 ),
               ),
             ),
             if (supplications != null)
-              FortressSupplicationList(chapterSupplications: supplications)
+              FortressSupplicationList(fortressChapterSupplications: supplications)
             else if (error != null && !isLoading)
               const SliverFillRemaining(
                 hasScrollBody: false,
-                child: Center(child: Text(AppStrings.errorLoadData)),
+                child: Center(
+                  child: Text(AppStrings.errorLoadData),
+                ),
               )
             else
               const SliverFillRemaining(
                 hasScrollBody: false,
-                child: Center(child: CircularProgressIndicator.adaptive()),
+                child: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
               ),
           ],
         ),

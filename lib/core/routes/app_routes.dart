@@ -34,7 +34,7 @@ class AppRoutes {
     NamesRouter.fortressSupplicationsPage: (context, args) {
       final FortressChapterArgs fortressChapterArgs = FortressChapterArgs(args);
       return FortressSupplicationsPage(
-        chapterModel: fortressChapterArgs.chapterEntity,
+        fortressChapterModel: fortressChapterArgs.chapterEntity,
       );
     },
   };

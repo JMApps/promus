@@ -11,11 +11,11 @@ import '../widgets/main_html_widget.dart';
 class FortressChapterItem extends StatelessWidget {
   const FortressChapterItem({
     super.key,
-    required this.chapterModel,
+    required this.fortressChapterModel,
     required this.index,
   });
 
-  final FortressChapterEntity chapterModel;
+  final FortressChapterEntity fortressChapterModel;
   final int index;
 
   @override
@@ -32,7 +32,7 @@ class FortressChapterItem extends StatelessWidget {
           Navigator.pushNamed(
             context,
             NamesRouter.fortressSupplicationsPage,
-            arguments: chapterModel,
+            arguments: fortressChapterModel,
           );
         },
         horizontalTitleGap: 8,
@@ -41,7 +41,7 @@ class FortressChapterItem extends StatelessWidget {
         title: Padding(
           padding: AppPaddings.leftXSmall,
           child: MainHtmlWidget(
-            htmlContent: chapterModel.chapterTitle,
+            htmlContent: fortressChapterModel.chapterTitle,
             textAlign: .start,
           ),
         ),
@@ -49,7 +49,7 @@ class FortressChapterItem extends StatelessWidget {
           radius: 17.5,
           backgroundColor: appColors.inversePrimary,
           child: Text(
-            chapterModel.chapterId.toString(),
+            fortressChapterModel.chapterId.toString(),
             style: AppTextStyles.small.copyWith(
               fontSize: 14.0,
             ),

@@ -6,20 +6,20 @@ import '../items/fortress_supplication_item.dart';
 class FortressSupplicationList extends StatelessWidget {
   const FortressSupplicationList({
     super.key,
-    required this.chapterSupplications,
+    required this.fortressChapterSupplications,
   });
 
-  final List<FortressSupplicationEntity> chapterSupplications;
+  final List<FortressSupplicationEntity> fortressChapterSupplications;
 
   @override
   Widget build(BuildContext context) {
     return SliverList.builder(
-      itemCount: chapterSupplications.length,
+      itemCount: fortressChapterSupplications.length,
       itemBuilder: (context, index) {
-        final supplication = chapterSupplications[index];
+        final supplication = fortressChapterSupplications[index];
         return FortressSupplicationItem(
           supplicationModel: supplication,
-          supplicationsLength: chapterSupplications.length,
+          supplicationsLength: fortressChapterSupplications.length,
           index: index,
         );
       },

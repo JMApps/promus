@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_shapes.dart';
+import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
 import '../states/fortress_footnote_state.dart';
@@ -26,68 +27,61 @@ class SupplicationOptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    return Card(
-      margin: AppPaddings.verticalSmall,
-      elevation: 0,
-      color: appColors.primaryContainer.withAlpha(175),
-      child: Row(
-        mainAxisAlignment: .spaceAround,
-        children: [
-          IconButton(
-            onPressed: () async {
-              final content = await _fullContent(context);
-              await Clipboard.setData(ClipboardData(text: content));
+    return Row(
+      mainAxisAlignment: .end,
+      children: [
+        IconButton(
+          onPressed: () async {
+            final content = await _fullContent(context);
+            await Clipboard.setData(ClipboardData(text: content));
 
-              if (!context.mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: appColors.inversePrimary,
-                  content: Text(
-                    AppStrings.copied,
-                    style: AppTextStyles.medium.copyWith(
-                      color: appColors.primary,
-                    ),
+            if (!context.mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: appColors.inversePrimary,
+                content: Text(
+                  AppStrings.copied,
+                  style: AppTextStyles.medium.copyWith(
+                    color: appColors.primary,
                   ),
-                  duration: const Duration(seconds: 1),
                 ),
-              );
-            },
-            iconSize: 18.0,
-            visualDensity: .compact,
-            padding: .zero,
-            icon: const Icon(Icons.copy),
-          ),
-          IconButton(
-            onPressed: () async {
-              final box = context.findRenderObject() as RenderBox?;
-              final content = await _fullContent(context);
-
-              await SharePlus.instance.share(
-                ShareParams(
-                  text: content,
-                  sharePositionOrigin: box != null ? box.localToGlobal(Offset.zero) & box.size : null,
-                ),
-              );
-            },
-            iconSize: 18.0,
-            visualDensity: .compact,
-            padding: .zero,
-            icon: const Icon(Icons.ios_share),
-          ),
-          Card(
-            color: appColors.inversePrimary,
-            shape: AppShapes.small,
-            elevation: 0,
-            child: Padding(
-              padding: AppPaddings.hrMediumVrXSmall,
-              child: Text(
-                '$index/$supplicationsLength',
-                style: AppTextStyles.small,
+                duration: const Duration(seconds: 1),
               ),
+            );
+          },
+          padding: .zero,
+          icon: const Icon(Icons.copy),
+        ),
+        IconButton(
+          onPressed: () async {
+            final box = context.findRenderObject() as RenderBox?;
+            final content = await _fullContent(context);
+
+            await SharePlus.instance.share(
+              ShareParams(
+                text: content,
+                sharePositionOrigin: box != null ? box.localToGlobal(Offset.zero) & box.size : null,
+              ),
+            );
+          },
+          padding: .zero,
+          icon: const Icon(Icons.ios_share),
+        ),
+        const SizedBox(width: AppSpacing.medium),
+        Card(
+          color: appColors.inversePrimary,
+          shape: AppShapes.small,
+          elevation: 0,
+          child: Padding(
+            padding: AppPaddings.hrMediumVrXSmall,
+            child: Text(
+              '$index/$supplicationsLength',
+              style: AppTextStyles.small,
             ),
           ),
-        ],
-      ),
+        ),
+        const SizedBox(width: AppSpacing.medium),
+      ],
     );
   }
 

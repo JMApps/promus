@@ -17,11 +17,13 @@ class FortressSearchChapterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = query.isEmpty ? chapters : chapters.where((c) {
-      final lowerQuery = query.toLowerCase();
-      return c.chapterTitle.toLowerCase().contains(lowerQuery) ||
-          c.chapterId.toString().contains(lowerQuery);
-    }).toList();
+    final filtered = query.isEmpty
+        ? chapters
+        : chapters.where((c) {
+            final lowerQuery = query.toLowerCase();
+            return c.chapterTitle.toLowerCase().contains(lowerQuery) ||
+                c.chapterId.toString().contains(lowerQuery);
+          }).toList();
 
     if (filtered.isEmpty) {
       return const Column(
@@ -48,7 +50,7 @@ class FortressSearchChapterList extends StatelessWidget {
         itemBuilder: (context, index) {
           final chapter = filtered[index];
           return FortressChapterItem(
-            chapterModel: chapter,
+            fortressChapterModel: chapter,
             index: index,
           );
         },

@@ -6,19 +6,19 @@ import '../items/fortress_chapter_item.dart';
 class FortressChapterList extends StatelessWidget {
   const FortressChapterList({
     super.key,
-    required this.chapters,
+    required this.fortressChapters,
   });
 
-  final List<FortressChapterEntity> chapters;
+  final List<FortressChapterEntity> fortressChapters;
 
   @override
   Widget build(BuildContext context) {
     return SliverList.builder(
-      itemCount: chapters.length,
+      itemCount: fortressChapters.length,
       itemBuilder: (context, index) {
-        final chapter = chapters[index];
+        final chapter = fortressChapters[index];
         return FortressChapterItem(
-          chapterModel: chapter,
+          fortressChapterModel: chapter,
           index: index,
         );
       },

@@ -47,9 +47,9 @@ class _FootnoteContainerState extends State<FootnoteContainer> {
   Widget build(BuildContext context) {
     return Selector<FortressFootnoteState, (String?, bool, bool)>(
       selector: (_, state) => (
-      state.cachedFootnoteById(widget.footnoteId)?.footnote,
-      state.isLoading,
-      state.error != null,
+        state.cachedFootnoteById(widget.footnoteId)?.footnote,
+        state.isLoading,
+        state.error != null,
       ),
       builder: (context, data, _) {
         final (text, isLoading, hasError) = data;
@@ -63,16 +63,20 @@ class _FootnoteContainerState extends State<FootnoteContainer> {
 
         return Container(
           padding: AppPaddings.withoutTopMedium,
-          child: html == null ? (isLoading ? const Center(child: CircularProgressIndicator.adaptive()) : const SizedBox.shrink()) : Html(
-            data: html,
-            style: {
-              '#': Style(
-                padding: HtmlPaddings.only(left: 4, right: 4, bottom: 4),
-                margin: .zero,
-                fontSize: FontSize(16.0),
-              ),
-            },
-          ),
+          child: html == null
+              ? (isLoading
+                    ? const Center(child: CircularProgressIndicator.adaptive())
+                    : const SizedBox.shrink())
+              : Html(
+                  data: html,
+                  style: {
+                    '#': Style(
+                      padding: HtmlPaddings.only(left: 4, right: 4, bottom: 4),
+                      margin: .zero,
+                      fontSize: FontSize(16.0),
+                    ),
+                  },
+                ),
         );
       },
     );

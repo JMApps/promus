@@ -36,7 +36,7 @@ class MainHtmlWidget extends StatelessWidget {
         'small': Style(
           fontSize: FontSize(10.0),
           color: appColors.secondary,
-        )
+        ),
       },
       onLinkTap: (String? footnoteId, _, _) {
         showModalBottomSheet(

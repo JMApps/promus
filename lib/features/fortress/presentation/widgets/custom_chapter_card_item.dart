@@ -38,36 +38,31 @@ class CustomChapterCardItem extends StatelessWidget {
           ],
         ),
       ),
-      child: Card(
-        color: Colors.transparent,
-        elevation: 0,
-        shape: AppShapes.medium,
-        child: InkWell(
-          borderRadius: AppRadius.medium,
-          onTap: () async {
-            final chapter = context.read<FortressChapterState>().fortressChapters[chapterNumber - 1];
-            await Navigator.pushNamed(
-              context,
-              NamesRouter.fortressSupplicationsPage,
-              arguments: chapter,
-            );
-          },
-          child: Padding(
-            padding: AppPaddings.small,
-            child: Row(
-              mainAxisAlignment: .center,
-              children: [
-                Icon(icon, color: cardColor),
-                const SizedBox(width: AppSpacing.small),
-                Text(
-                  title,
-                  style: AppTextStyles.medium,
-                  textAlign: .center,
-                  overflow: .ellipsis,
-                  maxLines: 1,
-                ),
-              ],
-            ),
+      child: InkWell(
+        borderRadius: AppRadius.medium,
+        onTap: () async {
+          final chapter = context.read<FortressChapterState>().fortressChapters[chapterNumber - 1];
+          await Navigator.pushNamed(
+            context,
+            NamesRouter.fortressSupplicationsPage,
+            arguments: chapter,
+          );
+        },
+        child: Padding(
+          padding: AppPaddings.small,
+          child: Row(
+            mainAxisAlignment: .center,
+            children: [
+              Icon(icon, color: cardColor),
+              const SizedBox(width: AppSpacing.small),
+              Text(
+                title,
+                style: AppTextStyles.medium,
+                textAlign: .center,
+                overflow: .ellipsis,
+                maxLines: 1,
+              ),
+            ],
           ),
         ),
       ),

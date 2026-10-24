@@ -31,7 +31,7 @@ class FortressSupplicationItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: .stretch,
           children: [
-            if (supplicationModel.arabicText != null) ...[
+            if (supplicationModel.hasArabic) ...[
               Text(
                 supplicationModel.arabicText!,
                 style: const TextStyle(
@@ -43,7 +43,7 @@ class FortressSupplicationItem extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.small),
             ],
-            if (supplicationModel.transcriptionText != null) ...[
+            if (supplicationModel.hasTranscription) ...[
               Text(
                 supplicationModel.transcriptionText!,
                 style: TextStyle(

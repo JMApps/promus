@@ -45,7 +45,7 @@ class FortressPage extends StatelessWidget {
         ),
         _ => RawScrollbar(
           controller: scrollController,
-          padding: EdgeInsets.only(
+          padding: .only(
             top: mqPadding.top + kToolbarHeight,
             bottom: mqPadding.bottom,
           ),
@@ -91,7 +91,7 @@ class FortressPage extends StatelessWidget {
               ),
               SliverPadding(
                 padding: const .only(bottom: kBottomNavigationBarHeight + AppSpacing.medium * 1.5),
-                sliver: FortressChapterList(chapters: chapters),
+                sliver: FortressChapterList(fortressChapters: chapters),
               ),
             ],
           ),

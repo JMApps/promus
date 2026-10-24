@@ -18,18 +18,21 @@ class FortressSupplicationState extends ChangeNotifier {
 
   Object? get error => _error;
 
-  FortressSupplicationEntity? cachedSupplicationById(int supplicationId) => _supplicationByIdMap[supplicationId];
+  FortressSupplicationEntity? cachedSupplicationById(int supplicationId) =>
+      _supplicationByIdMap[supplicationId];
 
-  List<FortressSupplicationEntity>? cachedSupplicationsByChapter(int chapterId) => _supplicationsByChapterMap[chapterId];
+  List<FortressSupplicationEntity>? cachedSupplicationsByChapter(int chapterId) =>
+      _supplicationsByChapterMap[chapterId];
 
   Future<FortressSupplicationEntity?> loadSupplicationById(int supplicationId) async {
     return _supplicationByIdMap[supplicationId] ??
         await _fetch(() async {
-          return _supplicationByIdMap[supplicationId] = await _supplicationRepository.fetchSupplicationById(supplicationId: supplicationId);
+          return _supplicationByIdMap[supplicationId] = await _supplicationRepository
+              .fetchSupplicationById(supplicationId: supplicationId);
         });
   }
 
-  Future<List<FortressSupplicationEntity>?> loadSupplicationsByChapter(int chapterId,) async {
+  Future<List<FortressSupplicationEntity>?> loadSupplicationsByChapter(int chapterId) async {
     return _supplicationsByChapterMap[chapterId] ??
         await _fetch(() async {
           final supplications = List<FortressSupplicationEntity>.unmodifiable(
