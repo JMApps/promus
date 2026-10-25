@@ -23,10 +23,8 @@ class MainDateCardItem extends StatelessWidget {
       decoration: ShapeDecoration(
         shape: AppShapes.medium,
         gradient: LinearGradient(
-          begin: .topLeft,
-          end: .bottomRight,
           colors: [
-            appColors.inversePrimary,
+            appColors.primaryContainer,
             appColors.tertiaryContainer,
             appColors.secondaryContainer,
           ],

@@ -18,8 +18,8 @@ class MainNavigationIcon extends StatelessWidget {
         end: .bottomRight,
         colors: [
           appColors.primary,
-          appColors.secondary,
           appColors.tertiary,
+          appColors.secondary,
         ],
       ).createShader(bounds),
       child: Image.asset(

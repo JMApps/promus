@@ -30,18 +30,19 @@ class CustomChapterCardItem extends StatelessWidget {
       decoration: ShapeDecoration(
         shape: AppShapes.medium,
         gradient: LinearGradient(
-          begin: .centerLeft,
           colors: [
-            appColors.inversePrimary.withAlpha(125),
-            appColors.tertiaryContainer.withAlpha(125),
-            appColors.secondaryContainer.withAlpha(125),
+            appColors.primaryContainer,
+            appColors.tertiaryContainer,
+            appColors.secondaryContainer,
           ],
         ),
       ),
       child: InkWell(
         borderRadius: AppRadius.medium,
         onTap: () async {
-          final chapter = context.read<FortressChapterState>().fortressChapters[chapterNumber - 1];
+          final chapter = context
+              .read<FortressChapterState>()
+              .fortressChapters[chapterNumber - 1];
           await Navigator.pushNamed(
             context,
             NamesRouter.fortressSupplicationsPage,

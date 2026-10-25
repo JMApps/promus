@@ -29,9 +29,9 @@ class ElapsedPrayerTimeSleek extends StatelessWidget {
           shadowWidth: 0,
         ),
         customColors: CustomSliderColors(
-          trackColor: appColors.secondaryContainer,
-          progressBarColor: appColors.secondary,
-          dotColor: appColors.secondaryContainer,
+          trackColor: appColors.primaryContainer,
+          progressBarColor: appColors.primary,
+          dotColor: appColors.primaryContainer,
         ),
       ),
       min: 0,

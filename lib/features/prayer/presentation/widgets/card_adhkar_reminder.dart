@@ -22,12 +22,10 @@ class CardAdhkarReminder extends StatelessWidget {
       decoration: ShapeDecoration(
         shape: AppShapes.medium,
         gradient: LinearGradient(
-          begin: .topLeft,
-          end: .bottomRight,
           colors: [
-            appColors.secondaryContainer,
-            appColors.tertiaryContainer,
             appColors.primaryContainer,
+            appColors.tertiaryContainer,
+            appColors.secondaryContainer,
           ],
         ),
       ),

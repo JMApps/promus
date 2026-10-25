@@ -70,22 +70,22 @@ class MainPrayerPage extends StatelessWidget {
                   ),
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathParams,
-                    iconColor: appColors.tertiary,
+                    iconColor: appColors.secondary,
                     onPressed: () {},
                   ),
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathCalendar,
-                    iconColor: appColors.secondary,
+                    iconColor: appColors.primary,
                     onPressed: () {},
                   ),
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathQiblah,
-                    iconColor: appColors.secondary,
+                    iconColor: appColors.primary,
                     onPressed: () {},
                   ),
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathNotifications,
-                    iconColor: appColors.secondary,
+                    iconColor: appColors.primary,
                     onPressed: () {},
                   ),
                 ],

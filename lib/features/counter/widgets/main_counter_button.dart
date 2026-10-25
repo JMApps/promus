@@ -29,9 +29,8 @@ class MainCounterButton extends StatelessWidget {
                   end: .bottomRight,
                   colors: [
                     appColors.primary,
-                    appColors.secondary,
                     appColors.tertiary,
-                    appColors.primaryContainer,
+                    appColors.secondary,
                   ],
                 ).createShader(bounds),
                 child: Icon(

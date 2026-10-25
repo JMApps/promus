@@ -33,11 +33,10 @@ class FavoriteSurahNameItem extends StatelessWidget {
         decoration: ShapeDecoration(
           shape: AppShapes.medium,
           gradient: LinearGradient(
-            begin: .centerLeft,
             colors: [
-              appColors.inversePrimary.withAlpha(125),
-              appColors.tertiaryContainer.withAlpha(125),
-              appColors.secondaryContainer.withAlpha(125),
+              appColors.primaryContainer,
+              appColors.tertiaryContainer,
+              appColors.secondaryContainer,
             ],
           ),
         ),
