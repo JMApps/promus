@@ -49,7 +49,7 @@ class AyahByAyahState extends ChangeNotifier {
     final normalizedQuery = query.trim();
 
     if (normalizedQuery.isEmpty) {
-      return Future.value(const []);
+      return .value(const []);
     }
 
     return _ayahByAyahRepository.searchAyahs(

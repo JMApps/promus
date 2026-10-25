@@ -20,14 +20,12 @@ class HighlightedAyahText extends StatelessWidget {
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
 
-    final style = isArabic
-        ? const TextStyle(
+    final style = isArabic ? const TextStyle(
       fontSize: 21.0,
       fontFamily: FontFamilies.uthmanic,
       height: 2.5,
       letterSpacing: 0,
-    )
-        : AppTextStyles.medium;
+    ) : AppTextStyles.medium;
 
     final highlightStyle = style.copyWith(
       fontWeight: isArabic ? null : FontWeight.bold,
@@ -65,17 +63,25 @@ class HighlightedAyahText extends StatelessWidget {
     for (final r in ranges) {
       if (r.start > cursor) {
         children.add(
-          TextSpan(text: fullText.substring(cursor, r.start), style: normalStyle),
+          TextSpan(
+            text: fullText.substring(cursor, r.start),
+            style: normalStyle,
+          ),
         );
       }
       children.add(
-        TextSpan(text: fullText.substring(r.start, r.end), style: highlightStyle),
+        TextSpan(
+          text: fullText.substring(r.start, r.end),
+          style: highlightStyle,
+        ),
       );
       cursor = r.end;
     }
 
     if (cursor < fullText.length) {
-      children.add(TextSpan(text: fullText.substring(cursor), style: normalStyle));
+      children.add(
+        TextSpan(text: fullText.substring(cursor), style: normalStyle),
+      );
     }
 
     return TextSpan(children: children);

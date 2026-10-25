@@ -12,5 +12,8 @@ class LastOpenedSurahEntity extends Equatable {
   final int pageNumber;
 
   @override
-  List<Object?> get props => [surah, pageNumber];
+  List<Object?> get props => [
+    surah,
+    pageNumber,
+  ];
 }

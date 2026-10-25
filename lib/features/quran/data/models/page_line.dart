@@ -1,4 +1,4 @@
-import 'mushaf_page_entity.dart';
+import '../../domain/entities/mushaf_page_entity.dart';
 
 sealed class PageLine {
   const PageLine();

@@ -7,7 +7,6 @@ import '../domain/repositories/mushaf_page_repository.dart';
 import 'mushaf_page_load_state.dart';
 
 class MushafPageState extends ChangeNotifier {
-
   MushafPageState(this._pageRepository);
 
   final MushafPageRepository _pageRepository;
@@ -38,23 +37,34 @@ class MushafPageState extends ChangeNotifier {
   }
 
   Future<void> loadPage(int page) {
-    if (!_isValidPage(page)) {
-      return Future.value();
-    }
-
-    if (isPageLoaded(page)) {
+    if (!_isValidPage(page) || isPageLoaded(page)) {
       return Future.value();
     }
 
     final running = _runningLoads[page];
     if (running != null) {
+      _pages.putIfAbsent(page, () => const MushafPageLoadState.loading());
       return running;
     }
 
     final future = _loadPageInternal(page);
     _runningLoads[page] = future;
-
     return future;
+  }
+
+  void loadWindow(int page) {
+    if (!_isValidPage(page)) return;
+
+    final window = _buildWindow(page); // List, порядок важен
+    _activeWindow = window.toSet();
+
+    _pages.removeWhere((pageNumber, _) => !_activeWindow.contains(pageNumber));
+
+    notifyListeners();
+
+    for (final pageNumber in window) {
+      loadPage(pageNumber);
+    }
   }
 
   Future<void> _loadPageInternal(int page) async {
@@ -62,7 +72,6 @@ class MushafPageState extends ChangeNotifier {
     notifyListeners();
 
     try {
-
       final data = await _pageRepository.fetchMushafPageData(
         pageNumber: page,
         translationColumn: ColumnNames.ayahRuKuliev,
@@ -84,37 +93,15 @@ class MushafPageState extends ChangeNotifier {
     }
   }
 
-  void loadWindow(int page) {
-    if (!_isValidPage(page)) return;
-
-    final pages = _buildWindow(page);
-
-    _activeWindow = pages;
-
-    _pages.removeWhere((pageNumber, _) {
-      return !pages.contains(pageNumber);
-    });
-
-    _runningLoads.removeWhere((pageNumber, _) {
-      return !pages.contains(pageNumber);
-    });
-
-    notifyListeners();
-
-    for (final pageNumber in pages) {
-      loadPage(pageNumber);
-    }
-  }
-
-  Set<int> _buildWindow(int page) {
-    final previous = page - 1;
+  List<int> _buildWindow(int page) {
     final next = page + 1;
+    final previous = page - 1;
 
-    return <int>{
-      if (_isValidPage(previous)) previous,
-      if (_isValidPage(page)) page,
+    return [
+      page,
       if (_isValidPage(next)) next,
-    };
+      if (_isValidPage(previous)) previous,
+    ];
   }
 
   bool _isValidPage(int page) {
@@ -123,7 +110,6 @@ class MushafPageState extends ChangeNotifier {
 
   void clear() {
     _pages.clear();
-    _runningLoads.clear();
     _activeWindow = const {};
     notifyListeners();
   }

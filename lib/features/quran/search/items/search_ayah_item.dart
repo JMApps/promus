@@ -54,7 +54,7 @@ class SearchAyahItem extends StatelessWidget {
       child: Container(
         padding: AppPaddings.medium,
         decoration: BoxDecoration(
-          border: Border.symmetric(
+          border: .symmetric(
             horizontal: BorderSide(
               width: 0.25,
               color: appColors.outlineVariant,

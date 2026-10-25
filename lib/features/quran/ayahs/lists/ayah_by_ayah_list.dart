@@ -5,7 +5,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../../../core/enums/line_type.dart';
 import '../../../../../core/theme/app_paddings.dart';
 import '../../domain/entities/mushaf_page_entity.dart';
-import '../../domain/entities/page_line.dart';
+import '../../data/models/page_line.dart';
 import '../../search/widgets/ayah_flash_high_light.dart';
 import '../items/ayah_by_ayah_item.dart';
 import '../items/basmallah_item.dart';

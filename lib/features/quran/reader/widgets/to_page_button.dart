@@ -19,7 +19,7 @@ class ToPageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    return IconButton(
+    return IconButton.filledTonal(
       onPressed: () {
         showModalBottomSheet(
           context: context,

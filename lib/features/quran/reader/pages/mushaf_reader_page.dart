@@ -46,11 +46,11 @@ class _MushafReaderPageState extends State<MushafReaderPage> {
         extendBody: true,
         extendBodyBehindAppBar: true,
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight),
+          preferredSize: const .fromHeight(kToolbarHeight),
           child: ReaderAppBar(pageController: _pageController),
         ),
         body: GestureDetector(
-          behavior: HitTestBehavior.translucent,
+          behavior: .translucent,
           onTap: () => context.read<ReaderAppBarState>().toggleShowAppBar(),
           child: ReaderPageList(
             pageController: _pageController,
