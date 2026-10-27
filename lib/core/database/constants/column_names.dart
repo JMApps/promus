@@ -1,6 +1,8 @@
 class ColumnNames {
   ColumnNames._();
 
+  static const String id = 'id';
+
   static const String surahNumber = 'surah_number';
   static const String numberSurah = 'number_surah';
   static const String nameTranscription = 'name_transcription';
@@ -34,7 +36,6 @@ class ColumnNames {
   static const String isCentered = 'is_centered';
   static const String ayahRuKuliev = 'ayah_ru_kuliev';
 
-  static const String id = 'id';
   static const String location = 'location';
   static const String wordNumber = 'word_number';
   static const String glyph = 'glyph';
@@ -57,4 +58,10 @@ class ColumnNames {
   static const String nameAudio = 'name_audio';
   static const String sampleBy = 'sample_by';
   static const String countNumber = 'count_number';
+
+  static const String country = 'country';
+  static const String city = 'city';
+  static const String iso = 'iso3';
+  static const String latitude = 'latitude';
+  static const String longitude = 'longitude';
 }

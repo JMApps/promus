@@ -1,26 +1,18 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
+
+import 'constants/table_names.dart';
 
 class FortressDatabaseHelper {
   FortressDatabaseHelper._();
 
   static final FortressDatabaseHelper instance = FortressDatabaseHelper._();
 
-  static const String _dbFileName = 'fortress_of_the_muslim.db';
-  static const String _assetPath = 'assets/databases/$_dbFileName';
-
-  /// Должна совпадать с `PRAGMA user_version` внутри файла в ассетах.
-  /// Собрали новую базу — поднимите user_version в ней и эту константу.
-  /// В debug-сборке расхождение падает по assert сразу после установки.
-  static const int _expectedDbVersion = 3;
-
-  /// Смещение поля user_version в заголовке SQLite (4 байта, big-endian).
-  static const int _userVersionOffset = 60;
+  static const int _dbVersion = 1;
 
   Database? _db;
   Future<Database>? _opening;
@@ -39,11 +31,17 @@ class FortressDatabaseHelper {
     return future;
   }
 
+  Future<String> _resolveDbPath() async {
+    final dbDir = await getDatabasesPath();
+    return p.join(dbDir, TableNames.fortressDatabaseName);
+  }
+
   Future<Database> _open() async {
     try {
       final dbPath = await _resolveDbPath();
 
       await Directory(p.dirname(dbPath)).create(recursive: true);
+
       await _ensureDatabaseInstalled(dbPath);
 
       final database = await openDatabase(
@@ -63,105 +61,65 @@ class FortressDatabaseHelper {
     }
   }
 
-  Future<String> _resolveDbPath() async {
-    final dbDir = await getDatabasesPath();
-    return p.join(dbDir, _dbFileName);
-  }
-
-  // ---------------------------------------------------------------- установка
-
   Future<void> _ensureDatabaseInstalled(String dbPath) async {
-    if (!await File(dbPath).exists()) {
-      await _installFreshFromAssets(dbPath);
-      return;
-    }
-
-    final state = await _probe(dbPath);
-
-    if (state.valid && state.version == _expectedDbVersion) return;
-
-    await _deleteCopiedDatabase(dbPath);
+    final installed = await _installedVersion(dbPath);
+    if (installed >= _dbVersion) return;
     await _installFreshFromAssets(dbPath);
   }
 
-  /// Одно открытие вместо двух: проверяет читаемость и сразу отдаёт версию.
-  Future<({bool valid, int version})> _probe(String dbPath) async {
+  Future<int> _installedVersion(String dbPath) async {
+    if (!await File(dbPath).exists()) return 0;
+
     Database? probe;
-
     try {
-      probe = await openDatabase(
-        dbPath,
-        singleInstance: false,
-        readOnly: true,
-      );
-
-      await probe.rawQuery(
-        'SELECT name FROM sqlite_master WHERE type = ? LIMIT 1',
-        ['table'],
-      );
-
-      return (valid: true, version: await probe.getVersion());
+      probe = await openDatabase(dbPath, readOnly: true, singleInstance: false);
+      return await probe.getVersion();
     } catch (_) {
-      return (valid: false, version: -1);
+      return 0;
     } finally {
       await probe?.close();
     }
   }
 
   Future<void> _installFreshFromAssets(String dbPath) async {
-    try {
-      await _copyAssetDbTo(dbPath);
+    await close();
 
-      // user_version уже записан внутри файла при сборке базы —
-      // копия его сохраняет, setVersion() не нужен.
-      if (kDebugMode) {
-        final installed = await _probe(dbPath);
-        assert(
-        installed.valid && installed.version == _expectedDbVersion,
-        'Файл в ассетах имеет user_version = ${installed.version}, '
-            'а _expectedDbVersion = $_expectedDbVersion. '
-            'Обновите константу или пересоберите базу.',
-        );
-      }
+    final tmpPath = '$dbPath.tmp';
+    Database? rw;
+
+    try {
+      await _copyAssetDbTo(tmpPath);
+
+      rw = await openDatabase(tmpPath, singleInstance: false);
+      await rw.execute('ANALYZE');
+      await rw.setVersion(_dbVersion);
+      await rw.close();
+      rw = null;
+
+      await File(tmpPath).rename(dbPath);
     } catch (e, s) {
-      log('Fresh database install failed', error: e, stackTrace: s);
-      await _deleteCopiedDatabase(dbPath);
+      log('Database install failed', error: e, stackTrace: s);
+      await rw?.close();
+      final tmp = File(tmpPath);
+      if (await tmp.exists()) await tmp.delete();
       rethrow;
     }
   }
 
-  Future<void> _copyAssetDbTo(String dbPath) async {
-    final data = await rootBundle.load(_assetPath);
+  Future<void> _copyAssetDbTo(String path) async {
+    final data = await rootBundle.load(
+      '${TableNames.databasesPath}${TableNames.fortressDatabaseName}',
+    );
 
-    try {
-      final bytes = data.buffer.asUint8List(
-        data.offsetInBytes,
-        data.lengthInBytes,
-      );
+    final bytes = data.buffer.asUint8List(
+      data.offsetInBytes,
+      data.lengthInBytes,
+    );
 
-      final file = File(dbPath);
-      await file.parent.create(recursive: true);
-      await file.writeAsBytes(bytes, flush: true);
-    } finally {
-      // rootBundle кэширует загруженное — иначе полмегабайта
-      // будут висеть в памяти до конца жизни приложения.
-      rootBundle.evict(_assetPath);
-    }
+    await File(path).writeAsBytes(bytes, flush: true);
   }
 
-  Future<void> _deleteCopiedDatabase(String dbPath) async {
-    // Внутренний сброс: НЕ трогает _opening, иначе параллельный вызов
-    // геттера db запустит вторую установку поверх текущей.
-    await _closeCurrent();
-
-    if (await File(dbPath).exists()) {
-      await deleteDatabase(dbPath);
-    }
-  }
-
-  // ------------------------------------------------------------------ закрытие
-
-  Future<void> _closeCurrent() async {
+  Future<void> close() async {
     final database = _db;
     _db = null;
 
@@ -170,29 +128,17 @@ class FortressDatabaseHelper {
     }
   }
 
-  Future<void> close() async {
-    _opening = null;
-    await _closeCurrent();
-  }
-
   Future<Database> reinstallFromAssets() async {
-    await close();
+    final pending = _opening;
+    if (pending != null) {
+      try {
+        await pending;
+      } catch (_) {}
+    }
 
     final dbPath = await _resolveDbPath();
-    await _deleteCopiedDatabase(dbPath);
     await _installFreshFromAssets(dbPath);
 
     return db;
-  }
-
-  /// Версия файла в ассетах, прочитанная прямо из заголовка SQLite.
-  /// Нужна только для диагностики — в обычном потоке не вызывается.
-  Future<int> readAssetVersion() async {
-    final data = await rootBundle.load(_assetPath);
-    try {
-      return data.getUint32(_userVersionOffset);
-    } finally {
-      rootBundle.evict(_assetPath);
-    }
   }
 }

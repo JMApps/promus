@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -87,67 +86,60 @@ class _HomePageState extends State<HomePage> {
           removeTop: true,
           removeBottom: true,
           child: Card(
-            color: Colors.transparent,
-            elevation: 0,
+            elevation: 0.25,
             margin: AppPaddings.withoutTopMedium,
             shape: AppShapes.large,
-            child: ClipRRect(
-              borderRadius: AppRadius.large,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 12.5, sigmaY: 12.5),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: appColors.primaryContainer.withAlpha(055),
-                    borderRadius: AppRadius.large,
+            child: Container(
+              decoration: BoxDecoration(
+                color: appColors.primaryContainer.withAlpha(055),
+                borderRadius: AppRadius.large,
+              ),
+              child: SalomonBottomBar(
+                itemShape: AppShapes.medium,
+                selectedItemColor: appColors.primary,
+                unselectedItemColor: appColors.onSurface.withAlpha(185),
+                items: [
+                  SalomonBottomBarItem(
+                    icon: const MainNavigationIcon(
+                      iconPath: IconPaths.iconPathHome,
+                    ),
+                    title: const MainNavigationLabel(
+                      label: AppStrings.titleHome,
+                    ),
                   ),
-                  child: SalomonBottomBar(
-                    itemShape: AppShapes.medium,
-                    selectedItemColor: appColors.primary,
-                    unselectedItemColor: appColors.onSurface.withAlpha(185),
-                    items: [
-                      SalomonBottomBarItem(
-                        icon: const MainNavigationIcon(
-                          iconPath: IconPaths.iconPathHome,
-                        ),
-                        title: const MainNavigationLabel(
-                          label: AppStrings.titleHome,
-                        ),
-                      ),
-                      SalomonBottomBarItem(
-                        icon: const MainNavigationIcon(
-                          iconPath: IconPaths.iconPathMushaf,
-                        ),
-                        title: const MainNavigationLabel(
-                          label: AppStrings.titleMushaf,
-                        ),
-                      ),
-                      SalomonBottomBarItem(
-                        icon: const MainNavigationIcon(
-                          iconPath: IconPaths.iconPathFortress,
-                        ),
-                        title: const MainNavigationLabel(
-                          label: AppStrings.titleFortress,
-                        ),
-                      ),
-                      SalomonBottomBarItem(
-                        icon: const MainNavigationIcon(
-                          iconPath: IconPaths.iconPathCounter,
-                        ),
-                        title: const MainNavigationLabel(
-                          label: AppStrings.titleCounter,
-                        ),
-                      ),
-                    ],
-                    currentIndex: currentNavigatorIndex,
-                    onTap: (int index) {
-                      if (currentNavigatorIndex != index) {
-                        context.read<MainState>().changeNavigationIndex(index);
-                      } else {
-                        _scrollCurrentTabToTop(index);
-                      }
-                    },
+                  SalomonBottomBarItem(
+                    icon: const MainNavigationIcon(
+                      iconPath: IconPaths.iconPathMushaf,
+                    ),
+                    title: const MainNavigationLabel(
+                      label: AppStrings.titleMushaf,
+                    ),
                   ),
-                ),
+                  SalomonBottomBarItem(
+                    icon: const MainNavigationIcon(
+                      iconPath: IconPaths.iconPathFortress,
+                    ),
+                    title: const MainNavigationLabel(
+                      label: AppStrings.titleFortress,
+                    ),
+                  ),
+                  SalomonBottomBarItem(
+                    icon: const MainNavigationIcon(
+                      iconPath: IconPaths.iconPathCounter,
+                    ),
+                    title: const MainNavigationLabel(
+                      label: AppStrings.titleCounter,
+                    ),
+                  ),
+                ],
+                currentIndex: currentNavigatorIndex,
+                onTap: (int index) {
+                  if (currentNavigatorIndex != index) {
+                    context.read<MainState>().changeNavigationIndex(index);
+                  } else {
+                    _scrollCurrentTabToTop(index);
+                  }
+                },
               ),
             ),
           ),
