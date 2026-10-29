@@ -37,6 +37,12 @@ class AppStrings {
   static const String showCountLabel = 'Показать количество';
   static const String countReset = 'Счётчик сброшен';
   static const String undo = 'Отменить';
+  static const String cancel = 'Отмена';
+  static const String select = 'Выбрать';
+
+  static const String selectionCity = 'Выбор города';
+  static const String selectCity = 'Выбрать город';
+  static const String enterQuery = 'Введите запрос';
 
   static const List weekDays = <String>[
     'Пн',
@@ -194,8 +200,7 @@ class AppStrings {
     '1000',
   ];
 
-  static String searchByQuery(String query, String matches) =>
-      'По запросу «$query»\n$matches';
+  static String searchByQuery(String query, String matches) => 'По запросу «$query»\n$matches';
 
   static String searchError(String error) => 'Ошибка поиска: $error';
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_spacing.dart';
-import 'custom_chapter_card_item.dart';
+import '../widgets/custom_chapter_card_item.dart';
 
 class CustomChaptersList extends StatelessWidget {
   const CustomChaptersList({super.key});

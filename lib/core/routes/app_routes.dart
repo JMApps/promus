@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promus/features/prayer/presentation/pages/selection_city_page.dart';
 
 import '../../features/fortress/data/arguments/fortress_chapter_args.dart';
 import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
@@ -36,6 +37,9 @@ class AppRoutes {
       return FortressSupplicationsPage(
         fortressChapterModel: fortressChapterArgs.chapterEntity,
       );
+    },
+    NamesRouter.selectionCityPage: (context, args) {
+      return const SelectionCityPage();
     },
   };
 }

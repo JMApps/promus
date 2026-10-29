@@ -28,13 +28,15 @@ class MainCityCupertinoButton extends StatelessWidget {
           const SizedBox(width: AppSpacing.small),
           MainIconItem(
             iconPath: IconPaths.iconPathLocation,
-            iconColor: appColors.error,
+            iconColor: appColors.tertiary,
           ),
           const SizedBox(width: AppSpacing.small),
           Flexible(
             child: Text(
               cityText,
-              style: AppTextStyles.medium.copyWith(color: appColors.secondary),
+              style: AppTextStyles.medium.copyWith(
+                color: appColors.tertiary,
+              ),
               overflow: .ellipsis,
               maxLines: 1,
             ),

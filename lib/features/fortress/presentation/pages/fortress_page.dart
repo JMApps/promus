@@ -5,9 +5,9 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
+import '../lists/custom_chapters_list.dart';
 import '../lists/fortress_chapter_list.dart';
 import '../states/fortress_chapters_state.dart';
-import '../widgets/custom_chapters_list.dart';
 import '../widgets/search_chapters_delegate.dart';
 
 class FortressPage extends StatelessWidget {
