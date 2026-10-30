@@ -387,21 +387,23 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   // Теперь локация меняется одним атомарным методом.
   // ---------------------------------------------------------------------------
 
-  void setLocation({
+  Future<void> setLocation({
     required String country,
     required String city,
     required double latitude,
     required double longitude,
-  }) {
+  }) async {
     _country = country;
     _city = city;
     _latitude = latitude;
     _longitude = longitude;
 
-    _settingsPrayerTimeBox.put(AppConstantKeys.keyCountry, country);
-    _settingsPrayerTimeBox.put(AppConstantKeys.keyCity, city);
-    _settingsPrayerTimeBox.put(AppConstantKeys.keyCurrentLatitude, latitude);
-    _settingsPrayerTimeBox.put(AppConstantKeys.keyCurrentLongitude, longitude);
+    await _settingsPrayerTimeBox.putAll({
+      AppConstantKeys.keyCountry: country,
+      AppConstantKeys.keyCity: city,
+      AppConstantKeys.keyCurrentLatitude: latitude,
+      AppConstantKeys.keyCurrentLongitude: longitude,
+    });
 
     initPrayerTime();
   }

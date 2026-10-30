@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/database/city_database_helper.dart';
-import '../../../../core/theme/app_paddings.dart';
+import '../../../other/widgets/error_load_data_widget.dart';
+import '../../../other/widgets/load_data_widget.dart';
 import '../../data/repositories/city_repository_impl.dart';
-import '../../domain/entities/city_entity.dart';
 import '../../state/selection_cities_state.dart';
 import '../lists/selection_city_list.dart';
 import '../widgets/search_city_text_field.dart';
@@ -18,78 +20,76 @@ class SelectionCityPage extends StatefulWidget {
 }
 
 class _SelectionCityPageState extends State<SelectionCityPage> {
-  late final CityDatabaseHelper _cityDatabaseHelper;
-  late TextEditingController _editingController;
+  late final TextEditingController _editingController;
+  late final AllCitiesState _state;
 
   @override
   void initState() {
     super.initState();
-
     _editingController = TextEditingController();
+    _state = AllCitiesState(CityRepositoryImpl(CityDatabaseHelper()));
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      CityDatabaseHelper.instance.db.then((_) {}, onError: (_) {});
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _waitForTransition();
+      if (mounted) _state.loadAllCitiesList();
     });
+  }
 
-    _cityDatabaseHelper = CityDatabaseHelper.instance;
+  Future<void> _waitForTransition() {
+    final anim = ModalRoute.of(context)?.animation;
+    if (anim == null || anim.isCompleted) return Future.value();
+
+    final completer = Completer<void>();
+    void listener(AnimationStatus status) {
+      if (status == AnimationStatus.completed) {
+        anim.removeStatusListener(listener);
+        completer.complete();
+      }
+    }
+
+    anim.addStatusListener(listener);
+    return completer.future;
   }
 
   @override
   void dispose() {
     _editingController.dispose();
+    _state.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AllCitiesState(
-        CityRepositoryImpl(_cityDatabaseHelper),
-      ),
+    return ChangeNotifierProvider.value(
+      value: _state,
       child: Scaffold(
         appBar: AppBar(
           notificationPredicate: (_) => false,
           title: const Text(AppStrings.selectionCity),
         ),
-        body: Consumer<AllCitiesState>(
-          builder: (context, allCitiesState, _) {
-            return FutureBuilder<List<CityEntity>>(
-              future: allCitiesState.fetchAllCities(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == .waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  );
-                }
+        body: Column(
+          children: [
+            SearchCityTextField(editingController: _editingController),
+            Expanded(
+              child: Consumer<AllCitiesState>(
+                builder: (context, state, _) {
+                  if (state.error != null) {
+                    return ErrorLoadDataWidget(
+                      errorMessage: state.error.toString(),
+                    );
+                  }
 
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Padding(
-                      padding: AppPaddings.medium,
-                      child: Text(
-                        '${AppStrings.errorLoadData}\n${snapshot.error}',
-                        textAlign: .center,
-                      ),
-                    ),
-                  );
-                }
+                  if (state.isLoading) {
+                    return const LoadDataWidget();
+                  }
 
-                return Column(
-                  children: [
-                    SearchCityTextField(
-                      editingController: _editingController,
-                    ),
-                    Expanded(
-                      child: SelectionCityList(
-                        cities: snapshot.data!,
-                        searchQuery: allCitiesState.searchQuery,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+                  return SelectionCityList(
+                    cities: state.cities,
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

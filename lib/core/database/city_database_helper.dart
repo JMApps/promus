@@ -8,82 +8,58 @@ import 'package:sqflite/sqflite.dart';
 import 'constants/table_names.dart';
 
 class CityDatabaseHelper {
-  CityDatabaseHelper._();
-
-  static final CityDatabaseHelper instance = CityDatabaseHelper._();
-
   static const int _dbVersion = 1;
 
   Database? _db;
-  Future<Database>? _opening;
-
-  Future<Database> get db {
-    final existing = _db;
-    if (existing != null && existing.isOpen) {
-      return Future.value(existing);
-    }
-
-    final opening = _opening;
-    if (opening != null) return opening;
-
-    final future = _open();
-    _opening = future;
-    return future;
-  }
 
   Future<String> _resolveDbPath() async {
     final dbDir = await getDatabasesPath();
     return p.join(dbDir, TableNames.cityDatabaseName);
   }
 
-  Future<Database> _open() async {
+  Future<Database> open() async {
+    final dbPath = await _resolveDbPath();
+    await Directory(p.dirname(dbPath)).create(recursive: true);
+
     try {
-      final dbPath = await _resolveDbPath();
+      var database = await _openIfCurrent(dbPath);
 
-      await Directory(p.dirname(dbPath)).create(recursive: true);
+      if (database == null) {
+        await _installFreshFromAssets(dbPath);
+        database = await _openReadOnly(dbPath);
+      }
 
-      await _ensureDatabaseInstalled(dbPath);
-
-      final database = await openDatabase(
-        dbPath,
-        singleInstance: true,
-        readOnly: true,
-      );
-
-      _db = database;
-      return database;
+      return _db = database;
     } catch (e, s) {
-      _db = null;
       log('Database open failed', error: e, stackTrace: s);
       rethrow;
-    } finally {
-      _opening = null;
     }
   }
 
-  Future<void> _ensureDatabaseInstalled(String dbPath) async {
-    final installed = await _installedVersion(dbPath);
-    if (installed >= _dbVersion) return;
-    await _installFreshFromAssets(dbPath);
+  Future<Database> _openReadOnly(String dbPath) {
+    return openDatabase(
+      dbPath,
+      readOnly: true,
+      singleInstance: false,
+    );
   }
 
-  Future<int> _installedVersion(String dbPath) async {
-    if (!await File(dbPath).exists()) return 0;
+  /// Открывает установленную базу, если она есть и версия актуальна.
+  /// Иначе возвращает null (файла нет, битый файл или старая версия).
+  Future<Database?> _openIfCurrent(String dbPath) async {
+    if (!await File(dbPath).exists()) return null;
 
-    Database? probe;
+    Database? database;
     try {
-      probe = await openDatabase(dbPath, readOnly: true, singleInstance: false);
-      return await probe.getVersion();
-    } catch (_) {
-      return 0;
-    } finally {
-      await probe?.close();
-    }
+      database = await _openReadOnly(dbPath);
+      if (await database.getVersion() >= _dbVersion) return database;
+    } catch (_) {}
+
+    await database?.close();
+    return null;
   }
 
   Future<void> _installFreshFromAssets(String dbPath) async {
-    await close();
-
     final tmpPath = '$dbPath.tmp';
     Database? rw;
 
@@ -126,19 +102,5 @@ class CityDatabaseHelper {
     if (database != null && database.isOpen) {
       await database.close();
     }
-  }
-
-  Future<Database> reinstallFromAssets() async {
-    final pending = _opening;
-    if (pending != null) {
-      try {
-        await pending;
-      } catch (_) {}
-    }
-
-    final dbPath = await _resolveDbPath();
-    await _installFreshFromAssets(dbPath);
-
-    return db;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
@@ -6,6 +7,7 @@ import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/city_entity.dart';
+import '../../state/prayer_state.dart';
 
 class SelectionCityItem extends StatelessWidget {
   const SelectionCityItem({
@@ -39,9 +41,17 @@ class SelectionCityItem extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      // Save city
+                      final prayerState = context.read<PrayerState>();
+                      final navigator = Navigator.of(context);
+
+                      prayerState.setLocation(
+                        country: cityModel.country,
+                        city: cityModel.city,
+                        latitude: cityModel.latitude,
+                        longitude: cityModel.longitude,
+                      );
+
+                      navigator..pop()..pop();
                     },
                     child: const Text(
                       AppStrings.select,

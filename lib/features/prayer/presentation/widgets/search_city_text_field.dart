@@ -26,7 +26,7 @@ class SearchCityTextField extends StatelessWidget {
         autocorrect: false,
         autofocus: true,
         placeholder: AppStrings.enterQuery,
-        onChanged: (query) => allCitiesState.onEndSearchQuery(
+        onChanged: (query) => allCitiesState.onSearchChanged(
           query.toLowerCase().trim(),
         ),
         textAlign: .center,
