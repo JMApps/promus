@@ -4,15 +4,16 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
 import '../lists/fortress_search_chapter_list.dart';
+import '../states/fortress_chapters_state.dart';
 
 class SearchChaptersDelegate extends SearchDelegate<void> {
-  SearchChaptersDelegate({required this.chapters}) : super(
+  SearchChaptersDelegate({required this.fortressChaptersState}) : super(
     searchFieldLabel: AppStrings.searchByChapters,
     keyboardType: .text,
     textInputAction: .search,
   );
 
-  final List<FortressChapterEntity> chapters;
+  final FortressChapterState fortressChaptersState;
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -56,17 +57,17 @@ class SearchChaptersDelegate extends SearchDelegate<void> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return FortressSearchChapterList(
-      chapters: chapters,
-      query: query,
+    final List<FortressChapterEntity> found = fortressChaptersState.search(
+      query,
     );
+    return FortressSearchChapterList(chapters: found);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FortressSearchChapterList(
-      chapters: chapters,
-      query: query,
+    final List<FortressChapterEntity> found = fortressChaptersState.search(
+      query,
     );
+    return FortressSearchChapterList(chapters: found);
   }
 }
