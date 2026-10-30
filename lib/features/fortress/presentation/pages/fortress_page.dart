@@ -66,7 +66,7 @@ class FortressPage extends StatelessWidget {
                       showSearch(
                         context: context,
                         delegate: SearchChaptersDelegate(
-                          chapters: chapters,
+                          fortressChaptersState: context.read<FortressChapterState>(),
                         ),
                       );
                     },
