@@ -12,12 +12,13 @@ class CityRepositoryImpl implements CityRepository {
   CityRepositoryImpl(this._databaseHelper);
 
   @override
-  Future<List<CityEntity>> fetchAllCities() async {
+  Future<List<CityEntity>> fetchAllCities({required String country}) async {
     final database = await _databaseHelper.open();
 
     final rows = await database.query(
       TableNames.tableOfCityCoordinates,
-      orderBy: ColumnNames.id,
+      orderBy: 'CASE WHEN ${ColumnNames.country} = ? THEN 0 ELSE 1 END, ${ColumnNames.id}',
+      whereArgs: [country],
     );
 
     return rows.map((row) => CityModel.fromMap(row).toEntity()).toList(growable: false);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:promus/features/prayer/presentation/pages/selection_city_page.dart';
 
 import '../../features/fortress/data/arguments/fortress_chapter_args.dart';
 import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
+import '../../features/prayer/presentation/pages/selection_city_page.dart';
 import '../../features/quran/data/args/reader_args.dart';
 import '../../features/quran/reader/pages/mushaf_reader_page.dart';
 import 'names_router.dart';
@@ -39,7 +39,8 @@ class AppRoutes {
       );
     },
     NamesRouter.selectionCityPage: (context, args) {
-      return const SelectionCityPage();
+      final String countryArg = args;
+      return SelectionCityPage(country: countryArg);
     },
   };
 }

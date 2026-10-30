@@ -64,6 +64,8 @@ class AppStrings {
   static const String midnight = 'Полночь';
   static const String lastThirdNight = 'Треть';
 
+  static const String daysToRamadan = 'Дней до Рамадана';
+
   static const String loadData = 'Загрузка данных';
   static const String errorLoad = 'Ошибка загрузки';
 

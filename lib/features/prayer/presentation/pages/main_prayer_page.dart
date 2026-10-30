@@ -1,11 +1,11 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:promus/core/routes/names_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/icon_paths.dart';
+import '../../../../core/routes/names_router.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../state/prayer_state.dart';
@@ -41,14 +41,14 @@ class MainPrayerPage extends StatelessWidget {
             ),
             onPressed: () {},
           ),
-          CupertinoButton(
-            padding: const .only(right: AppSpacing.medium),
-            child: MainIconItem(
-              iconPath: IconPaths.iconPathLibrary,
-              iconColor: appColors.primary,
-            ),
-            onPressed: () {},
-          ),
+          // CupertinoButton(
+          //   padding: const .only(right: AppSpacing.medium),
+          //   child: MainIconItem(
+          //     iconPath: IconPaths.iconPathLibrary,
+          //     iconColor: appColors.primary,
+          //   ),
+          //   onPressed: () {},
+          // ),
         ],
       ),
       body: SingleChildScrollView(
@@ -67,7 +67,11 @@ class MainPrayerPage extends StatelessWidget {
                     child: MainCityCupertinoButton(
                       cityText: prayer.city,
                       onPressed: () {
-                        Navigator.pushNamed(context, NamesRouter.selectionCityPage);
+                        Navigator.pushNamed(
+                          context,
+                          NamesRouter.selectionCityPage,
+                          arguments: prayer.country,
+                        );
                       },
                     ),
                   ),
@@ -269,7 +273,7 @@ class MainPrayerPage extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.medium),
             const DaysToHolidays(
-              eventDay: 'Дней до Рамадана',
+              eventDay: AppStrings.daysToRamadan,
               remainingDays: 166,
             ),
             const SizedBox(height: AppSpacing.medium * 1.5),

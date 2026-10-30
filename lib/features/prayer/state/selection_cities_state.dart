@@ -6,9 +6,10 @@ import '../data/repositories/city_repository_impl.dart';
 import '../domain/entities/city_entity.dart';
 
 class AllCitiesState extends ChangeNotifier {
-  AllCitiesState(this._repo);
+  AllCitiesState(this._repo, this._country);
 
   final CityRepositoryImpl _repo;
+  final String _country;
 
   List<CityEntity> _all = const [];
   List<String> _index = const [];
@@ -24,7 +25,7 @@ class AllCitiesState extends ChangeNotifier {
 
   Future<void> loadAllCitiesList() async {
     try {
-      _all = await _repo.fetchAllCities();
+      _all = await _repo.fetchAllCities(country: _country);
       _index = [
         for (final c in _all) '${c.city} ${c.country} ${c.iso}'.toLowerCase(),
       ];

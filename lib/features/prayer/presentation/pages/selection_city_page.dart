@@ -13,7 +13,12 @@ import '../lists/selection_city_list.dart';
 import '../widgets/search_city_text_field.dart';
 
 class SelectionCityPage extends StatefulWidget {
-  const SelectionCityPage({super.key});
+  const SelectionCityPage({
+    super.key,
+    required this.country,
+  });
+
+  final String country;
 
   @override
   State<SelectionCityPage> createState() => _SelectionCityPageState();
@@ -27,7 +32,7 @@ class _SelectionCityPageState extends State<SelectionCityPage> {
   void initState() {
     super.initState();
     _editingController = TextEditingController();
-    _state = AllCitiesState(CityRepositoryImpl(CityDatabaseHelper()));
+    _state = AllCitiesState(CityRepositoryImpl(CityDatabaseHelper()), widget.country);
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _waitForTransition();

@@ -43,14 +43,12 @@ class SelectionCityItem extends StatelessWidget {
                     onPressed: () {
                       final prayerState = context.read<PrayerState>();
                       final navigator = Navigator.of(context);
-
                       prayerState.setLocation(
                         country: cityModel.country,
                         city: cityModel.city,
                         latitude: cityModel.latitude,
                         longitude: cityModel.longitude,
                       );
-
                       navigator..pop()..pop();
                     },
                     child: const Text(
@@ -83,9 +81,10 @@ class SelectionCityItem extends StatelessWidget {
         ),
         subtitle: Text(cityModel.country),
         leading: CircleAvatar(
+          backgroundColor: appColors.inversePrimary,
           child: Text(
             cityModel.iso,
-            style: AppTextStyles.small,
+            style: AppTextStyles.small.copyWith(color: appColors.primary),
           ),
         ),
         trailing: const Icon(
