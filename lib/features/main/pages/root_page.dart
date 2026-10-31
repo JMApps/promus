@@ -12,7 +12,7 @@ class RootPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = AppTheme(seedColor: Colors.indigo);
+    final appTheme = AppTheme(seedColor: Colors.blue);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,

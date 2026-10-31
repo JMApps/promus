@@ -12,6 +12,7 @@ class AppStrings {
   static const String titleCounter = 'Счётчик';
 
   static const String settings = 'Настройки';
+  static const String params = 'Параметры';
 
   static const String searchByChapters = 'Поиск по главам';
   static const String searchBySurahs = 'Поиск по сурам';
@@ -101,6 +102,8 @@ class AppStrings {
     CalculationMethod.north_america,
     CalculationMethod.russia,
     CalculationMethod.tatarstan,
+    CalculationMethod.dagestan,
+    CalculationMethod.chechnya,
     CalculationMethod.france,
     CalculationMethod.dubai,
     CalculationMethod.egyptian,
@@ -129,6 +132,8 @@ class AppStrings {
     'North America (ISNA)',
     'Russia',
     'Tatarstan',
+    'Dagestan',
+    'Chechnya',
     'France',
     'Dubai',
     'Egyptian',

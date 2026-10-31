@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../features/fortress/data/arguments/fortress_chapter_args.dart';
 import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
+import '../../features/prayer/presentation/pages/prayer_params_page.dart';
 import '../../features/prayer/presentation/pages/selection_city_page.dart';
 import '../../features/quran/data/args/reader_args.dart';
 import '../../features/quran/reader/pages/mushaf_reader_page.dart';
@@ -41,6 +42,9 @@ class AppRoutes {
     NamesRouter.selectionCityPage: (context, args) {
       final String countryArg = args;
       return SelectionCityPage(country: countryArg);
+    },
+    NamesRouter.prayerParamsPage: (context, args) {
+      return const PrayerParamsPage();
     },
   };
 }

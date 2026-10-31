@@ -115,7 +115,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     );
     _calculationMethodIndex = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyCalculationIndex,
-      defaultValue: 10,
+      defaultValue: 14,
     );
     _highLatitudeMethodIndex = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyHighLatitudeIndex,
