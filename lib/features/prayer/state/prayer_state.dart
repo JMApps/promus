@@ -67,7 +67,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   late int _calculationMethodIndex;
   late int _highLatitudeMethodIndex;
   late bool _dst;
-  late int _madhabIndex;
+  late int _asrMethodIndex;
 
   PrayerState(this._settingsPrayerTimeBox) {
     WidgetsBinding.instance.addObserver(this);
@@ -121,7 +121,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
       AppConstantKeys.keyHighLatitudeIndex,
       defaultValue: 0,
     );
-    _madhabIndex = _settingsPrayerTimeBox.get(
+    _asrMethodIndex = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyMadhabIndex,
       defaultValue: 0,
     );
@@ -138,10 +138,9 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   void initPrayerTime() {
     _coordinates = Coordinates(_latitude, _longitude);
 
-    _prayerParams =
-    AppStrings.prayerCalculationMethods[_calculationMethodIndex].getParameters()
+    _prayerParams = AppStrings.prayerCalculationMethods[_calculationMethodIndex].getParameters()
       ..highLatitudeRule = AppStrings.highLatitude[_highLatitudeMethodIndex]
-      ..madhab = AppStrings.calculationMadhab[_madhabIndex];
+      ..madhab = AppStrings.calculationMadhab[_asrMethodIndex];
 
     // ИСПРАВЛЕНО: знак DST. Тумблер нужен, когда устройство живёт в поясе
     // без перевода часов, а официальные времена летом сдвинуты ВПЕРЁД,
@@ -374,6 +373,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   String get gregorianDateText =>
       '${_dateTime.day} ${AppStrings.gregorianMonths[_dateTime.month - 1]}, ${_dateTime.year}';
+
   String get hijriDateText {
     final h = HijriCalendar.fromDate(_dateTime);
     return '${h.hDay} ${AppStrings.hijriMonths[h.hMonth - 1]}, ${h.hYear}';
@@ -415,6 +415,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   int get calculationMethodIndex => _calculationMethodIndex;
 
   set setCalculationIndex(int index) {
+    if (index == _calculationMethodIndex) return;
     _calculationMethodIndex = index;
     _settingsPrayerTimeBox.put(AppConstantKeys.keyCalculationIndex, index);
     initPrayerTime();
@@ -428,10 +429,10 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     initPrayerTime();
   }
 
-  int get madhabIndex => _madhabIndex;
+  int get asrMethodIndex => _asrMethodIndex;
 
-  set setMadhabIndex(int index) {
-    _madhabIndex = index;
+  set setAsrMethodIndex(int index) {
+    _asrMethodIndex = index;
     _settingsPrayerTimeBox.put(AppConstantKeys.keyMadhabIndex, index);
     initPrayerTime();
   }
@@ -468,12 +469,8 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     final beforeSunrise = _dateTime.isBefore(_prayerTimes.sunrise);
 
     final events = <DateTime>[
-      beforeSunrise
-          ? _prayerTimes.sunrise.subtract(_day)
-          : _prayerTimes.sunrise,
-      beforeSunrise
-          ? _sunnahTimes.middleOfTheNight.subtract(_day)
-          : _sunnahTimes.middleOfTheNight,
+      beforeSunrise ? _prayerTimes.sunrise.subtract(_day) : _prayerTimes.sunrise,
+      beforeSunrise ? _sunnahTimes.middleOfTheNight.subtract(_day) : _sunnahTimes.middleOfTheNight,
       beforeSunrise
           ? _sunnahTimes.lastThirdOfTheNight.subtract(_day)
           : _sunnahTimes.lastThirdOfTheNight,
@@ -484,9 +481,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   int get currentPrayerStep {
-    final passed = _todayPrayers
-        .where((p) => !p.time.isAfter(_dateTime))
-        .length;
+    final passed = _todayPrayers.where((p) => !p.time.isAfter(_dateTime)).length;
     return passed.clamp(0, _todayPrayers.length - 1);
   }
 
@@ -566,12 +561,8 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     required bool before,
     required DateTime prayerTime,
   }) {
-    final DateTime rangeStart = before
-        ? prayerTime.subtract(hourInterval)
-        : prayerTime;
-    final DateTime rangeEnd = before
-        ? prayerTime
-        : prayerTime.add(hourInterval);
+    final DateTime rangeStart = before ? prayerTime.subtract(hourInterval) : prayerTime;
+    final DateTime rangeEnd = before ? prayerTime : prayerTime.add(hourInterval);
     return _dateTime.isAfter(rangeStart) && _dateTime.isBefore(rangeEnd);
   }
 
@@ -612,8 +603,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     return '$hoursText $minutesText';
   }
 
-  bool isNextPrayer({required Prayer prayer}) =>
-      _prayerTimes.nextPrayer() == prayer;
+  bool isNextPrayer({required Prayer prayer}) => _prayerTimes.nextPrayer() == prayer;
 
   bool isAdhan({required Prayer prayer}) {
     return _dateTime.isAfter(
@@ -650,8 +640,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     _prayerTimes.sunrise,
   );
 
-  bool get isSunrise =>
-      _isWithinRange(_prayerTimes.sunrise, _prayerTimes.dhuhr);
+  bool get isSunrise => _isWithinRange(_prayerTimes.sunrise, _prayerTimes.dhuhr);
 
   bool get isDuha => _isWithinRange(
     _prayerTimes.sunrise.add(const Duration(minutes: 45)),
@@ -694,11 +683,9 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   bool get isFriday {
     final bool firstCheck =
-        _dateTime.weekday == DateTime.thursday &&
-        _dateTime.isAfter(_prayerTimes.maghrib);
+        _dateTime.weekday == DateTime.thursday && _dateTime.isAfter(_prayerTimes.maghrib);
     final bool secondCheck =
-        _dateTime.weekday == DateTime.friday &&
-        _dateTime.isBefore(_prayerTimes.maghrib);
+        _dateTime.weekday == DateTime.friday && _dateTime.isBefore(_prayerTimes.maghrib);
     return firstCheck || secondCheck;
   }
 

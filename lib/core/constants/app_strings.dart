@@ -63,7 +63,7 @@ class AppStrings {
 
   static const String sunrise = 'Восход';
   static const String midnight = 'Полночь';
-  static const String lastThirdNight = 'Треть';
+  static const String lastThirdNight = '1/3 ночи';
 
   static const String daysToRamadan = 'Дней до Рамадана';
 
@@ -98,19 +98,19 @@ class AppStrings {
   );
 
   static const List<CalculationMethod> prayerCalculationMethods = [
-    CalculationMethod.umm_al_qura,
-    CalculationMethod.north_america,
     CalculationMethod.russia,
     CalculationMethod.tatarstan,
     CalculationMethod.dagestan,
     CalculationMethod.chechnya,
+    CalculationMethod.north_america,
+    CalculationMethod.muslim_world_league,
+    CalculationMethod.umm_al_qura,
     CalculationMethod.france,
     CalculationMethod.dubai,
     CalculationMethod.egyptian,
     CalculationMethod.karachi,
     CalculationMethod.kuwait,
     CalculationMethod.moon_sighting_committee,
-    CalculationMethod.muslim_world_league,
     CalculationMethod.qatar,
     CalculationMethod.turkey,
     CalculationMethod.singapore,
@@ -128,19 +128,19 @@ class AppStrings {
   ];
 
   static const List<String> prayerCalculationNames = [
-    'Umm al-Qura',
-    'North America (ISNA)',
     'Russia',
     'Tatarstan',
     'Dagestan',
     'Chechnya',
+    'North America (ISNA)',
+    'Muslim world league (MWL)',
+    'Umm al-Qura',
     'France',
     'Dubai',
     'Egyptian',
     'Karachi',
     'Kuwait',
     'Moon sighting committee (MSC)',
-    'Muslim world league (MWL)',
     'Qatar',
     'Turkey',
     'Singapore',
