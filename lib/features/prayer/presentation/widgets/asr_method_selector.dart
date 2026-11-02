@@ -22,7 +22,7 @@ class AsrMethodSelector extends StatelessWidget {
         return ChoiceChip(
           label: Text(AppStrings.asrMethodNamesList[i]),
           selected: selectedIndex == i,
-          showCheckmark: true,
+          showCheckmark: false,
           shape: AppShapes.medium,
           side: BorderSide(
             width: selectedIndex == i ? 0.75 : 0.0,

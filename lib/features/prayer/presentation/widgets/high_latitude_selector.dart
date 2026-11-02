@@ -22,7 +22,7 @@ class HighLatitudeSelector extends StatelessWidget {
         return ChoiceChip(
           label: Text(AppStrings.highLatitudeNamesList[i]),
           selected: selectedIndex == i,
-          showCheckmark: true,
+          showCheckmark: false,
           shape: AppShapes.medium,
           side: BorderSide(
             width: selectedIndex == i ? 0.75 : 0.0,

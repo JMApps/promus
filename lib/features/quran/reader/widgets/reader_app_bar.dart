@@ -42,7 +42,7 @@ class ReaderAppBar extends StatelessWidget {
                   style: AppTextStyles.medium,
                 ),
                 Text(
-                  '${AppStrings.page} $page, ${AppStrings.juz.toLowerCase()} ${pageMeta.juzNumber}',
+                  '${AppStrings.page} $page \u2022 ${AppStrings.juz.toLowerCase()} ${pageMeta.juzNumber}',
                   style: AppTextStyles.small,
                 ),
               ],

@@ -16,6 +16,7 @@ import 'features/fortress/presentation/states/fortress_supplications_state.dart'
 import 'features/main/pages/root_page.dart';
 import 'features/main/state/main_state.dart';
 import 'features/prayer/state/prayer_state.dart';
+import 'features/prayer/state/time_state.dart';
 import 'features/quran/ayahs/states/ayah_by_ayah_state.dart';
 import 'features/quran/data/repositories/ayah_by_ayah_repository_impl.dart';
 import 'features/quran/data/repositories/mushaf_page_repository_impl.dart';
@@ -55,6 +56,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (_) => MainState(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TimeState(),
         ),
         ChangeNotifierProvider(
           create: (_) =>

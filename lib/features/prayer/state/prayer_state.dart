@@ -99,23 +99,23 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
     _country = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyCountry,
-      defaultValue: 'Saudi Arabia',
+      defaultValue: AppStrings.defCountry,
     );
     _city = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyCity,
-      defaultValue: 'Mecca',
+      defaultValue: AppStrings.defCity,
     );
     _latitude = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyCurrentLatitude,
-      defaultValue: 21.42580,
+      defaultValue: AppStrings.defLatitude,
     );
     _longitude = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyCurrentLongitude,
-      defaultValue: 39.82410,
+      defaultValue: AppStrings.defLongitude,
     );
     _calculationMethodIndex = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyCalculationIndex,
-      defaultValue: 14,
+      defaultValue: 5,
     );
     _highLatitudeMethodIndex = _settingsPrayerTimeBox.get(
       AppConstantKeys.keyHighLatitudeIndex,

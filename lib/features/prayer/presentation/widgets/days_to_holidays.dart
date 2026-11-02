@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 
 class DaysToHolidays extends StatelessWidget {
-  const DaysToHolidays({
-    super.key,
-    required this.eventDay,
-    required this.remainingDays,
-  });
-
-  final String eventDay;
-  final int remainingDays;
+  const DaysToHolidays({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +28,17 @@ class DaysToHolidays extends StatelessWidget {
         splashColor: appColors.secondaryContainer,
         visualDensity: .compact,
         contentPadding: AppPaddings.hrMedium,
-        title: Row(
+        title: const Row(
           mainAxisAlignment: .spaceBetween,
           children: [
             Text(
-              eventDay,
-              style: const TextStyle(
+              AppStrings.daysToRamadan,
+              style: TextStyle(
                 overflow: .ellipsis,
               ),
             ),
-            const SizedBox(width: AppSpacing.medium),
-            const Text('100'),
+            SizedBox(width: AppSpacing.medium),
+            Text('100'),
           ],
         ),
         trailing: const Icon(
