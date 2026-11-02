@@ -45,6 +45,8 @@ class AppStrings {
   static const String selectCity = 'Выбрать город';
   static const String enterQuery = 'Введите запрос';
 
+  static String qiblahDirectionDescription(String qiblahDirection) => 'Кибла на $qiblahDirection\u00B0';
+
   static const List weekDays = <String>[
     'Пн',
     'Вт',
@@ -86,6 +88,11 @@ class AppStrings {
   static const String winterTime = 'Зимнее время';
   static const String dstMode = 'Зимнее время (DST)';
   static const String labelDefault = 'По умолчанию';
+
+  static const String defCity = 'Mecca';
+  static const String defCountry = 'Saudi Arabia';
+  static const double defLatitude = 21.42580;
+  static const double defLongitude = 39.82410;
 
   static String ayahsCount(int count) => Intl.plural(
     count,

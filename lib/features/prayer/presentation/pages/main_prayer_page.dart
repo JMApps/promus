@@ -18,6 +18,7 @@ import '../widgets/main_city_cupertino_button.dart';
 import '../widgets/main_cupertino_button.dart';
 import '../widgets/main_date_card_item.dart';
 import '../widgets/main_icon_item.dart';
+import '../widgets/qibla_direction.dart';
 import '../widgets/remaining_prayer_time_sleek.dart';
 
 class MainPrayerPage extends StatelessWidget {
@@ -84,7 +85,15 @@ class MainPrayerPage extends StatelessWidget {
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathQiblah,
                     iconColor: appColors.primary,
-                    onPressed: () {},
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        useSafeArea: true,
+                        builder: (_) {
+                          return const QiblaDirection();
+                        }
+                      );
+                    },
                   ),
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathNotifications,
@@ -268,10 +277,7 @@ class MainPrayerPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.medium),
-            const DaysToHolidays(
-              eventDay: AppStrings.daysToRamadan,
-              remainingDays: 166,
-            ),
+            const DaysToHolidays(),
             const SizedBox(height: AppSpacing.medium * 1.5),
           ],
         ),
