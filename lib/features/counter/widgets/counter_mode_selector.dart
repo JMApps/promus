@@ -30,12 +30,14 @@ class CounterModeSelector extends StatelessWidget {
                 value: mode,
                 child: Center(
                   child: Text(
-                    AppStrings.tasbeehCounts[mode.index],
-                    style: mode == currentMode ? TextStyle(
-                      fontSize: 17.0,
-                      color: primaryColor,
-                      fontWeight: .bold,
-                    ) : AppTextStyles.medium,
+                    AppStrings.tasbeehCountsList[mode.index],
+                    style: mode == currentMode
+                        ? TextStyle(
+                            fontSize: 17.0,
+                            color: primaryColor,
+                            fontWeight: .bold,
+                          )
+                        : AppTextStyles.medium,
                     overflow: .ellipsis,
                     textAlign: .center,
                   ),

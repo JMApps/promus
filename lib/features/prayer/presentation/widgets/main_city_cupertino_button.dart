@@ -1,28 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/icon_paths.dart';
+import '../../../../core/routes/names_router.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../state/prayer_state.dart';
 import 'main_icon_item.dart';
 
 class MainCityCupertinoButton extends StatelessWidget {
-  const MainCityCupertinoButton({
-    super.key,
-    required this.cityText,
-    required this.onPressed,
-  });
-
-  final String cityText;
-  final VoidCallback onPressed;
+  const MainCityCupertinoButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
     return CupertinoButton(
       padding: AppPaddings.small,
-      onPressed: onPressed,
+      onPressed: () {
+        Navigator.pushNamed(
+          context,
+          NamesRouter.selectionCityPage,
+        );
+      },
       child: Row(
         children: [
           const SizedBox(width: AppSpacing.small),
@@ -33,7 +34,7 @@ class MainCityCupertinoButton extends StatelessWidget {
           const SizedBox(width: AppSpacing.small),
           Flexible(
             child: Text(
-              cityText,
+              context.watch<PrayerState>().city,
               style: AppTextStyles.medium.copyWith(
                 color: appColors.tertiary,
               ),

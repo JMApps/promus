@@ -138,9 +138,9 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   void initPrayerTime() {
     _coordinates = Coordinates(_latitude, _longitude);
 
-    _prayerParams = AppStrings.prayerCalculationMethods[_calculationMethodIndex].getParameters()
-      ..highLatitudeRule = AppStrings.highLatitude[_highLatitudeMethodIndex]
-      ..madhab = AppStrings.calculationMadhab[_asrMethodIndex];
+    _prayerParams = AppStrings.prayerCalculationMethodList[_calculationMethodIndex].getParameters()
+      ..highLatitudeRule = AppStrings.highLatitudeList[_highLatitudeMethodIndex]
+      ..madhab = AppStrings.calculationMadhabList[_asrMethodIndex];
 
     // ИСПРАВЛЕНО: знак DST. Тумблер нужен, когда устройство живёт в поясе
     // без перевода часов, а официальные времена летом сдвинуты ВПЕРЁД,
@@ -372,11 +372,11 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   double get longitude => _longitude;
 
   String get gregorianDateText =>
-      '${_dateTime.day} ${AppStrings.gregorianMonths[_dateTime.month - 1]}, ${_dateTime.year}';
+      '${_dateTime.day} ${AppStrings.gregorianMonthsList[_dateTime.month - 1]}, ${_dateTime.year}';
 
   String get hijriDateText {
     final h = HijriCalendar.fromDate(_dateTime);
-    return '${h.hDay} ${AppStrings.hijriMonths[h.hMonth - 1]}, ${h.hYear}';
+    return '${h.hDay} ${AppStrings.hijriMonthsList[h.hMonth - 1]}, ${h.hYear}';
   }
 
   // ---------------------------------------------------------------------------

@@ -78,6 +78,15 @@ class AppStrings {
 
   static const String copied = 'Скопировано';
 
+  static const String selectedCity = 'Выбранный город';
+  static const String prayerMethodCalculate = 'Методы расчета времени молитв';
+  static const String highLatitude = 'Широкие высоты';
+  static const String correctionMinutes = 'Корректировка минут';
+  static const String asrMethod = 'Молитва \'аср';
+  static const String winterTime = 'Зимнее время';
+  static const String dstMode = 'Зимнее время (DST)';
+  static const String labelDefault = 'По умолчанию';
+
   static String ayahsCount(int count) => Intl.plural(
     count,
     one: '$count аят',
@@ -97,7 +106,7 @@ class AppStrings {
     locale: 'ru',
   );
 
-  static const List<CalculationMethod> prayerCalculationMethods = [
+  static const List<CalculationMethod> prayerCalculationMethodList = [
     CalculationMethod.russia,
     CalculationMethod.tatarstan,
     CalculationMethod.dagestan,
@@ -116,18 +125,18 @@ class AppStrings {
     CalculationMethod.singapore,
   ];
 
-  static const List<HighLatitudeRule> highLatitude = [
+  static const List<HighLatitudeRule> highLatitudeList = [
     HighLatitudeRule.middle_of_the_night,
     HighLatitudeRule.seventh_of_the_night,
     HighLatitudeRule.twilight_angle,
   ];
 
-  static const List<Madhab> calculationMadhab = [
+  static const List<Madhab> calculationMadhabList = [
     Madhab.shafi,
     Madhab.hanafi,
   ];
 
-  static const List<String> prayerCalculationNames = [
+  static const List<String> prayerCalculationNamesList = [
     'Russia',
     'Tatarstan',
     'Dagestan',
@@ -146,13 +155,13 @@ class AppStrings {
     'Singapore',
   ];
 
-  static const List<String> highLatitudeNames = [
+  static const List<String> highLatitudeNamesList = [
     'Middle of the night',
     'Seventh of the night',
     'Twilight angle',
   ];
 
-  static const List<String> asrMethodNames = [
+  static const List<String> asrMethodNamesList = [
     'Shafi',
     'Hanafi',
   ];
@@ -163,7 +172,7 @@ class AppStrings {
     const Duration(hours: 1),
   ];
 
-  static const List<String> gregorianMonths = <String>[
+  static const List<String> gregorianMonthsList = <String>[
     'января',
     'февраля',
     'марта',
@@ -178,7 +187,7 @@ class AppStrings {
     'декабря',
   ];
 
-  static const List<String> hijriMonths = <String>[
+  static const List<String> hijriMonthsList = <String>[
     'мухаррам',
     'сафар',
     'раби аль-авваль',
@@ -201,7 +210,7 @@ class AppStrings {
     'Время ночных азкаров',
   ];
 
-  static const List<String> tasbeehCounts = [
+  static const List<String> tasbeehCountsList = [
     '--/--',
     '33',
     '100',

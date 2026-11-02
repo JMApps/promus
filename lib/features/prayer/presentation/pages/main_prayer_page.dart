@@ -63,17 +63,8 @@ class MainPrayerPage extends StatelessWidget {
             Card(
               child: Row(
                 children: [
-                  Expanded(
-                    child: MainCityCupertinoButton(
-                      cityText: prayer.city,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                          context,
-                          NamesRouter.selectionCityPage,
-                          arguments: prayer.country,
-                        );
-                      },
-                    ),
+                  const Expanded(
+                    child: MainCityCupertinoButton(),
                   ),
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathParams,

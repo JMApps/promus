@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:promus/features/prayer/state/prayer_state.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -13,12 +14,7 @@ import '../lists/selection_city_list.dart';
 import '../widgets/search_city_text_field.dart';
 
 class SelectionCityPage extends StatefulWidget {
-  const SelectionCityPage({
-    super.key,
-    required this.country,
-  });
-
-  final String country;
+  const SelectionCityPage({super.key});
 
   @override
   State<SelectionCityPage> createState() => _SelectionCityPageState();
@@ -32,7 +28,10 @@ class _SelectionCityPageState extends State<SelectionCityPage> {
   void initState() {
     super.initState();
     _editingController = TextEditingController();
-    _state = AllCitiesState(CityRepositoryImpl(CityDatabaseHelper()), widget.country);
+    _state = AllCitiesState(
+      CityRepositoryImpl(CityDatabaseHelper()),
+      context.read<PrayerState>().country,
+    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _waitForTransition();

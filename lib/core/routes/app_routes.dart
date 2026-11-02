@@ -40,8 +40,7 @@ class AppRoutes {
       );
     },
     NamesRouter.selectionCityPage: (context, args) {
-      final String countryArg = args;
-      return SelectionCityPage(country: countryArg);
+      return const SelectionCityPage();
     },
     NamesRouter.prayerParamsPage: (context, args) {
       return const PrayerParamsPage();

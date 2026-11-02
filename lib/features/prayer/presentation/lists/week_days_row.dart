@@ -25,7 +25,7 @@ class WeekDaysRow extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: AppRadius.small,
                 side: BorderSide(
-                  width: day == weekDay ? 2.0 : 0.01,
+                  width: day == weekDay ? 1.25 : 0.01,
                   color: appColors.primary,
                 ),
               ),
