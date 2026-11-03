@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:promus/core/theme/app_paddings.dart';
 
 import '../../../../core/constants/icon_paths.dart';
+import '../../../../core/routes/names_router.dart';
+import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_shapes.dart';
 import 'main_icon_item.dart';
 
@@ -9,11 +10,11 @@ class CardAdhkarReminder extends StatelessWidget {
   const CardAdhkarReminder({
     super.key,
     required this.message,
-    required this.routeName,
+    required this.chapterId,
   });
 
   final String message;
-  final String routeName;
+  final int chapterId;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,11 @@ class CardAdhkarReminder extends StatelessWidget {
       ),
       child: ListTile(
         onTap: () {
-          // Navigate with route name
+          Navigator.pushNamed(
+            context,
+            NamesRouter.fortressSupplicationsPage,
+            arguments: chapterId,
+          );
         },
         shape: AppShapes.medium,
         splashColor: appColors.secondaryContainer,

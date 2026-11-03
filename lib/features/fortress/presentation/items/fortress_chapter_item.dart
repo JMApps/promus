@@ -32,7 +32,7 @@ class FortressChapterItem extends StatelessWidget {
           Navigator.pushNamed(
             context,
             NamesRouter.fortressSupplicationsPage,
-            arguments: fortressChapterModel,
+            arguments: fortressChapterModel.chapterId,
           );
         },
         horizontalTitleGap: 8,

@@ -5,6 +5,7 @@ import 'package:hijri/hijri_calendar.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/constants/adhkar_reminders.dart';
 import '../../../core/constants/app_constant_keys.dart';
 import '../../../core/constants/app_strings.dart';
 
@@ -225,9 +226,9 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     return null;
   }
 
-  String? get adhkarMessage {
+  AdhkarReminder? get adhkarReminder {
     final index = currentAdhkarIndex;
-    return index == null ? null : AppStrings.adhkarList[index];
+    return index == null ? null : adhkarReminders[index];
   }
 
   void _updateDateTime() {

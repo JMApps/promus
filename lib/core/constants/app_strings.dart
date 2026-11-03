@@ -229,13 +229,11 @@ class AppStrings {
     'зуль-хиджа',
   ];
 
-  static const List<String> adhkarList = [
-    'Слова поминания во время азана',
-    'Слова поминания после молитвы',
-    'Время утренних азкаров',
-    'Время вечерних азкаров',
-    'Время ночных азкаров',
-  ];
+  static const String adhkarDuringAdhan = 'Слова поминания во время азана';
+  static const String adhkarAfterPrayer = 'Слова поминания после молитвы';
+  static const String adhkarMorning = 'Время утренних азкаров';
+  static const String adhkarEvening = 'Время вечерних азкаров';
+  static const String adhkarNight = 'Время ночных азкаров';
 
   static const List<String> tasbeehCountsList = [
     '--/--',

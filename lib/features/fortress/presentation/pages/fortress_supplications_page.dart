@@ -8,16 +8,17 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
 import '../lists/fortress_supplication_list.dart';
+import '../states/fortress_chapters_state.dart';
 import '../states/fortress_supplications_state.dart';
 import '../widgets/main_html_widget.dart';
 
 class FortressSupplicationsPage extends StatefulWidget {
   const FortressSupplicationsPage({
     super.key,
-    required this.fortressChapterModel,
+    required this.chapterId,
   });
 
-  final FortressChapterEntity fortressChapterModel;
+  final int chapterId;
 
   @override
   State<FortressSupplicationsPage> createState() => _FortressSupplicationsPageState();
@@ -28,34 +29,31 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
   void initState() {
     super.initState();
     final fortressSupplicationsState = context.read<FortressSupplicationState>();
-    final chapterId = widget.fortressChapterModel.chapterId;
 
-    if (fortressSupplicationsState.cachedSupplicationsByChapter(chapterId) != null) return;
+    if (fortressSupplicationsState.cachedSupplicationsByChapter(widget.chapterId) != null) return;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      fortressSupplicationsState.loadSupplicationsByChapter(chapterId);
+      fortressSupplicationsState.loadSupplicationsByChapter(widget.chapterId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final mqPadding = MediaQuery.of(context).padding;
-    final chapterId = widget.fortressChapterModel.chapterId;
+    final topPadding = MediaQuery.paddingOf(context).top;
 
     final isLoading = context.select<FortressSupplicationState, bool>((s) => s.isLoading);
     final error = context.select<FortressSupplicationState, Object?>((s) => s.error);
-    final supplications = context
-        .select<FortressSupplicationState, List<FortressSupplicationEntity>?>(
-          (s) => s.cachedSupplicationsByChapter(chapterId),
-        );
-
+    final chapter = context.select<FortressChapterState, FortressChapterEntity?>(
+          (s) => s.chapterById(widget.chapterId),
+    );
+    final supplications = context.select<FortressSupplicationState, List<FortressSupplicationEntity>?>(
+          (s) => s.cachedSupplicationsByChapter(widget.chapterId),
+    );
     return Scaffold(
       body: RawScrollbar(
-        padding: .only(
-          top: mqPadding.top + kToolbarHeight,
-        ),
+        padding: .only(top: topPadding + kToolbarHeight),
         thickness: 2.75,
         thumbColor: appColors.primary.withAlpha(125),
         radius: const .circular(AppSpacing.medium),
@@ -64,33 +62,34 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
             SliverAppBar(
               floating: true,
               pinned: false,
-              title: Text(widget.fortressChapterModel.chapterNumber),
+              title: Text(chapter?.chapterNumber ?? ''),
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: AppPaddings.topMediumSmallOther,
-                child: Ink(
-                  decoration: ShapeDecoration(
-                    shape: AppShapes.medium,
-                    gradient: LinearGradient(
-                      begin: .centerLeft,
-                      colors: [
-                        appColors.inversePrimary,
-                        appColors.tertiaryContainer,
-                        appColors.secondaryContainer,
-                      ],
+            if (chapter != null)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: AppPaddings.topMediumSmallOther,
+                  child: Ink(
+                    decoration: ShapeDecoration(
+                      shape: AppShapes.medium,
+                      gradient: LinearGradient(
+                        begin: .centerLeft,
+                        colors: [
+                          appColors.inversePrimary,
+                          appColors.tertiaryContainer,
+                          appColors.secondaryContainer,
+                        ],
+                      ),
                     ),
-                  ),
-                  child: Padding(
-                    padding: AppPaddings.small,
-                    child: MainHtmlWidget(
-                      htmlContent: widget.fortressChapterModel.chapterTitle,
-                      textAlign: .center,
+                    child: Padding(
+                      padding: AppPaddings.small,
+                      child: MainHtmlWidget(
+                        htmlContent: chapter.chapterTitle,
+                        textAlign: .center,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
             if (supplications != null)
               FortressSupplicationList(fortressChapterSupplications: supplications)
             else if (error != null && !isLoading)

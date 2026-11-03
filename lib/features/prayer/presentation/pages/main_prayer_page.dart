@@ -35,7 +35,7 @@ class MainPrayerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
     final prayer = context.watch<PrayerState>();
-    final adhkarMessage = prayer.adhkarMessage;
+    final adhkar = prayer.adhkarReminder;
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppStrings.appName),
@@ -227,13 +227,13 @@ class MainPrayerPage extends StatelessWidget {
                 ),
               ),
             ),
-            if (adhkarMessage != null) ...[
+            if (adhkar != null) ...[
               const SizedBox(height: AppSpacing.medium),
             ],
-            if (adhkarMessage != null) ...[
+            if (adhkar != null) ...[
               CardAdhkarReminder(
-                message: adhkarMessage,
-                routeName: '',
+                message: adhkar.message,
+                chapterId: adhkar.chapterId,
               ),
             ],
             const SizedBox(height: AppSpacing.medium),

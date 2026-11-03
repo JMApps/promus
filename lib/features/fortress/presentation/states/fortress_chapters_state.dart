@@ -12,11 +12,14 @@ class FortressChapterState extends ChangeNotifier {
   final FortressChapterRepository _fortressRepository;
 
   List<FortressChapterEntity> _fortressChapters = const [];
+  Map<int, FortressChapterEntity> _chapterById = const {};
   List<String> _index = const [];
   bool _isLoading = true;
   Object? _error;
 
   List<FortressChapterEntity> get fortressChapters => _fortressChapters;
+
+  FortressChapterEntity? chapterById(int id) => _chapterById[id];
 
   bool get isLoading => _isLoading;
 
@@ -27,6 +30,7 @@ class FortressChapterState extends ChangeNotifier {
       _fortressChapters = List.unmodifiable(
         await _fortressRepository.fetchAllChapters(),
       );
+      _chapterById = {for (final c in _fortressChapters) c.chapterId: c};
       _index = [
         for (final c in _fortressChapters)
           '${c.chapterId} ${c.chapterTitle}'.toLowerCase(),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:promus/features/main/pages/main_settings_page.dart';
 
-import '../../features/fortress/data/arguments/fortress_chapter_args.dart';
 import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
+import '../../features/main/pages/main_settings_page.dart';
 import '../../features/prayer/presentation/pages/prayer_params_page.dart';
 import '../../features/prayer/presentation/pages/selection_city_page.dart';
 import '../../features/quran/data/args/reader_args.dart';
@@ -38,9 +37,9 @@ class AppRoutes {
       );
     },
     NamesRouter.fortressSupplicationsPage: (context, args) {
-      final FortressChapterArgs fortressChapterArgs = FortressChapterArgs(args);
+      final int chapterId = args;
       return FortressSupplicationsPage(
-        fortressChapterModel: fortressChapterArgs.chapterEntity,
+        chapterId: chapterId,
       );
     },
     NamesRouter.selectionCityPage: (context, args) {
