@@ -141,7 +141,7 @@ class MainPrayerPage extends StatelessWidget {
               },
             ),
             const SizedBox(height: AppSpacing.small),
-            WeekDaysRow(weekDay: DateTime.now().weekday),
+            WeekDaysRow(),
             const SizedBox(height: AppSpacing.small),
             Card(
               child: Padding(
