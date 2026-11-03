@@ -82,30 +82,28 @@ class TimeState extends ChangeNotifier with WidgetsBindingObserver {
     return h.hijriToGregorian(year, month, 12);
   }
 
-  /// Сколько дней до ближайшей хиджрийской даты [hijriMonth]/[hijriDay].
-  /// Если дата сегодня, количество дней будет 0.
-  Map<String, dynamic> getDaysToHijriDate({required int hijriMonth, required int hijriDay, required String daysKey, required String dateKey}) {
+  /// Ближайшая григорианская дата для хиджрийской даты [month]/[day].
+  /// Если дата сегодня, вернёт сегодняшний день.
+  DateTime nextHijriDate(int month, int day) {
     final h = _hijriCalendar;
-    final passed = h.hMonth > hijriMonth || (h.hMonth == hijriMonth && h.hDay > hijriDay);
+    final passed = h.hMonth > month || (h.hMonth == month && h.hDay > day);
+    final year = passed ? h.hYear + 1 : h.hYear;
 
-    final targetDate = h.hijriToGregorian(
-      passed ? h.hYear + 1 : h.hYear,
-      hijriMonth,
-      hijriDay,
-    );
+    // В хиджрийском месяце 29 или 30 дней: не выходим за его границы.
+    final lastDay = h.getDaysInMonth(year, month);
+    return h.hijriToGregorian(year, month, day > lastDay ? lastDay : day);
+  }
+
+  /// Сколько дней осталось до ближайшей хиджрийской даты [month]/[day].
+  /// Если дата сегодня, вернёт 0.
+  int daysUntilHijri(int month, int day) {
+    final target = nextHijriDate(month, day);
 
     // Сравниваем только даты, без часов и минут.
     final today = DateTime.utc(_dateTime.year, _dateTime.month, _dateTime.day);
-    final target = DateTime.utc(
-      targetDate.year,
-      targetDate.month,
-      targetDate.day,
-    );
+    final targetDay = DateTime.utc(target.year, target.month, target.day);
 
-    return {
-      daysKey: target.difference(today).inDays,
-      dateKey: targetDate,
-    };
+    return targetDay.difference(today).inDays;
   }
 
   // ---------------------------------------------------------------------------

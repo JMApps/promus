@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -25,11 +24,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final List<Widget> _mainPages;
+  final ScrollController _mainPageController = ScrollController();
   final ScrollController _mushafSurahsController = ScrollController();
   final ScrollController _fortressChaptersController = ScrollController();
 
   void _scrollCurrentTabToTop(int index) {
     final controller = switch (index) {
+      0 => _mainPageController,
       1 => _mushafSurahsController,
       2 => _fortressChaptersController,
       _ => null,
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _mainPages = <Widget>[
-      const MainPrayerPage(),
+      MainPrayerPage(scrollController: _mainPageController),
       SurahNamePage(scrollController: _mushafSurahsController),
       FortressPage(scrollController: _fortressChaptersController),
       const CounterMainPage(),

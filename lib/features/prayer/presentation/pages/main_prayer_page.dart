@@ -22,7 +22,12 @@ import '../widgets/qibla_direction.dart';
 import '../widgets/remaining_prayer_time_sleek.dart';
 
 class MainPrayerPage extends StatelessWidget {
-  const MainPrayerPage({super.key});
+  const MainPrayerPage({
+    super.key,
+    required this.scrollController,
+  });
+
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +58,7 @@ class MainPrayerPage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
+        controller: scrollController,
         padding: const .only(
           left: AppSpacing.small,
           right: AppSpacing.small,
@@ -91,7 +97,7 @@ class MainPrayerPage extends StatelessWidget {
                         useSafeArea: true,
                         builder: (_) {
                           return const QiblaDirection();
-                        }
+                        },
                       );
                     },
                   ),
@@ -278,7 +284,7 @@ class MainPrayerPage extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.medium),
             const DaysToHolidays(),
-            const SizedBox(height: AppSpacing.medium * 1.5),
+            const SizedBox(height: AppSpacing.medium * 1.75),
           ],
         ),
       ),

@@ -33,7 +33,7 @@ class MainDateCardItem extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         visualDensity: .compact,
-        splashColor: appColors.surfaceDim,
+        splashColor: appColors.secondaryContainer,
         shape: AppShapes.medium,
         dense: true,
         minVerticalPadding: 0,

@@ -45,7 +45,8 @@ class AppStrings {
   static const String selectCity = 'Выбрать город';
   static const String enterQuery = 'Введите запрос';
 
-  static String qiblahDirectionDescription(String qiblahDirection) => 'Кибла на $qiblahDirection\u00B0';
+  static String qiblahDirectionDescription(String qiblahDirection) =>
+      'Кибла на $qiblahDirection\u00B0';
 
   static const List weekDays = <String>[
     'Пн',
@@ -68,6 +69,7 @@ class AppStrings {
   static const String lastThirdNight = '1/3 ночи';
 
   static const String daysToRamadan = 'Дней до Рамадана';
+  static const String holyRamadan = 'Священный Рамадан';
 
   static const String loadData = 'Загрузка данных';
   static const String errorLoad = 'Ошибка загрузки';
@@ -142,6 +144,15 @@ class AppStrings {
     Madhab.shafi,
     Madhab.hanafi,
   ];
+
+  static const holidayRamadanStart = 'Начало Рамадана';
+  static const holidayEidAlFitr = '\'Ид аль-Фитр';
+  static const holidayDhulhijjahStart = 'Начало Зуль-хиджи';
+  static const holidayArafah = 'День \'Арафа';
+  static const holidayEidAlAdha = '\'Ид аль-Адха';
+  static const holidayAshura = 'День \'Ашура';
+  static const today = 'Сегодня';
+  static const daysShort = 'дн.';
 
   static const List<String> prayerCalculationNamesList = [
     'Russia',
@@ -224,7 +235,8 @@ class AppStrings {
     '1000',
   ];
 
-  static String searchByQuery(String query, String matches) => 'По запросу «$query»\n$matches';
+  static String searchByQuery(String query, String matches) =>
+      'По запросу «$query»\n$matches';
 
   static String searchError(String error) => 'Ошибка поиска: $error';
 }

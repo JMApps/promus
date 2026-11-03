@@ -11,7 +11,6 @@ class LoadDataWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Column(
-        crossAxisAlignment: .stretch,
         mainAxisAlignment: .center,
         children: [
           Text(

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:promus/features/prayer/state/prayer_state.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -9,6 +8,7 @@ import '../../../../core/database/city_database_helper.dart';
 import '../../../other/widgets/error_load_data_widget.dart';
 import '../../../other/widgets/load_data_widget.dart';
 import '../../data/repositories/city_repository_impl.dart';
+import '../../state/prayer_state.dart';
 import '../../state/selection_cities_state.dart';
 import '../lists/selection_city_list.dart';
 import '../widgets/search_city_text_field.dart';
