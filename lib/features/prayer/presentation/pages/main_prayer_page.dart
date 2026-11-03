@@ -47,7 +47,12 @@ class MainPrayerPage extends StatelessWidget {
               iconPath: IconPaths.iconPathSetting,
               iconColor: appColors.primary,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                NamesRouter.mainSettingsPage,
+              );
+            },
           ),
           // CupertinoButton(
           //   padding: const .only(right: AppSpacing.medium),

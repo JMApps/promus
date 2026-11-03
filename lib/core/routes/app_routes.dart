@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:promus/features/main/pages/main_settings_page.dart';
 
 import '../../features/fortress/data/arguments/fortress_chapter_args.dart';
 import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
@@ -23,6 +24,9 @@ class AppRoutes {
   }
 
   static Map<String, Widget Function(BuildContext, dynamic)> routes = {
+    NamesRouter.mainSettingsPage: (context, args) {
+      return const MainSettingsPage();
+    },
     NamesRouter.pageReader: (context, args) {
       final ReaderArgs readerArgs = ReaderArgs(
         pageNumber: args.pageNumber,

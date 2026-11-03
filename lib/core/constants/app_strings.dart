@@ -14,6 +14,15 @@ class AppStrings {
   static const String settings = 'Настройки';
   static const String params = 'Параметры';
 
+  static const String alwaysOnDisplay = 'Дисплей всегда включён';
+  static const String theme = 'Тема';
+  static const String themeSystem = 'Системная';
+  static const String themeLight = 'Светлая';
+  static const String themeDark = 'Тёмная';
+  static const String themeColor = 'Цвет темы';
+  static const String selectionColor = 'Выберите цвет';
+  static const String close = 'Закрыть';
+
   static const String searchByChapters = 'Поиск по главам';
   static const String searchBySurahs = 'Поиск по сурам';
   static const String startSearch = 'Начните поиск';

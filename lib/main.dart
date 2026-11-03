@@ -14,6 +14,7 @@ import 'features/fortress/presentation/states/fortress_chapters_state.dart';
 import 'features/fortress/presentation/states/fortress_footnote_state.dart';
 import 'features/fortress/presentation/states/fortress_supplications_state.dart';
 import 'features/main/pages/root_page.dart';
+import 'features/main/state/main_settings_state.dart';
 import 'features/main/state/main_state.dart';
 import 'features/prayer/state/prayer_state.dart';
 import 'features/prayer/state/time_state.dart';
@@ -31,6 +32,7 @@ import 'features/quran/surah/states/surah_name_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
 
@@ -45,6 +47,7 @@ void main() async {
     MushafDatabaseHelper.instance.db.then((_) {}, onError: (_) {});
   });
 
+  final mainAppSettings = Hive.box(AppConstantKeys.mainAppSettingsBox);
   final appCounterBox = Hive.box(AppConstantKeys.keyMainCounterBox);
   final bookmarksSurahsBox = Hive.box(AppConstantKeys.keyBookmarksSurahsBox);
 
@@ -54,6 +57,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => MainSettingsState(mainAppSettingsBox: mainAppSettings),
+        ),
         ChangeNotifierProvider(
           create: (_) => MainState(),
         ),
