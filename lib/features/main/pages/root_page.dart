@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import '../../../core/constants/app_strings.dart';
 import '../../../core/routes/app_routes.dart';
@@ -18,6 +20,14 @@ class RootPage extends StatelessWidget {
       title: AppStrings.appName,
       theme: appTheme.lightTheme,
       darkTheme: appTheme.darkTheme,
+      locale: const Locale('ru'),
+      supportedLocales: const [Locale('ru')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        SfGlobalLocalizations.delegate,
+      ],
       onGenerateRoute: AppRoutes.onRouteGenerator,
       builder: (context, child) {
         return SafeArea(

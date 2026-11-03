@@ -14,6 +14,8 @@ import '../widgets/card_additional_times.dart';
 import '../widgets/card_adhkar_reminder.dart';
 import '../widgets/days_to_holidays.dart';
 import '../widgets/elapsed_prayer_time_sleek.dart';
+import '../widgets/gregorian_date_picker.dart';
+import '../widgets/hijri_date_picker.dart';
 import '../widgets/main_city_cupertino_button.dart';
 import '../widgets/main_cupertino_button.dart';
 import '../widgets/main_date_card_item.dart';
@@ -113,13 +115,25 @@ class MainPrayerPage extends StatelessWidget {
             MainDateCardItem(
               dateText: prayer.gregorianDateText,
               itemColor: appColors.primary,
-              onTap: () {},
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  showDragHandle: true,
+                  builder: (_) => const GregorianDatePicker(),
+                );
+              },
             ),
             const SizedBox(height: AppSpacing.small),
             MainDateCardItem(
               dateText: prayer.hijriDateText,
               itemColor: appColors.tertiary,
-              onTap: () {},
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  showDragHandle: true,
+                  builder: (_) => const HijriDatePicker(),
+                );
+              },
             ),
             const SizedBox(height: AppSpacing.small),
             WeekDaysRow(weekDay: DateTime.now().weekday),

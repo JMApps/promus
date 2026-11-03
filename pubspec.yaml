@@ -12,6 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
+
+  syncfusion_localizations: ^35.1.43
+
   cupertino_icons: ^2.0.0
   adhan: ^2.0.0+1
   flutter_html: ^3.0.0
