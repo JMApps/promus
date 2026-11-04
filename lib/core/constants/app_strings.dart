@@ -28,6 +28,7 @@ class AppStrings {
   static const String startSearch = 'Начните поиск';
   static const String searchAyahs = 'Поиск аятов';
   static const String strShort = 'Стр.';
+  static const String minShort = 'Мин.';
   static const String medina = 'Медина';
   static const String mecca = 'Мекка';
   static const String favorites = 'Избранное';
@@ -47,6 +48,7 @@ class AppStrings {
   static const String showCountLabel = 'Показать количество';
   static const String countReset = 'Счётчик сброшен';
   static const String undo = 'Отменить';
+  static const String ready = 'Готово';
   static const String cancel = 'Отмена';
   static const String select = 'Выбрать';
 
@@ -54,8 +56,7 @@ class AppStrings {
   static const String selectCity = 'Выбрать город';
   static const String enterQuery = 'Введите запрос';
 
-  static String qiblahDirectionDescription(String qiblahDirection) =>
-      'Кибла на $qiblahDirection\u00B0';
+  static String qiblahDirectionDescription(String qiblahDirection) => 'Кибла на $qiblahDirection\u00B0';
 
   static const List weekDays = <String>[
     'Пн',
@@ -67,11 +68,28 @@ class AppStrings {
     'Вс',
   ];
 
+  static const String notifications = 'Уведомления';
+  static const String nearWhiteDays = 'Приблизились белые дни';
+  static const String whiteDays = 'Белые дни';
+  static const String prayers = 'Молитвы';
+  static const String ikamahs = 'Икамы';
+  static const String friday = 'Пятница';
+  static const String fasting = 'Пост';
+  static const String fastMonday = 'Пост в понедельник';
+  static const String fastThursday = 'Пост в четверг';
+  static const String tomorrowFriday = 'Завтра пятница';
+  static const String lastFridayHour = 'Последний час пятницы';
+  static const String tomorrowDesirableFastingDay = 'Завтра день желательного поста';
+  static const String desirableFastingDay = 'День желательного поста';
+  static const String remind = 'Напоминание';
+
+  static const String prayerTime = 'Время молитвы';
   static const String prayerFajr = 'Фаджр';
   static const String prayerDhuhr = 'Зухр';
   static const String prayerAsr = '\'Аср';
   static const String prayerMaghrib = 'Магриб';
   static const String prayerIsha = '\'Иша';
+  static const String sunriseDuha = 'Восход (Духа)';
 
   static const String sunrise = 'Восход';
   static const String midnight = 'Полночь';
@@ -242,8 +260,7 @@ class AppStrings {
     '1000',
   ];
 
-  static String searchByQuery(String query, String matches) =>
-      'По запросу «$query»\n$matches';
+  static String searchByQuery(String query, String matches) => 'По запросу «$query»\n$matches';
 
   static String searchError(String error) => 'Ошибка поиска: $error';
 }

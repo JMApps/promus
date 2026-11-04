@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
+import '../../features/main/pages/main_notifications_page.dart';
 import '../../features/main/pages/main_settings_page.dart';
 import '../../features/prayer/presentation/pages/prayer_params_page.dart';
 import '../../features/prayer/presentation/pages/selection_city_page.dart';
@@ -25,6 +26,9 @@ class AppRoutes {
   static Map<String, Widget Function(BuildContext, dynamic)> routes = {
     NamesRouter.mainSettingsPage: (context, args) {
       return const MainSettingsPage();
+    },
+    NamesRouter.mainNotificationsPage: (context, args) {
+      return const MainNotificationsPage();
     },
     NamesRouter.pageReader: (context, args) {
       final ReaderArgs readerArgs = ReaderArgs(

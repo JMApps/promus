@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppSettingStrings {
   AppSettingStrings._();
 
-  static const MaterialColor defaultThemeColor = Colors.teal;
+  static const MaterialColor defaultThemeColor = Colors.amber;
 
   static const String keyThemeMode = 'theme_mode';
   static const String keyThemeColor = 'theme_color';

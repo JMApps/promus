@@ -46,6 +46,7 @@ dependencies:
   pasteboard: ^0.5.0
   html: ^0.15.4
   responsive_builder: ^0.7.1
+  flutter_timezone: ^5.1.1
 
 dev_dependencies:
   flutter_test:
