@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/app_strings.dart';
@@ -62,14 +63,13 @@ class SurahNamePage extends StatelessWidget {
                 centerTitle: false,
                 title: const Text(AppStrings.titleMushaf),
                 actions: [
-                  IconButton.filledTonal(
+                  GlassIconButton(
                     onPressed: () {
                       showSearch<void>(
                         context: context,
                         delegate: SearchAyahsDelegate(),
                       );
                     },
-                    tooltip: AppStrings.searchAyahs,
                     icon: const Icon(Icons.search),
                   ),
                 ],

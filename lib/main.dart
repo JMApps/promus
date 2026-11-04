@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:liquid_glass_widgets/liquid_glass_setup.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:promus/core/constants/notification_keys.dart';
-import 'package:promus/features/main/state/notification_settings_state.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/app_constant_keys.dart';
+import 'core/constants/notification_keys.dart';
 import 'core/database/fortress_database_helper.dart';
 import 'core/database/mushaf_database_helper.dart';
 import 'features/counter/state/main_counter_state.dart';
@@ -18,6 +18,7 @@ import 'features/fortress/presentation/states/fortress_supplications_state.dart'
 import 'features/main/pages/root_page.dart';
 import 'features/main/state/main_settings_state.dart';
 import 'features/main/state/main_state.dart';
+import 'features/main/state/notification_settings_state.dart';
 import 'features/prayer/state/prayer_state.dart';
 import 'features/prayer/state/time_state.dart';
 import 'features/quran/ayahs/states/ayah_by_ayah_state.dart';
@@ -34,6 +35,7 @@ import 'features/quran/surah/states/surah_name_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await LiquidGlassWidgets.initialize();
 
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
@@ -50,32 +52,44 @@ void main() async {
     MushafDatabaseHelper.instance.db.then((_) {}, onError: (_) {});
   });
 
-  final mainNotificationsBox = Hive.box(NotificationKeys.keyMainNotificationsBox);
+  final mainNotificationsBox = Hive.box(
+    NotificationKeys.keyMainNotificationsBox,
+  );
   final mainAppSettingsBox = Hive.box(AppConstantKeys.keyMainAppSettingsBox);
+  final settingsPrayerTimeBox = Hive.box(
+    AppConstantKeys.keySettingsPrayerTimeBox,
+  );
   final bookmarksSurahsBox = Hive.box(AppConstantKeys.keyBookmarksSurahsBox);
   final appCounterBox = Hive.box(AppConstantKeys.keyMainCounterBox);
 
-  final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
-  final MushafDatabaseHelper mushafDatabaseHelper = MushafDatabaseHelper.instance;
+  final FortressDatabaseHelper fortressDatabaseHelper =
+      FortressDatabaseHelper.instance;
+  final MushafDatabaseHelper mushafDatabaseHelper =
+      MushafDatabaseHelper.instance;
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => MainSettingsState(mainAppSettingsBox: mainAppSettingsBox),
+          create: (_) => MainSettingsState(
+            mainAppSettingsBox: mainAppSettingsBox,
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => MainState(),
         ),
         ChangeNotifierProvider(
-          create: (_) => NotificationSettingsState(mainNotificationsBox: mainNotificationsBox),
+          create: (_) => NotificationSettingsState(
+            mainNotificationsBox: mainNotificationsBox,
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => TimeState(),
         ),
         ChangeNotifierProvider(
-          create: (_) =>
-              PrayerState(Hive.box(AppConstantKeys.keySettingsPrayerTimeBox)),
+          create: (_) => PrayerState(
+            settingsPrayerTimeBox: settingsPrayerTimeBox,
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => SurahNameState(

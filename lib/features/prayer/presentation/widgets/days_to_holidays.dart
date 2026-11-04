@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -47,20 +48,27 @@ class DaysToHolidays extends StatelessWidget {
             final isRamadan = state.isRamadan();
             return (
               isRamadan: isRamadan,
-              value: isRamadan ? state.getHijriDateTime.hDay : state.daysUntilHijri(9, 1),
+              value: isRamadan
+                  ? state.getHijriDateTime.hDay
+                  : state.daysUntilHijri(9, 1),
             );
           },
           builder: (_, data, _) => Row(
             children: [
               Expanded(
                 child: Text(
-                  data.isRamadan ? AppStrings.holyRamadan : AppStrings.daysToRamadan,
+                  data.isRamadan
+                      ? AppStrings.holyRamadan
+                      : AppStrings.daysToRamadan,
                   maxLines: 1,
                   overflow: .ellipsis,
                 ),
               ),
               const SizedBox(width: AppSpacing.medium),
-              Text('${data.value}'),
+              GlassContainer(
+                padding: AppPaddings.hrMediumVrSmall,
+                child: Text(data.value.toString()),
+              ),
             ],
           ),
         ),

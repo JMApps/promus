@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../core/routes/names_router.dart';
 import '../../../../core/theme/app_paddings.dart';
@@ -7,7 +6,6 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../states/fortress_chapters_state.dart';
 
 class CustomChapterCardItem extends StatelessWidget {
   const CustomChapterCardItem({
@@ -40,13 +38,10 @@ class CustomChapterCardItem extends StatelessWidget {
       child: InkWell(
         borderRadius: AppRadius.medium,
         onTap: () async {
-          final chapter = context
-              .read<FortressChapterState>()
-              .fortressChapters[chapterNumber - 1];
           await Navigator.pushNamed(
             context,
             NamesRouter.fortressSupplicationsPage,
-            arguments: chapter,
+            arguments: chapterNumber,
           );
         },
         child: Padding(

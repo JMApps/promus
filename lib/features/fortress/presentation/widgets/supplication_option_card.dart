@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:html/parser.dart' as html_parser;
+import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
+import 'package:promus/core/theme/app_paddings.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/constants/app_strings.dart';
-import '../../../../core/theme/app_paddings.dart';
-import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
@@ -30,7 +30,7 @@ class SupplicationOptionCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: .end,
       children: [
-        IconButton(
+        GlassIconButton(
           onPressed: () async {
             final content = await _fullContent(context);
             await Clipboard.setData(ClipboardData(text: content));
@@ -49,10 +49,10 @@ class SupplicationOptionCard extends StatelessWidget {
               ),
             );
           },
-          padding: .zero,
-          icon: const Icon(Icons.copy),
+          icon: const Icon(Icons.copy_rounded),
         ),
-        IconButton(
+        const SizedBox(width: AppSpacing.small),
+        GlassIconButton(
           onPressed: () async {
             final box = context.findRenderObject() as RenderBox?;
             final content = await _fullContent(context);
@@ -60,25 +60,18 @@ class SupplicationOptionCard extends StatelessWidget {
             await SharePlus.instance.share(
               ShareParams(
                 text: content,
-                sharePositionOrigin: box != null ? box.localToGlobal(Offset.zero) & box.size : null,
+                sharePositionOrigin: box != null
+                    ? box.localToGlobal(Offset.zero) & box.size
+                    : null,
               ),
             );
           },
-          padding: .zero,
           icon: const Icon(Icons.ios_share),
         ),
-        const SizedBox(width: AppSpacing.medium),
-        Card(
-          color: appColors.inversePrimary,
-          shape: AppShapes.small,
-          elevation: 0,
-          child: Padding(
-            padding: AppPaddings.hrMediumVrXSmall,
-            child: Text(
-              '$index/$supplicationsLength',
-              style: AppTextStyles.small,
-            ),
-          ),
+        const SizedBox(width: AppSpacing.small),
+        GlassContainer(
+          padding: AppPaddings.hrMediumVrSmall,
+          child: Text('$index/$supplicationsLength'),
         ),
         const SizedBox(width: AppSpacing.medium),
       ],
@@ -86,7 +79,10 @@ class SupplicationOptionCard extends StatelessWidget {
   }
 
   Future<String> _fullContent(BuildContext context) async {
-    final footnoteContent = await _footnoteContent(context, supplicationModel.supplicationId);
+    final footnoteContent = await _footnoteContent(
+      context,
+      supplicationModel.supplicationId,
+    );
     return [
       _supplicationContent(supplicationModel),
       footnoteContent,
@@ -103,11 +99,17 @@ class SupplicationOptionCard extends StatelessWidget {
     return parts.join('\n\n');
   }
 
-  Future<String> _footnoteContent(BuildContext context, int supplicationId) async {
+  Future<String> _footnoteContent(
+    BuildContext context,
+    int supplicationId,
+  ) async {
     final footnoteState = context.read<FortressFootnoteState>();
     await footnoteState.loadFootnotesBySupplication(supplicationId);
-    return _stripHtml(footnoteState.formattedFootnotesText(supplicationId) ?? '');
+    return _stripHtml(
+      footnoteState.formattedFootnotesText(supplicationId) ?? '',
+    );
   }
 
-  String _stripHtml(String htmlString) => html_parser.parse(htmlString).body?.text ?? '';
+  String _stripHtml(String htmlString) =>
+      html_parser.parse(htmlString).body?.text ?? '';
 }

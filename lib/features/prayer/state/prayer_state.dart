@@ -9,8 +9,6 @@ import '../../../core/constants/adhkar_reminders.dart';
 import '../../../core/constants/app_constant_keys.dart';
 import '../../../core/constants/app_strings.dart';
 
-/// Готовые данные одного круга: имя, длительность и прогресс 0..1.
-/// Виджеты получают только это и ничего не считают сами.
 class SleekData {
   const SleekData({
     required this.name,
@@ -22,7 +20,6 @@ class SleekData {
   final Duration duration;
   final double progress;
 
-  /// Длительность в формате HH:mm.
   String get timeText {
     final h = duration.inHours.toString().padLeft(2, '0');
     final m = (duration.inMinutes % 60).toString().padLeft(2, '0');
@@ -41,7 +38,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   // Обычный DateTime.now() честно даёт локальные настенные часы.
   // ---------------------------------------------------------------------------
 
-  late final Box _settingsPrayerTimeBox;
+  final Box _settingsPrayerTimeBox;
   DateTime _dateTime = DateTime.now();
   final Cron _cron = Cron();
   static const Duration hourInterval = Duration(hours: 1);
@@ -70,7 +67,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   late bool _dst;
   late int _asrMethodIndex;
 
-  PrayerState(this._settingsPrayerTimeBox) {
+  PrayerState({required this._settingsPrayerTimeBox}) {
     WidgetsBinding.instance.addObserver(this);
 
     _fajrAdjustment = _settingsPrayerTimeBox.get(
