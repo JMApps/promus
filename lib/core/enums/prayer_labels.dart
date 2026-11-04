@@ -2,7 +2,7 @@ import '../constants/app_strings.dart';
 
 enum PrayerLabels {
   fajr(AppStrings.prayerFajr),
-  sunrise(AppStrings.sunriseDuha),
+  sunrise(AppStrings.sunrise),
   dhuhr(AppStrings.prayerDhuhr),
   asr(AppStrings.prayerAsr),
   maghrib(AppStrings.prayerMaghrib),

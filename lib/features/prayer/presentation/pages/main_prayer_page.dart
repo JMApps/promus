@@ -104,7 +104,12 @@ class MainPrayerPage extends StatelessWidget {
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathCalendar,
                     iconColor: appColors.primary,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        NamesRouter.monthlyPrayersPage,
+                      );
+                    },
                   ),
                   MainCupertinoButton(
                     iconPath: IconPaths.iconPathQiblah,

@@ -7,4 +7,5 @@ class NamesRouter {
   static const String fortressSupplicationsPage = 'fortress_supplications_page';
   static const String selectionCityPage = 'selection_city_page';
   static const String prayerParamsPage = 'prayer_params_page';
+  static const String monthlyPrayersPage = 'monthly_prayers_page';
 }

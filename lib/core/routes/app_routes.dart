@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../features/fortress/presentation/pages/fortress_supplications_page.dart';
 import '../../features/main/pages/main_notifications_page.dart';
 import '../../features/main/pages/main_settings_page.dart';
+import '../../features/prayer/presentation/pages/monthly_prayers_page.dart';
 import '../../features/prayer/presentation/pages/prayer_params_page.dart';
 import '../../features/prayer/presentation/pages/selection_city_page.dart';
 import '../../features/quran/data/args/reader_args.dart';
@@ -51,6 +52,9 @@ class AppRoutes {
     },
     NamesRouter.prayerParamsPage: (context, args) {
       return const PrayerParamsPage();
+    },
+    NamesRouter.monthlyPrayersPage: (context, args) {
+      return const MonthlyPrayersPage();
     },
   };
 }

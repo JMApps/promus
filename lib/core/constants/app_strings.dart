@@ -51,6 +51,7 @@ class AppStrings {
   static const String ready = 'Готово';
   static const String cancel = 'Отмена';
   static const String select = 'Выбрать';
+  static const String monthlySchedule = 'Расписание на месяц';
 
   static const String selectionCity = 'Выбор города';
   static const String selectCity = 'Выбрать город';
