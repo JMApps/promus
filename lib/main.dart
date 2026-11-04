@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:promus/core/constants/notification_keys.dart';
+import 'package:promus/features/main/state/notification_settings_state.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/app_constant_keys.dart';
@@ -37,19 +39,21 @@ void main() async {
   Hive.init(dir.path);
 
   await Future.wait([
+    Hive.openBox(NotificationKeys.keyMainNotificationsBox),
+    Hive.openBox(AppConstantKeys.keyMainAppSettingsBox),
     Hive.openBox(AppConstantKeys.keySettingsPrayerTimeBox),
-    Hive.openBox(AppConstantKeys.mainAppSettingsBox),
-    Hive.openBox(AppConstantKeys.keyMainCounterBox),
     Hive.openBox(AppConstantKeys.keyBookmarksSurahsBox),
+    Hive.openBox(AppConstantKeys.keyMainCounterBox),
   ]);
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
     MushafDatabaseHelper.instance.db.then((_) {}, onError: (_) {});
   });
 
-  final mainAppSettings = Hive.box(AppConstantKeys.mainAppSettingsBox);
-  final appCounterBox = Hive.box(AppConstantKeys.keyMainCounterBox);
+  final mainNotificationsBox = Hive.box(NotificationKeys.keyMainNotificationsBox);
+  final mainAppSettingsBox = Hive.box(AppConstantKeys.keyMainAppSettingsBox);
   final bookmarksSurahsBox = Hive.box(AppConstantKeys.keyBookmarksSurahsBox);
+  final appCounterBox = Hive.box(AppConstantKeys.keyMainCounterBox);
 
   final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
   final MushafDatabaseHelper mushafDatabaseHelper = MushafDatabaseHelper.instance;
@@ -58,10 +62,13 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => MainSettingsState(mainAppSettingsBox: mainAppSettings),
+          create: (_) => MainSettingsState(mainAppSettingsBox: mainAppSettingsBox),
         ),
         ChangeNotifierProvider(
           create: (_) => MainState(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NotificationSettingsState(mainNotificationsBox: mainNotificationsBox),
         ),
         ChangeNotifierProvider(
           create: (_) => TimeState(),

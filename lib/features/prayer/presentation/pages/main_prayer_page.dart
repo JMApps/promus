@@ -42,7 +42,20 @@ class MainPrayerPage extends StatelessWidget {
         centerTitle: false,
         actions: [
           CupertinoButton(
-            padding: .zero,
+            padding: AppPaddings.leftXSmall,
+            child: MainIconItem(
+              iconPath: IconPaths.iconPathNotifications,
+              iconColor: appColors.primary,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                NamesRouter.mainNotificationsPage,
+              );
+            },
+          ),
+          CupertinoButton(
+            padding: AppPaddings.rightMedium,
             child: MainIconItem(
               iconPath: IconPaths.iconPathSetting,
               iconColor: appColors.primary,
@@ -54,14 +67,6 @@ class MainPrayerPage extends StatelessWidget {
               );
             },
           ),
-          // CupertinoButton(
-          //   padding: const .only(right: AppSpacing.medium),
-          //   child: MainIconItem(
-          //     iconPath: IconPaths.iconPathLibrary,
-          //     iconColor: appColors.primary,
-          //   ),
-          //   onPressed: () {},
-          // ),
         ],
       ),
       body: SingleChildScrollView(
@@ -107,11 +112,6 @@ class MainPrayerPage extends StatelessWidget {
                         },
                       );
                     },
-                  ),
-                  MainCupertinoButton(
-                    iconPath: IconPaths.iconPathNotifications,
-                    iconColor: appColors.primary,
-                    onPressed: () {},
                   ),
                 ],
               ),
