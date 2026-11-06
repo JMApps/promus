@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_strings.dart';
@@ -44,8 +43,9 @@ class ResetCurrentCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassIconButton(
+    return IconButton.filledTonal(
       onPressed: () => _reset(context),
+      tooltip: AppStrings.reset,
       icon: const Icon(Icons.refresh_rounded),
     );
   }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:html/parser.dart' as html_parser;
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
-import 'package:promus/core/theme/app_paddings.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -30,7 +28,7 @@ class SupplicationOptionCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: .end,
       children: [
-        GlassIconButton(
+        IconButton.filledTonal(
           onPressed: () async {
             final content = await _fullContent(context);
             await Clipboard.setData(ClipboardData(text: content));
@@ -52,7 +50,7 @@ class SupplicationOptionCard extends StatelessWidget {
           icon: const Icon(Icons.copy_rounded),
         ),
         const SizedBox(width: AppSpacing.small),
-        GlassIconButton(
+        IconButton.filledTonal(
           onPressed: () async {
             final box = context.findRenderObject() as RenderBox?;
             final content = await _fullContent(context);
@@ -69,8 +67,7 @@ class SupplicationOptionCard extends StatelessWidget {
           icon: const Icon(Icons.ios_share),
         ),
         const SizedBox(width: AppSpacing.small),
-        GlassContainer(
-          padding: AppPaddings.hrMediumVrSmall,
+        CircleAvatar(
           child: Text('$index/$supplicationsLength'),
         ),
         const SizedBox(width: AppSpacing.medium),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:liquid_glass_widgets/liquid_glass_setup.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +34,6 @@ import 'features/quran/surah/states/surah_name_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await LiquidGlassWidgets.initialize();
 
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);

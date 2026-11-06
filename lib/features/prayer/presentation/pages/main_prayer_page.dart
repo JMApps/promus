@@ -1,7 +1,6 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -42,14 +41,13 @@ class MainPrayerPage extends StatelessWidget {
         title: const Text(AppStrings.appName),
         centerTitle: false,
         actions: [
-          GlassButton(
-            width: 41.0,
-            height: 41.0,
+          IconButton.filledTonal(
+            tooltip: AppStrings.notifications,
             icon: MainIconItem(
               iconPath: IconPaths.iconPathNotifications,
               iconColor: appColors.primary,
             ),
-            onTap: () {
+            onPressed: () {
               Navigator.pushNamed(
                 context,
                 NamesRouter.mainNotificationsPage,
@@ -57,14 +55,13 @@ class MainPrayerPage extends StatelessWidget {
             },
           ),
           const SizedBox(width: AppSpacing.small),
-          GlassButton(
-            width: 41.0,
-            height: 41.0,
+          IconButton.filledTonal(
+            tooltip: AppStrings.settings,
             icon: MainIconItem(
               iconPath: IconPaths.iconPathSetting,
               iconColor: appColors.primary,
             ),
-            onTap: () {
+            onPressed: () {
               Navigator.pushNamed(
                 context,
                 NamesRouter.mainSettingsPage,

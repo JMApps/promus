@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -62,7 +61,7 @@ class FortressPage extends StatelessWidget {
                 centerTitle: false,
                 title: const Text(AppStrings.titleFortress),
                 actions: [
-                  GlassIconButton(
+                  IconButton.filledTonal(
                     onPressed: () {
                       showSearch(
                         context: context,
@@ -71,6 +70,7 @@ class FortressPage extends StatelessWidget {
                         ),
                       );
                     },
+                    tooltip: AppStrings.searchByChapters,
                     icon: const Icon(Icons.search),
                   ),
                 ],
