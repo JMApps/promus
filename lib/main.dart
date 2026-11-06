@@ -50,20 +50,14 @@ void main() async {
     MushafDatabaseHelper.instance.db.then((_) {}, onError: (_) {});
   });
 
-  final mainNotificationsBox = Hive.box(
-    NotificationKeys.keyMainNotificationsBox,
-  );
+  final mainNotificationsBox = Hive.box(NotificationKeys.keyMainNotificationsBox);
   final mainAppSettingsBox = Hive.box(AppConstantKeys.keyMainAppSettingsBox);
-  final settingsPrayerTimeBox = Hive.box(
-    AppConstantKeys.keySettingsPrayerTimeBox,
-  );
+  final settingsPrayerTimeBox = Hive.box(AppConstantKeys.keySettingsPrayerTimeBox);
   final bookmarksSurahsBox = Hive.box(AppConstantKeys.keyBookmarksSurahsBox);
   final appCounterBox = Hive.box(AppConstantKeys.keyMainCounterBox);
 
-  final FortressDatabaseHelper fortressDatabaseHelper =
-      FortressDatabaseHelper.instance;
-  final MushafDatabaseHelper mushafDatabaseHelper =
-      MushafDatabaseHelper.instance;
+  final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
+  final MushafDatabaseHelper mushafDatabaseHelper = MushafDatabaseHelper.instance;
 
   runApp(
     MultiProvider(
