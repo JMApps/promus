@@ -5,7 +5,7 @@ import '../../../../core/constants/hijri_holidays.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../state/time_state.dart';
-import '../items/holiday_Item.dart';
+import '../items/holiday_item.dart';
 
 class HolidaysList extends StatelessWidget {
   const HolidaysList({super.key});

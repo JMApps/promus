@@ -520,7 +520,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   void resetAdjustments() {
     if (_adjustments.values.every((v) => v == 0)) return;
-    _adjustments.updateAll((_, __) => 0);
+    _adjustments.updateAll((_, _) => 0);
     _settingsPrayerTimeBox.putAll({for (final key in _adjustmentKeys.values) key: 0});
     initPrayerTime();
   }

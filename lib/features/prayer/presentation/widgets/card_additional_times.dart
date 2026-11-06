@@ -37,7 +37,6 @@ class CardAdditionalTimes extends StatelessWidget {
       ),
       min: 0,
       max: 100,
-      initialValue: 75,
       innerWidget: (_) => Column(
         mainAxisSize: .min,
         mainAxisAlignment: .center,
