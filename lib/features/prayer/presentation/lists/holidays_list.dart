@@ -15,12 +15,11 @@ class HolidaysList extends StatelessWidget {
     final time = context.watch<TimeState>();
 
     final items = [
-      for (final h in hijriHolidays)
-        (
-          title: h.title,
-          date: time.nextHijriDate(h.month, h.day),
-          days: time.daysUntilHijri(h.month, h.day),
-        ),
+      for (final h in hijriHolidays)(
+      title: h.title,
+      date: time.nextHijriDate(h.month, h.day),
+      days: time.daysUntilHijri(h.month, h.day),
+      ),
     ]..sort((a, b) => a.days.compareTo(b.days));
 
     return ListView.separated(
