@@ -16,6 +16,7 @@ class MainCityCupertinoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
+    final city = context.select<PrayerState, String>((s) => s.city);
     return CupertinoButton(
       padding: AppPaddings.small,
       onPressed: () {
@@ -34,7 +35,7 @@ class MainCityCupertinoButton extends StatelessWidget {
           const SizedBox(width: AppSpacing.small),
           Flexible(
             child: Text(
-              context.watch<PrayerState>().city,
+              city,
               style: AppTextStyles.medium.copyWith(
                 color: appColors.tertiary,
               ),

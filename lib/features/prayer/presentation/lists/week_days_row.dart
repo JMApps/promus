@@ -13,36 +13,32 @@ class WeekDaysRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final weekDay = context.select<TimeState, int>((s) => s.getDateTime.weekday);
-    return SizedBox(
-      height: 35,
-      child: Row(
-        spacing: AppSpacing.small,
-        children: [
-          for (var day = DateTime.monday; day <= DateTime.sunday; day++)
-            Expanded(
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: AppRadius.small,
-                  side: BorderSide(
-                    width: day == weekDay ? 1.25 : 0.01,
+    final weekDay = context.select<TimeState, int>(
+      (s) => s.getDateTime.weekday,
+    );
+    return Row(
+      spacing: AppSpacing.small,
+      children: [
+        for (var day = 1; day <= 7; day++)
+          Expanded(
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: AppRadius.small,
+                side: day == weekDay ? BorderSide(width: 1.5, color: appColors.primary) : .none,
+              ),
+              child: Padding(
+                padding: AppPaddings.small,
+                child: Text(
+                  AppStrings.weekDays[day - 1],
+                  style: TextStyle(
                     color: appColors.primary,
                   ),
-                ),
-                child: Padding(
-                  padding: AppPaddings.hrMediumVrXSmall,
-                  child: Text(
-                    AppStrings.weekDays[day - 1],
-                    style: TextStyle(
-                      color: appColors.primary,
-                    ),
-                    textAlign: .center,
-                  ),
+                  textAlign: .center,
                 ),
               ),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

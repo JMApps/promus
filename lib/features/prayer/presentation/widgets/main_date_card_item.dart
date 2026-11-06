@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_shapes.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_spacing.dart';
 
 class MainDateCardItem extends StatelessWidget {
   const MainDateCardItem({
@@ -38,17 +38,16 @@ class MainDateCardItem extends StatelessWidget {
         dense: true,
         minVerticalPadding: 0,
         minTileHeight: 0,
-        horizontalTitleGap: 8,
+        horizontalTitleGap: AppSpacing.small,
         contentPadding: AppPaddings.hrMediumVrSmall,
         title: Text(
           dateText,
-          style: AppTextStyles.small,
           overflow: .ellipsis,
         ),
         leading: Icon(
           Icons.calendar_month_rounded,
           color: itemColor,
-          size: 17.5,
+          size: AppSpacing.large,
         ),
         trailing: const Icon(Icons.keyboard_arrow_right_rounded),
       ),

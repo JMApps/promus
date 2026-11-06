@@ -31,7 +31,6 @@ class DaysToHolidays extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             useSafeArea: true,
-            showDragHandle: true,
             builder: (_) => const SafeArea(
               top: false,
               child: HolidaysList(),
@@ -54,17 +53,13 @@ class DaysToHolidays extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  data.isRamadan
-                      ? AppStrings.holyRamadan
-                      : AppStrings.daysToRamadan,
+                  data.isRamadan ? AppStrings.holyRamadan : AppStrings.daysToRamadan,
                   maxLines: 1,
                   overflow: .ellipsis,
                 ),
               ),
               const SizedBox(width: AppSpacing.medium),
-              CircleAvatar(
-                child: Text(data.value.toString()),
-              ),
+              Text(data.value.toString()),
             ],
           ),
         ),

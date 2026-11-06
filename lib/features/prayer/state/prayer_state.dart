@@ -147,13 +147,21 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
     _events = [
       for (final (day, next) in [(_yesterday, _today), (_today, _tomorrow)]) ...[
-        (name: AppStrings.midnight, time: day.sunnah.middleOfTheNight, anchor: day.times.maghrib),
+        (
+        name: AppStrings.midnight,
+        time: day.sunnah.middleOfTheNight,
+        anchor: day.times.sunrise,                 // было: day.times.maghrib
+        ),
         (
         name: AppStrings.lastThirdNight,
         time: day.sunnah.lastThirdOfTheNight,
         anchor: day.sunnah.middleOfTheNight,
         ),
-        (name: AppStrings.sunrise, time: next.times.sunrise, anchor: next.times.fajr),
+        (
+        name: AppStrings.sunrise,
+        time: next.times.sunrise,
+        anchor: day.sunnah.lastThirdOfTheNight,    // было: next.times.fajr
+        ),
       ],
     ];
   }
