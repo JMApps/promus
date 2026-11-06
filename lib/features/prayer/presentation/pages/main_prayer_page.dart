@@ -41,7 +41,7 @@ class MainPrayerPage extends StatelessWidget {
               iconColor: appColors.primary,
             ),
           ),
-          const SizedBox(width: AppSpacing.small),
+          const SizedBox(width: AppSpacing.xSmall),
           IconButton.filledTonal(
             onPressed: () => Navigator.pushNamed(
               context,
