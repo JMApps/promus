@@ -11,6 +11,7 @@ class FortressSupplicationState extends ChangeNotifier {
 
   final Map<int, FortressSupplicationEntity> _supplicationByIdMap = {};
   final Map<int, List<FortressSupplicationEntity>> _supplicationsByChapterMap = {};
+
   bool _isLoading = false;
   Object? _error;
 
@@ -18,18 +19,23 @@ class FortressSupplicationState extends ChangeNotifier {
 
   Object? get error => _error;
 
-  FortressSupplicationEntity? cachedSupplicationById(int supplicationId) =>
-      _supplicationByIdMap[supplicationId];
+  bool _pageMode = false;
 
-  List<FortressSupplicationEntity>? cachedSupplicationsByChapter(int chapterId) =>
-      _supplicationsByChapterMap[chapterId];
+  bool get pageMode => _pageMode;
+
+  void changePageMode() {
+    _pageMode = !_pageMode;
+    notifyListeners();
+  }
+
+  FortressSupplicationEntity? cachedSupplicationById(int supplicationId) => _supplicationByIdMap[supplicationId];
+
+  List<FortressSupplicationEntity>? cachedSupplicationsByChapter(int chapterId) => _supplicationsByChapterMap[chapterId];
 
   Future<FortressSupplicationEntity?> loadSupplicationById(int supplicationId) async {
-    return _supplicationByIdMap[supplicationId] ??
-        await _fetch(() async {
-          return _supplicationByIdMap[supplicationId] = await _supplicationRepository
-              .fetchSupplicationById(supplicationId: supplicationId);
-        });
+    return _supplicationByIdMap[supplicationId] ?? await _fetch(() async {
+      return _supplicationByIdMap[supplicationId] = await _supplicationRepository.fetchSupplicationById(supplicationId: supplicationId);
+    });
   }
 
   Future<List<FortressSupplicationEntity>?> loadSupplicationsByChapter(int chapterId) async {

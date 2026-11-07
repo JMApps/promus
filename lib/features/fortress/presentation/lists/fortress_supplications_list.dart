@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
 import '../items/fortress_supplication_item.dart';
 
-class FortressSupplicationList extends StatelessWidget {
-  const FortressSupplicationList({
+class FortressSupplicationsList extends StatelessWidget {
+  const FortressSupplicationsList({
     super.key,
     required this.fortressChapterSupplications,
   });
