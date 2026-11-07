@@ -40,9 +40,9 @@ class MushafDatabaseHelper {
     try {
       final dbPath = await _resolveDbPath();
 
-      await Directory(p.dirname(dbPath)).create(recursive: true);
-
-      await _ensureDatabaseInstalled(dbPath);
+      if (!await _isInstalledAndCurrent(dbPath)) {
+        await _copyAssetDbTo(dbPath);
+      }
 
       final database = await openDatabase(
         dbPath,
@@ -61,184 +61,22 @@ class MushafDatabaseHelper {
     }
   }
 
-  Future<void> _ensureDatabaseInstalled(String dbPath) async {
-    if (await File(dbPath).exists() && await _isInstalledAndCurrent(dbPath)) {
-      return;
-    }
-
-    await _deleteCopiedDatabase(dbPath);
-    await _installFreshFromAssets(dbPath);
-  }
-
   Future<bool> _isInstalledAndCurrent(String dbPath) async {
-    Database? probe;
+    if (!await File(dbPath).exists()) return false;
 
+    Database? probe;
     try {
       probe = await openDatabase(
         dbPath,
         singleInstance: false,
         readOnly: true,
       );
-
-      final version = await probe.getVersion();
-      if (version != _dbVersion) return false;
-
-      final rows = await probe.rawQuery(
-        '''
-        SELECT COUNT(*) AS c
-        FROM sqlite_master
-        WHERE name IN (?, ?)
-        ''',
-        [TableNames.ftsArabicTable, TableNames.ftsTranslationsTable],
-      );
-
-      return (Sqflite.firstIntValue(rows) ?? 0) == 2;
+      return await probe.getVersion() == _dbVersion;
     } catch (_) {
       return false;
     } finally {
       await probe?.close();
     }
-  }
-
-  Future<void> _installFreshFromAssets(String dbPath) async {
-    await _copyAssetDbTo(dbPath);
-
-    Database? rw;
-
-    try {
-      rw = await openDatabase(
-        dbPath,
-        singleInstance: false,
-        readOnly: false,
-      );
-
-      await rw.transaction((txn) async {
-        await _createIndexes(txn);
-        await _createFts(txn);
-      });
-
-      await rw.execute('ANALYZE');
-
-      await rw.setVersion(_dbVersion);
-    } catch (e, s) {
-      log('Fresh database install failed', error: e, stackTrace: s);
-
-      await rw?.close();
-      rw = null;
-      await _deleteCopiedDatabase(dbPath);
-
-      rethrow;
-    } finally {
-      await rw?.close();
-    }
-  }
-
-  Future<void> _createIndexes(Transaction txn) async {
-    await txn.execute(
-      '''
-      CREATE INDEX IF NOT EXISTS idx_glyphs_surah_ayah
-      ON Table_of_glyph(surah_number, ayah_number)
-      ''',
-    );
-
-    await txn.execute(
-      '''
-      CREATE INDEX IF NOT EXISTS idx_glyphs_location
-      ON Table_of_glyph(location)
-      ''',
-    );
-
-    await txn.execute(
-      '''
-      CREATE INDEX IF NOT EXISTS idx_layout_page_line_words
-      ON Table_of_layout(
-        page_number,
-        line_number,
-        first_word_id,
-        last_word_id
-      )
-      ''',
-    );
-
-    await txn.execute(
-      '''
-      CREATE INDEX IF NOT EXISTS idx_ayahs_page_position
-      ON Table_of_ayah_by_ayah(ayah_page_number, ayah_position)
-      ''',
-    );
-
-    await txn.execute(
-      '''
-      CREATE INDEX IF NOT EXISTS idx_ayahs_verse_key
-      ON Table_of_ayah_by_ayah(verse_key)
-      ''',
-    );
-
-    await txn.execute(
-      '''
-      CREATE INDEX IF NOT EXISTS idx_translations_ayah_key
-      ON Table_of_translation(ayah_key)
-      ''',
-    );
-  }
-
-  Future<void> _createFts(Transaction txn) async {
-    await txn.execute('DROP TABLE IF EXISTS ${TableNames.ftsArabicTable}');
-
-    await txn.execute(
-      '''
-      CREATE VIRTUAL TABLE ${TableNames.ftsArabicTable}
-      USING fts4(
-        ayah_normalized,
-        tokenize=unicode61,
-        prefix="2,3"
-      )
-      ''',
-    );
-
-    await txn.execute(
-      '''
-      INSERT INTO ${TableNames.ftsArabicTable}(rowid, ayah_normalized)
-      SELECT ayah_id, COALESCE(ayah_normalized, '')
-      FROM Table_of_ayah_by_ayah
-      ''',
-    );
-
-    await txn.execute(
-      "INSERT INTO ${TableNames.ftsArabicTable}(${TableNames.ftsArabicTable}) VALUES('optimize')",
-    );
-
-    await txn.execute(
-      'DROP TABLE IF EXISTS ${TableNames.ftsTranslationsTable}',
-    );
-
-    await txn.execute(
-      '''
-      CREATE VIRTUAL TABLE ${TableNames.ftsTranslationsTable}
-      USING fts4(
-        ayah_ru_kuliev,
-        ayah_ru_adel,
-        tokenize=unicode61,
-        prefix="2,3"
-      )
-      ''',
-    );
-
-    await txn.execute(
-      '''
-      INSERT INTO ${TableNames.ftsTranslationsTable}(rowid, ayah_ru_kuliev, ayah_ru_adel)
-      SELECT
-        a.ayah_id,
-        COALESCE(t.ayah_ru_kuliev, ''),
-        COALESCE(t.ayah_ru_adel, '')
-      FROM Table_of_ayah_by_ayah a
-      JOIN Table_of_translation t ON t.ayah_key = a.verse_key
-      ''',
-    );
-
-    await txn.execute(
-      "INSERT INTO ${TableNames.ftsTranslationsTable}(${TableNames.ftsTranslationsTable}) VALUES('optimize')",
-    );
   }
 
   Future<void> _copyAssetDbTo(String dbPath) async {
@@ -251,10 +89,18 @@ class MushafDatabaseHelper {
       data.lengthInBytes,
     );
 
-    final file = File(dbPath);
+    await Directory(p.dirname(dbPath)).create(recursive: true);
 
-    await file.parent.create(recursive: true);
-    await file.writeAsBytes(bytes, flush: true);
+    final tmp = File('$dbPath.tmp');
+    try {
+      await tmp.writeAsBytes(bytes, flush: true);
+      await _deleteCopiedDatabase(dbPath);
+      await tmp.rename(dbPath);
+    } catch (e, s) {
+      log('Asset database copy failed', error: e, stackTrace: s);
+      if (await tmp.exists()) await tmp.delete();
+      rethrow;
+    }
   }
 
   Future<void> _deleteCopiedDatabase(String dbPath) async {
@@ -283,9 +129,7 @@ class MushafDatabaseHelper {
     }
 
     final dbPath = await _resolveDbPath();
-
-    await _deleteCopiedDatabase(dbPath);
-    await _installFreshFromAssets(dbPath);
+    await _copyAssetDbTo(dbPath);
 
     return db;
   }
