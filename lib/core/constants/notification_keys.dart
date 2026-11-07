@@ -5,12 +5,22 @@ abstract final class NotificationKeys {
   static const String keyMainNotificationsBox = 'key_main_notifications_box';
 
   static const String prayerChannelId = 'Prayer notifications';
+  static const String ikamahChannelId = 'ikamah_notifications';
   static const String reminderChannelId = 'When prayer daily notifications';
 
   static const String defaultPrayerChannelName = 'Время молитвы';
   static const String defaultPrayerChannelDescription = 'Уведомления о наступлении времени молитвы';
+  static const String defaultIkamahChannelName = 'Икама';
+  static const String defaultIkamahChannelDescription = 'Уведомления о времени икамы';
   static const String defaultReminderChannelName = 'Напоминания';
   static const String defaultReminderChannelDescription = 'Напоминания о посте, пятнице и белых днях';
+
+  static const List<int> legacyIds = [
+    435, 123, 675, 342, 768, 245, // намазы
+    875, 579, 900, 656, 906, // икамы
+    350, 425, 656, // посты
+    223, 321, // пятница
+  ];
 
   static const String keyFajrNotification = 'key_fajr_notification';
   static const String keySunriseNotification = 'key_sunrise_notification';

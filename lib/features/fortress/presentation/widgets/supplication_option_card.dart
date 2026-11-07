@@ -68,7 +68,10 @@ class SupplicationOptionCard extends StatelessWidget {
         ),
         const SizedBox(width: AppSpacing.small),
         CircleAvatar(
-          child: Text('$index/$supplicationsLength'),
+          child: Text(
+            '$index/$supplicationsLength',
+            style: AppTextStyles.small,
+          ),
         ),
         const SizedBox(width: AppSpacing.medium),
       ],

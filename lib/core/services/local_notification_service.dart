@@ -9,6 +9,7 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../constants/notification_keys.dart';
+import 'models.dart';
 
 class LocalNotificationService {
   LocalNotificationService._internal();
@@ -20,6 +21,7 @@ class LocalNotificationService {
   static const String _icon = 'ic_app_notification';
 
   static const RawResourceAndroidNotificationSound _adhanSound = RawResourceAndroidNotificationSound('adhan');
+  static const RawResourceAndroidNotificationSound _ikamahSound = RawResourceAndroidNotificationSound('ikamah');
 
   static const NotificationDetails _prayerDetails = NotificationDetails(
     android: AndroidNotificationDetails(
@@ -37,6 +39,25 @@ class LocalNotificationService {
       presentList: true,
       presentSound: true,
       sound: 'adhan.caf',
+    ),
+  );
+
+  static const NotificationDetails _ikamahDetails = NotificationDetails(
+    android: AndroidNotificationDetails(
+      NotificationKeys.ikamahChannelId,
+      NotificationKeys.defaultIkamahChannelName,
+      channelDescription: NotificationKeys.defaultIkamahChannelDescription,
+      icon: _icon,
+      importance: Importance.max,
+      priority: Priority.max,
+      playSound: true,
+      sound: _ikamahSound,
+    ),
+    iOS: DarwinNotificationDetails(
+      presentBanner: true,
+      presentList: true,
+      presentSound: true,
+      sound: 'ikamah.caf',
     ),
   );
 
@@ -71,6 +92,8 @@ class LocalNotificationService {
   Future<void> setupNotification({
     String prayerChannelName = NotificationKeys.defaultPrayerChannelName,
     String prayerChannelDescription = NotificationKeys.defaultPrayerChannelDescription,
+    String ikamahChannelName = NotificationKeys.defaultIkamahChannelName,
+    String ikamahChannelDescription = NotificationKeys.defaultIkamahChannelDescription,
     String reminderChannelName = NotificationKeys.defaultReminderChannelName,
     String reminderChannelDescription = NotificationKeys.defaultReminderChannelDescription,
   }) async {
@@ -94,6 +117,8 @@ class LocalNotificationService {
     final android = _android;
 
     if (android != null) {
+      // Звук канала фиксируется при создании и потом не меняется.
+      // Для другого звука нужен канал с другим id.
       await android.createNotificationChannel(
         AndroidNotificationChannel(
           NotificationKeys.prayerChannelId,
@@ -106,10 +131,20 @@ class LocalNotificationService {
       );
       await android.createNotificationChannel(
         AndroidNotificationChannel(
+          NotificationKeys.ikamahChannelId,
+          ikamahChannelName,
+          description: ikamahChannelDescription,
+          importance: .max,
+          playSound: true,
+          sound: _ikamahSound,
+        ),
+      );
+      await android.createNotificationChannel(
+        AndroidNotificationChannel(
           NotificationKeys.reminderChannelId,
           reminderChannelName,
           description: reminderChannelDescription,
-          importance: Importance.high,
+          importance: .high,
         ),
       );
     }
@@ -149,17 +184,16 @@ class LocalNotificationService {
     return false;
   }
 
+  /// Можно ли ставить точные будильники. На iOS такого ограничения нет.
+  Future<bool> canScheduleExactAlarms() async {
+    if (!Platform.isAndroid) return true;
+    return await _android?.canScheduleExactNotifications() ?? true;
+  }
+
+  /// Только разрешение на показ уведомлений.
   Future<bool> requestPermissions() async {
     if (Platform.isAndroid) {
-      final android = _android;
-      final granted = await android?.requestNotificationsPermission() ?? false;
-      if (granted) {
-        final canExact = await android?.canScheduleExactNotifications() ?? true;
-        if (!canExact) {
-          await android?.requestExactAlarmsPermission();
-        }
-      }
-      return granted;
+      return await _android?.requestNotificationsPermission() ?? false;
     }
     if (Platform.isIOS) {
       return await _ios?.requestPermissions(alert: true, badge: true, sound: true) ?? false;
@@ -167,41 +201,42 @@ class LocalNotificationService {
     return false;
   }
 
-  Future<bool> schedulePrayer({
-    required int id,
-    required String title,
-    required String body,
-    required DateTime dateTime,
-    String? payload,
-  }) {
-    return _schedule(
-      id: id,
-      title: title,
-      body: body,
-      dateTime: dateTime,
-      payload: payload,
-      details: _prayerDetails,
-      preferredMode: AndroidScheduleMode.alarmClock,
-    );
+  /// Открывает системный экран разрешения точных будильников (Android 12+).
+  /// Вызывайте после своего экрана с объяснением, зачем это нужно.
+  Future<void> requestExactAlarmsPermission() async {
+    if (!Platform.isAndroid) return;
+    final android = _android;
+    final canExact = await android?.canScheduleExactNotifications() ?? true;
+    if (!canExact) {
+      await android?.requestExactAlarmsPermission();
+    }
   }
 
-  Future<bool> scheduleReminder({
+  Future<bool> schedule({
+    required NotificationChannelKind channel,
     required int id,
     required String title,
     required String body,
     required DateTime dateTime,
     String? payload,
-    DateTimeComponents? repeat,
+    bool exact = true,
   }) {
+    final (details, preferredMode) = switch (channel) {
+    // alarmClock — самый надёжный режим в Doze, но в строке состояния
+    // будет значок будильника. Если мешает, замените на exactAllowWhileIdle.
+      NotificationChannelKind.prayer => (_prayerDetails, AndroidScheduleMode.alarmClock),
+      NotificationChannelKind.ikamah => (_ikamahDetails, AndroidScheduleMode.exactAllowWhileIdle),
+      NotificationChannelKind.reminder => (_reminderDetails, AndroidScheduleMode.exactAllowWhileIdle),
+    };
+
     return _schedule(
       id: id,
       title: title,
       body: body,
       dateTime: dateTime,
       payload: payload,
-      details: _reminderDetails,
-      preferredMode: .exactAllowWhileIdle,
-      repeat: repeat,
+      details: details,
+      preferredMode: exact ? preferredMode : AndroidScheduleMode.inexactAllowWhileIdle,
     );
   }
 
@@ -213,7 +248,6 @@ class LocalNotificationService {
     required NotificationDetails details,
     required AndroidScheduleMode preferredMode,
     String? payload,
-    DateTimeComponents? repeat,
   }) async {
     if (!_initialized) {
       debugPrint('LocalNotificationService is not initialized, skip #$id');
@@ -222,7 +256,7 @@ class LocalNotificationService {
 
     final scheduled = tz.TZDateTime.from(dateTime, tz.local);
 
-    if (repeat == null && !scheduled.isAfter(tz.TZDateTime.now(tz.local))) {
+    if (!scheduled.isAfter(tz.TZDateTime.now(tz.local))) {
       return false;
     }
 
@@ -234,13 +268,13 @@ class LocalNotificationService {
       notificationDetails: details,
       androidScheduleMode: mode,
       payload: payload,
-      matchDateTimeComponents: repeat,
     );
 
     try {
       try {
         await run(preferredMode);
       } on PlatformException catch (e) {
+        // Разрешение могли отозвать между проверкой и планированием.
         if (e.code != 'exact_alarms_not_permitted') rethrow;
         await run(AndroidScheduleMode.inexactAllowWhileIdle);
       }
@@ -251,8 +285,9 @@ class LocalNotificationService {
     }
   }
 
-  Future<void> cancelNotificationWithId(int id) => _plugin.cancel(id: id);
+  Future<List<PendingNotificationRequest>> pendingRequests() => _plugin.pendingNotificationRequests();
 
+  /// Внимание: `cancel` убирает уведомление и из шторки, если оно уже показано.
   Future<void> cancelNotifications(Iterable<int> ids) async {
     for (final id in ids) {
       await _plugin.cancel(id: id);
@@ -260,9 +295,4 @@ class LocalNotificationService {
   }
 
   Future<void> cancelAll() => _plugin.cancelAll();
-
-  Future<Set<int>> pendingIds() async {
-    final pending = await _plugin.pendingNotificationRequests();
-    return pending.map((r) => r.id).toSet();
-  }
 }

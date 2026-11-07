@@ -1,40 +1,37 @@
+
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 
 import '../../../core/constants/notification_keys.dart';
 import '../../../core/enums/notification_event.dart';
 import '../../../core/enums/prayer_labels.dart';
+import '../../../core/services/notification_prefs.dart';
 
+/// Состояние экрана настроек уведомлений.
+///
+/// Планированием не занимается: NotificationScheduler сам слушает
+/// этот box через `watch()` и перепланирует после любой записи.
 class NotificationSettingsState extends ChangeNotifier {
   NotificationSettingsState({required this._mainNotificationsBox});
 
   final Box _mainNotificationsBox;
 
-  static const _defaultIkamahMinutes = <PrayerLabels, int>{
-    PrayerLabels.fajr: 30,
-    PrayerLabels.dhuhr: 15,
-    PrayerLabels.asr: 15,
-    PrayerLabels.maghrib: 12,
-    PrayerLabels.isha: 15,
-  };
-
-
-  bool prayerEnabled(PrayerLabels p) => _read(NotificationKeys.prayer[p]!, true);
+  bool prayerEnabled(PrayerLabels p) => _read(NotificationKeys.prayer[p]!, NotificationPrefs.defaultPrayerEnabled);
 
   bool ikamahEnabled(PrayerLabels p) {
     assert(p.hasIkamah, '$p');
-    return _read(NotificationKeys.ikamahEnabled[p]!, false);
+    return _read(NotificationKeys.ikamahEnabled[p]!, NotificationPrefs.defaultIkamahEnabled);
   }
 
   int ikamahMinutes(PrayerLabels p) {
     assert(p.hasIkamah, '$p');
     return _read(
       NotificationKeys.ikamahMinutes[p]!,
-      _defaultIkamahMinutes[p] ?? 15,
+      NotificationPrefs.defaultIkamahMinutes[p] ?? NotificationPrefs.fallbackIkamahMinutes,
     );
   }
 
-  bool eventEnabled(NotificationEvent e) => _read(NotificationKeys.event[e]!, true);
+  bool eventEnabled(NotificationEvent e) => _read(NotificationKeys.event[e]!, NotificationPrefs.defaultEventEnabled);
 
   Future<void> setPrayer(PrayerLabels p, bool v) => _write(NotificationKeys.prayer[p]!, v);
 
@@ -61,13 +58,11 @@ class NotificationSettingsState extends ChangeNotifier {
 
     await _mainNotificationsBox.deleteAll(keys);
     notifyListeners();
-    // здесь же: перепланирование уведомлений
   }
 
   Future<void> _write(String key, Object value) async {
     if (_mainNotificationsBox.get(key) == value) return;
     await _mainNotificationsBox.put(key, value);
     notifyListeners();
-    // здесь же: перепланирование уведомлений
   }
 }

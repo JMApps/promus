@@ -33,10 +33,19 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     _highLatitudeMethodIndex = _read(AppConstantKeys.keyHighLatitudeIndex, 0);
     _asrMethodIndex = _read(AppConstantKeys.keyMadhabIndex, 0);
     _dst = _read(AppConstantKeys.keyDST, false);
+    _hijriOffset = _read(AppConstantKeys.keyHijriOffset, 0);
 
     WidgetsBinding.instance.addObserver(this);
     initPrayerTime();
     _scheduleTick();
+  }
+
+  set setHijriOffset(int value) {
+    final v = value.clamp(AppConstantKeys.minHijriOffset, AppConstantKeys.maxHijriOffset);
+    if (v == _hijriOffset) return;
+    _hijriOffset = v;
+    _settingsPrayerTimeBox.put(AppConstantKeys.keyHijriOffset, v);
+    notifyListeners(); // времена намазов не меняются, пересчёт не нужен
   }
 
   final Box _settingsPrayerTimeBox;
@@ -200,6 +209,11 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     notifyListeners();
   }
 
+  // В PrayerState, рядом с остальными геттерами:
+  Coordinates get coordinates => _coordinates;
+
+  CalculationParameters get calculationParameters => _prayerParams;
+
   // ---------------------------------------------------------------------------
   // Текущее положение во времени
   // ---------------------------------------------------------------------------
@@ -360,9 +374,6 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     _ => false,
   };
 
-  bool get isLastFridayHour =>
-      _dateTime.weekday == DateTime.friday &&
-          _isWithinRange(_today.times.maghrib.subtract(hourInterval), _today.times.maghrib);
 
   bool isPrayerInHourRange({required bool before, required DateTime prayerTime}) => before
       ? _isWithinRange(prayerTime.subtract(hourInterval), prayerTime)
@@ -419,27 +430,13 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     };
   }
 
-  // ---------------------------------------------------------------------------
-  // Недельные точки для уведомлений — всегда в будущем
-  // ---------------------------------------------------------------------------
+  late int _hijriOffset;
 
-  DateTime get lastFridayHour => _weekly(DateTime.friday, const Duration(hours: -1));
-  DateTime get weeklyThursday => _weekly(DateTime.thursday, hourInterval);
-  DateTime get weeklyWednesday => _weekly(DateTime.wednesday, hourInterval);
-  DateTime get weeklySunday => _weekly(DateTime.sunday, hourInterval);
+  int get hijriOffset => _hijriOffset;
 
-  /// Магриб считается на целевую дату. Если сегодня нужный день, но момент
-  /// уже прошёл — берётся следующая неделя.
-  DateTime _weekly(int weekday, Duration offset) {
-    final d = _dateTime;
-    for (var i = 0; i <= 7; i++) {
-      final day = DateTime(d.year, d.month, d.day + i);
-      if (day.weekday != weekday) continue;
-      final moment = prayerTimeSchedule(time: day).maghrib.add(offset);
-      if (moment.isAfter(d)) return moment;
-    }
-    throw StateError('unreachable');
-  }
+  /// Дата хиджры для календарного дня с учётом смещения.
+  HijriCalendar hijriFor(DateTime date) =>
+  HijriCalendar.fromDate(DateTime(date.year, date.month, date.day + _hijriOffset));
 
   // ---------------------------------------------------------------------------
   // Настройки

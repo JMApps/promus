@@ -52,4 +52,8 @@ class AppConstantKeys {
   static const String keyShowTranslationAyah = 'key_show_translation_ayah';
   static const String keyAyahArabicTextSize = 'key_ayah_arabic_text_size';
   static const String keyAyahTranslationTextSize = 'key_ayah_translation_text_size';
+
+  static const String keyHijriOffset = 'key_hijri_offset';
+  static const int minHijriOffset = -2;
+  static const int maxHijriOffset = 2;
 }
