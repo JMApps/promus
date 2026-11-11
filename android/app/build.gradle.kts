@@ -15,7 +15,6 @@ android {
     }
 
     defaultConfig {
-        multiDexEnabled = true
         applicationId = "taqweem.apps.promus"
         minSdk = 25
         targetSdk = 37
