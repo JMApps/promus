@@ -52,7 +52,7 @@ class MushafPageState extends ChangeNotifier {
     return future;
   }
 
-  void loadWindow(int page) {
+  Future<void> loadWindow(int page) async {
     if (!_isValidPage(page)) return;
 
     final window = _buildWindow(page); // List, порядок важен
@@ -63,7 +63,7 @@ class MushafPageState extends ChangeNotifier {
     notifyListeners();
 
     for (final pageNumber in window) {
-      loadPage(pageNumber);
+      await loadPage(pageNumber);
     }
   }
 

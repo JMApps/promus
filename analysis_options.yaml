@@ -8,6 +8,11 @@ linter:
     prefer_const_constructors: true
     prefer_const_literals_to_create_immutables: true
     unnecessary_this: true
+    unawaited_futures: true
+    discarded_futures: true
+    avoid_dynamic_calls: true
+    cancel_subscriptions: true
+    close_sinks: true
 analyzer:
   exclude:
     - build/**

@@ -62,8 +62,8 @@ class FortressPage extends StatelessWidget {
                 title: const Text(AppStrings.titleFortress),
                 actions: [
                   IconButton.filledTonal(
-                    onPressed: () {
-                      showSearch(
+                    onPressed: () async {
+                      await showSearch(
                         context: context,
                         delegate: SearchChaptersDelegate(
                           fortressChaptersState: context.read<FortressChapterState>(),

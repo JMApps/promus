@@ -18,17 +18,15 @@ class LocalNotificationService {
 
   factory LocalNotificationService() => _instance;
 
-  static const String _icon = 'ic_app_notification';
-
   static const RawResourceAndroidNotificationSound _adhanSound = RawResourceAndroidNotificationSound('adhan');
-  static const RawResourceAndroidNotificationSound _ikamahSound = RawResourceAndroidNotificationSound('ikamah');
+  static const RawResourceAndroidNotificationSound _iqamahSound = RawResourceAndroidNotificationSound('iqamah');
 
   static const NotificationDetails _prayerDetails = NotificationDetails(
     android: AndroidNotificationDetails(
       NotificationKeys.prayerChannelId,
       NotificationKeys.defaultPrayerChannelName,
       channelDescription: NotificationKeys.defaultPrayerChannelDescription,
-      icon: _icon,
+      icon: NotificationKeys.appIconName,
       importance: Importance.max,
       priority: Priority.max,
       playSound: true,
@@ -42,22 +40,22 @@ class LocalNotificationService {
     ),
   );
 
-  static const NotificationDetails _ikamahDetails = NotificationDetails(
+  static const NotificationDetails _iqamahDetails = NotificationDetails(
     android: AndroidNotificationDetails(
-      NotificationKeys.ikamahChannelId,
-      NotificationKeys.defaultIkamahChannelName,
-      channelDescription: NotificationKeys.defaultIkamahChannelDescription,
-      icon: _icon,
+      NotificationKeys.iqamahChannelId,
+      NotificationKeys.defaultIqamahChannelName,
+      channelDescription: NotificationKeys.defaultIqamahChannelDescription,
+      icon: NotificationKeys.appIconName,
       importance: Importance.max,
       priority: Priority.max,
       playSound: true,
-      sound: _ikamahSound,
+      sound: _iqamahSound,
     ),
     iOS: DarwinNotificationDetails(
       presentBanner: true,
       presentList: true,
       presentSound: true,
-      sound: 'ikamah.caf',
+      sound: 'iqamah.caf',
     ),
   );
 
@@ -66,7 +64,7 @@ class LocalNotificationService {
       NotificationKeys.reminderChannelId,
       NotificationKeys.defaultReminderChannelName,
       channelDescription: NotificationKeys.defaultReminderChannelDescription,
-      icon: _icon,
+      icon: NotificationKeys.appIconName,
       importance: Importance.high,
       priority: Priority.high,
     ),
@@ -92,8 +90,8 @@ class LocalNotificationService {
   Future<void> setupNotification({
     String prayerChannelName = NotificationKeys.defaultPrayerChannelName,
     String prayerChannelDescription = NotificationKeys.defaultPrayerChannelDescription,
-    String ikamahChannelName = NotificationKeys.defaultIkamahChannelName,
-    String ikamahChannelDescription = NotificationKeys.defaultIkamahChannelDescription,
+    String iqamahChannelName = NotificationKeys.defaultIqamahChannelName,
+    String iqamahChannelDescription = NotificationKeys.defaultIqamahChannelDescription,
     String reminderChannelName = NotificationKeys.defaultReminderChannelName,
     String reminderChannelDescription = NotificationKeys.defaultReminderChannelDescription,
   }) async {
@@ -104,7 +102,7 @@ class LocalNotificationService {
 
     await _plugin.initialize(
       settings: const InitializationSettings(
-        android: AndroidInitializationSettings(_icon),
+        android: AndroidInitializationSettings(NotificationKeys.appIconName),
         iOS: DarwinInitializationSettings(
           requestAlertPermission: false,
           requestBadgePermission: false,
@@ -131,12 +129,12 @@ class LocalNotificationService {
       );
       await android.createNotificationChannel(
         AndroidNotificationChannel(
-          NotificationKeys.ikamahChannelId,
-          ikamahChannelName,
-          description: ikamahChannelDescription,
+          NotificationKeys.iqamahChannelId,
+          iqamahChannelName,
+          description: iqamahChannelDescription,
           importance: .max,
           playSound: true,
-          sound: _ikamahSound,
+          sound: _iqamahSound,
         ),
       );
       await android.createNotificationChannel(
@@ -225,7 +223,7 @@ class LocalNotificationService {
     // alarmClock — самый надёжный режим в Doze, но в строке состояния
     // будет значок будильника. Если мешает, замените на exactAllowWhileIdle.
       NotificationChannelKind.prayer => (_prayerDetails, AndroidScheduleMode.alarmClock),
-      NotificationChannelKind.ikamah => (_ikamahDetails, AndroidScheduleMode.exactAllowWhileIdle),
+      NotificationChannelKind.iqamah => (_iqamahDetails, AndroidScheduleMode.exactAllowWhileIdle),
       NotificationChannelKind.reminder => (_reminderDetails, AndroidScheduleMode.exactAllowWhileIdle),
     };
 

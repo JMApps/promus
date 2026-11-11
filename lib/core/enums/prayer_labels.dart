@@ -12,7 +12,7 @@ enum PrayerLabels {
 
   final String label;
 
-  bool get hasIkamah => withIkamah.contains(this);
+  bool get hasIqamah => withIqamah.contains(this);
   
-  static const withIkamah = [fajr, dhuhr, asr, maghrib, isha];
+  static const withIqamah = [fajr, dhuhr, asr, maghrib, isha];
 }

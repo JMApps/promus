@@ -18,16 +18,16 @@ class NotificationSettingsState extends ChangeNotifier {
 
   bool prayerEnabled(PrayerLabels p) => _read(NotificationKeys.prayer[p]!, NotificationPrefs.defaultPrayerEnabled);
 
-  bool ikamahEnabled(PrayerLabels p) {
-    assert(p.hasIkamah, '$p');
-    return _read(NotificationKeys.ikamahEnabled[p]!, NotificationPrefs.defaultIkamahEnabled);
+  bool iqamahEnabled(PrayerLabels p) {
+    assert(p.hasIqamah, '$p');
+    return _read(NotificationKeys.iqamahEnabled[p]!, NotificationPrefs.defaultIqamahEnabled);
   }
 
-  int ikamahMinutes(PrayerLabels p) {
-    assert(p.hasIkamah, '$p');
+  int iqamahMinutes(PrayerLabels p) {
+    assert(p.hasIqamah, '$p');
     return _read(
-      NotificationKeys.ikamahMinutes[p]!,
-      NotificationPrefs.defaultIkamahMinutes[p] ?? NotificationPrefs.fallbackIkamahMinutes,
+      NotificationKeys.iqamahMinutes[p]!,
+      NotificationPrefs.defaultIqamahMinutes[p] ?? NotificationPrefs.fallbackIqamahMinutes,
     );
   }
 
@@ -35,14 +35,14 @@ class NotificationSettingsState extends ChangeNotifier {
 
   Future<void> setPrayer(PrayerLabels p, bool v) => _write(NotificationKeys.prayer[p]!, v);
 
-  Future<void> setIkamah(PrayerLabels p, bool v) {
-    assert(p.hasIkamah, '$p');
-    return _write(NotificationKeys.ikamahEnabled[p]!, v);
+  Future<void> setIqamah(PrayerLabels p, bool v) {
+    assert(p.hasIqamah, '$p');
+    return _write(NotificationKeys.iqamahEnabled[p]!, v);
   }
 
-  Future<void> setIkamahMinutes(PrayerLabels p, int m) {
-    assert(p.hasIkamah, '$p');
-    return _write(NotificationKeys.ikamahMinutes[p]!, m);
+  Future<void> setIqamahMinutes(PrayerLabels p, int m) {
+    assert(p.hasIqamah, '$p');
+    return _write(NotificationKeys.iqamahMinutes[p]!, m);
   }
 
   Future<void> setEvent(NotificationEvent e, bool v) => _write(NotificationKeys.event[e]!, v);

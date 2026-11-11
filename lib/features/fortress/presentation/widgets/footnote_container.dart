@@ -37,9 +37,9 @@ class _FootnoteContainerState extends State<FootnoteContainer> {
 
     if (footnoteState.cachedFootnoteById(id) != null) return;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
-      footnoteState.loadFootnoteById(id);
+      await footnoteState.loadFootnoteById(id);
     });
   }
 

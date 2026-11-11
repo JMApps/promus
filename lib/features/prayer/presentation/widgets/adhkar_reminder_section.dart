@@ -27,7 +27,7 @@ class AdhkarReminderSection extends StatelessWidget {
         opacity: animation,
         child: SizeTransition(
           sizeFactor: animation,
-          axisAlignment: -1,
+           axisAlignment: -1,
           child: child,
         ),
       ),

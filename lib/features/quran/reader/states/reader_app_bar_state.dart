@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -6,18 +8,18 @@ class ReaderAppBarState extends ChangeNotifier {
 
   bool get showAppBar => _showAppBar;
 
-  void toggleShowAppBar() {
+  Future<void> toggleShowAppBar() async {
     _showAppBar = !_showAppBar;
-    _showAppBar ? _showSystemUi() : _hideSystemUi();
+    unawaited(_showAppBar ? _showSystemUi() : _hideSystemUi());
     notifyListeners();
   }
 
-  void restoreSystemUI() {
-    _showSystemUi();
+  Future<void> restoreSystemUI() async {
+    await _showSystemUi();
   }
 
-  void _showSystemUi() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  Future<void> _showSystemUi() async {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -29,8 +31,8 @@ class ReaderAppBarState extends ChangeNotifier {
     _showAppBar = true;
   }
 
-  void _hideSystemUi() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  Future<void> _hideSystemUi() async {
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 
   @override

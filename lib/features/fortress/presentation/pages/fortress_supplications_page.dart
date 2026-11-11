@@ -37,9 +37,9 @@ class _FortressSupplicationsPageState extends State<FortressSupplicationsPage> {
     _supplicationPageController = PageController();
 
     if (_fortressSupplicationsState.cachedSupplicationsByChapter(widget.chapterId) != null) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
-      _fortressSupplicationsState.loadSupplicationsByChapter(widget.chapterId);
+      await _fortressSupplicationsState.loadSupplicationsByChapter(widget.chapterId);
     });
   }
 

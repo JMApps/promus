@@ -38,8 +38,8 @@ class MainHtmlWidget extends StatelessWidget {
           color: appColors.secondary,
         ),
       },
-      onLinkTap: (String? footnoteId, _, _) {
-        showModalBottomSheet(
+      onLinkTap: (String? footnoteId, _, _) async {
+        await showModalBottomSheet(
           context: (context),
           useSafeArea: true,
           isScrollControlled: true,

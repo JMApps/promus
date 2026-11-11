@@ -14,17 +14,17 @@ import '../enums/prayer_labels.dart';
 class NotificationPrefs {
   const NotificationPrefs({
     required this.prayers,
-    required this.ikamahs,
-    required this.ikamahMinutes,
+    required this.iqamahs,
+    required this.iqamahMinutes,
     required this.events,
   });
 
   static const bool defaultPrayerEnabled = true;
-  static const bool defaultIkamahEnabled = false;
+  static const bool defaultIqamahEnabled = false;
   static const bool defaultEventEnabled = true;
-  static const int fallbackIkamahMinutes = 15;
+  static const int fallbackIqamahMinutes = 15;
 
-  static const defaultIkamahMinutes = <PrayerLabels, int>{
+  static const defaultIqamahMinutes = <PrayerLabels, int>{
     PrayerLabels.fajr: 30,
     PrayerLabels.dhuhr: 15,
     PrayerLabels.asr: 15,
@@ -33,11 +33,11 @@ class NotificationPrefs {
   };
 
   final Set<PrayerLabels> prayers;
-  final Set<PrayerLabels> ikamahs;
-  final Map<PrayerLabels, int> ikamahMinutes;
+  final Set<PrayerLabels> iqamahs;
+  final Map<PrayerLabels, int> iqamahMinutes;
   final Set<NotificationEvent> events;
 
-  bool get isEmpty => prayers.isEmpty && ikamahs.isEmpty && events.isEmpty;
+  bool get isEmpty => prayers.isEmpty && iqamahs.isEmpty && events.isEmpty;
 
   factory NotificationPrefs.fromBox(Box box) {
     T read<T>(String key, T defaultValue) {
@@ -50,13 +50,13 @@ class NotificationPrefs {
         for (final entry in NotificationKeys.prayer.entries)
           if (read(entry.value, defaultPrayerEnabled)) entry.key,
       },
-      ikamahs: {
-        for (final entry in NotificationKeys.ikamahEnabled.entries)
-          if (read(entry.value, defaultIkamahEnabled)) entry.key,
+      iqamahs: {
+        for (final entry in NotificationKeys.iqamahEnabled.entries)
+          if (read(entry.value, defaultIqamahEnabled)) entry.key,
       },
-      ikamahMinutes: {
-        for (final entry in NotificationKeys.ikamahMinutes.entries)
-          entry.key: read(entry.value, defaultIkamahMinutes[entry.key] ?? fallbackIkamahMinutes),
+      iqamahMinutes: {
+        for (final entry in NotificationKeys.iqamahMinutes.entries)
+          entry.key: read(entry.value, defaultIqamahMinutes[entry.key] ?? fallbackIqamahMinutes),
       },
       events: {
         for (final entry in NotificationKeys.event.entries)

@@ -2,16 +2,19 @@ import '../enums/notification_event.dart';
 import '../enums/prayer_labels.dart';
 
 abstract final class NotificationKeys {
+  static const String appIconName = 'app_icon_notification';
+
   static const String keyMainNotificationsBox = 'key_main_notifications_box';
+  static const String keyPermissionAsked = 'key_permission_asked';
 
   static const String prayerChannelId = 'Prayer notifications';
-  static const String ikamahChannelId = 'ikamah_notifications';
+  static const String iqamahChannelId = 'iqamah_notifications';
   static const String reminderChannelId = 'When prayer daily notifications';
 
   static const String defaultPrayerChannelName = 'Время молитвы';
   static const String defaultPrayerChannelDescription = 'Уведомления о наступлении времени молитвы';
-  static const String defaultIkamahChannelName = 'Икама';
-  static const String defaultIkamahChannelDescription = 'Уведомления о времени икамы';
+  static const String defaultIqamahChannelName = 'Икама';
+  static const String defaultIqamahChannelDescription = 'Уведомления о времени икамы';
   static const String defaultReminderChannelName = 'Напоминания';
   static const String defaultReminderChannelDescription = 'Напоминания о посте, пятнице и белых днях';
 
@@ -29,17 +32,17 @@ abstract final class NotificationKeys {
   static const String keyMaghribNotification = 'key_maghrib_notification';
   static const String keyIshaNotification = 'key_isha_notification';
 
-  static const String keyFajrIkamah = 'key_fajr_ikamah';
-  static const String keyDhuhrIkamah = 'key_dhuhr_ikamah';
-  static const String keyAsrIkamah = 'key_asr_ikamah';
-  static const String keyMaghribIkamah = 'key_maghrib_ikamah';
-  static const String keyIshaIkamah = 'key_isha_ikamah';
+  static const String keyFajrIqamah = 'key_fajr_iqamah';
+  static const String keyDhuhrIqamah = 'key_dhuhr_iqamah';
+  static const String keyAsrIqamah = 'key_asr_iqamah';
+  static const String keyMaghribIqamah = 'key_maghrib_iqamah';
+  static const String keyIshaIqamah = 'key_isha_iqamah';
 
-  static const String keyFajrIkamahValue = 'key_fajr_ikamah_value';
-  static const String keyDhuhrIkamahValue = 'key_dhuhr_ikamah_value';
-  static const String keyAsrIkamahValue = 'key_asr_ikamah_value';
-  static const String keyMaghribIkamahValue = 'key_maghrib_ikamah_value';
-  static const String keyIshaIkamahValue = 'key_isha_ikamah_value';
+  static const String keyFajrIqamahValue = 'key_fajr_iqamah_value';
+  static const String keyDhuhrIqamahValue = 'key_dhuhr_iqamah_value';
+  static const String keyAsrIqamahValue = 'key_asr_iqamah_value';
+  static const String keyMaghribIqamahValue = 'key_maghrib_iqamah_value';
+  static const String keyIshaIqamahValue = 'key_isha_iqamah_value';
 
   static const String keyFastMondayNotification = 'key_fast_monday_notification';
   static const String keyFastThursdayNotification = 'key_fast_thursday_notification';
@@ -50,8 +53,8 @@ abstract final class NotificationKeys {
 
   static Iterable<String> get allNotificationDefValues => [
     ...prayer.values,
-    ...ikamahEnabled.values,
-    ...ikamahMinutes.values,
+    ...iqamahEnabled.values,
+    ...iqamahMinutes.values,
     ...event.values,
   ];
 
@@ -64,20 +67,20 @@ abstract final class NotificationKeys {
     PrayerLabels.isha: keyIshaNotification,
   };
 
-  static const ikamahEnabled = <PrayerLabels, String>{
-    PrayerLabels.fajr: keyFajrIkamah,
-    PrayerLabels.dhuhr: keyDhuhrIkamah,
-    PrayerLabels.asr: keyAsrIkamah,
-    PrayerLabels.maghrib: keyMaghribIkamah,
-    PrayerLabels.isha: keyIshaIkamah,
+  static const iqamahEnabled = <PrayerLabels, String>{
+    PrayerLabels.fajr: keyFajrIqamah,
+    PrayerLabels.dhuhr: keyDhuhrIqamah,
+    PrayerLabels.asr: keyAsrIqamah,
+    PrayerLabels.maghrib: keyMaghribIqamah,
+    PrayerLabels.isha: keyIshaIqamah,
   };
 
-  static const ikamahMinutes = <PrayerLabels, String>{
-    PrayerLabels.fajr: keyFajrIkamahValue,
-    PrayerLabels.dhuhr: keyDhuhrIkamahValue,
-    PrayerLabels.asr: keyAsrIkamahValue,
-    PrayerLabels.maghrib: keyMaghribIkamahValue,
-    PrayerLabels.isha: keyIshaIkamahValue,
+  static const iqamahMinutes = <PrayerLabels, String>{
+    PrayerLabels.fajr: keyFajrIqamahValue,
+    PrayerLabels.dhuhr: keyDhuhrIqamahValue,
+    PrayerLabels.asr: keyAsrIqamahValue,
+    PrayerLabels.maghrib: keyMaghribIqamahValue,
+    PrayerLabels.isha: keyIshaIqamahValue,
   };
 
   static const event = <NotificationEvent, String>{

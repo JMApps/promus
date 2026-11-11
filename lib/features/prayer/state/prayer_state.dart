@@ -398,7 +398,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
       '${_dateTime.day} ${AppStrings.gregorianMonthsList[_dateTime.month - 1]}, ${_dateTime.year}';
 
   String get hijriDateText {
-    final h = HijriCalendar.fromDate(_dateTime);
+    final h = hijriFor(_dateTime);
     return '${h.hDay} ${AppStrings.hijriMonthsList[h.hMonth - 1]}, ${h.hYear}';
   }
 
@@ -442,8 +442,8 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   // Настройки
   // ---------------------------------------------------------------------------
 
-  void _persist(String key, Object value) {
-    _settingsPrayerTimeBox.put(key, value);
+  Future<void> _persist(String key, Object value) async {
+    await _settingsPrayerTimeBox.put(key, value);
     initPrayerTime();
   }
 
@@ -517,16 +517,16 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set maghribAdjustment(int v) => _setAdjustment(Prayer.maghrib, v);
   set ishaAdjustment(int v) => _setAdjustment(Prayer.isha, v);
 
-  void _setAdjustment(Prayer prayer, int value) {
+  Future<void> _setAdjustment(Prayer prayer, int value) async {
     if (_adjustments[prayer] == value) return;
     _adjustments[prayer] = value;
-    _persist(_adjustmentKeys[prayer]!, value);
+    await _persist(_adjustmentKeys[prayer]!, value);
   }
 
-  void resetAdjustments() {
+  Future<void> resetAdjustments() async {
     if (_adjustments.values.every((v) => v == 0)) return;
     _adjustments.updateAll((_, _) => 0);
-    _settingsPrayerTimeBox.putAll({for (final key in _adjustmentKeys.values) key: 0});
+    await _settingsPrayerTimeBox.putAll({for (final key in _adjustmentKeys.values) key: 0});
     initPrayerTime();
   }
 

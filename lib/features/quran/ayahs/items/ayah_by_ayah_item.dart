@@ -28,8 +28,8 @@ class AyahByAyahItem extends StatelessWidget {
 
     return RepaintBoundary(
       child: GestureDetector(
-        onLongPress: () {
-          showModalBottomSheet(
+        onLongPress: () async {
+          await showModalBottomSheet(
             context: context,
             builder: (ctx) => AyahItemOption(
               ayahId: row.ayahId!,

@@ -18,7 +18,7 @@ class SurahBookmarkState extends ChangeNotifier {
 
   List<int> get lastOpenedPages => _lastOpenedPages;
 
-  void addLastOpenedPage(int page) {
+  Future<void> addLastOpenedPage(int page) async {
     final pages = [..._lastOpenedPages]
       ..remove(page)
       ..insert(0, page);
@@ -28,7 +28,7 @@ class SurahBookmarkState extends ChangeNotifier {
     }
 
     _lastOpenedPages = List.unmodifiable(pages);
-    _bookMarksSurahsBox.put(AppConstantKeys.keyBookmarkSurahs, _lastOpenedPages);
+    await _bookMarksSurahsBox.put(AppConstantKeys.keyBookmarkSurahs, _lastOpenedPages);
     notifyListeners();
   }
 

@@ -40,8 +40,8 @@ class SearchAyahItem extends StatelessWidget {
           ),
         );
       },
-      onLongPress: () {
-        showModalBottomSheet(
+      onLongPress: () async {
+        await showModalBottomSheet(
           context: context,
           builder: (ctx) => AyahItemOption(
             ayahId: ayah.ayahId,

@@ -45,9 +45,9 @@ class FavoriteSurahNameItem extends StatelessWidget {
           elevation: 0,
           color: Colors.transparent,
           child: ListTile(
-            onTap: () {
+            onTap: () async {
               context.read<MushafPageNumberState>().setPageNumber(page);
-              context.read<SurahBookmarkState>().addLastOpenedPage(surah.startPageNumber);
+              await context.read<SurahBookmarkState>().addLastOpenedPage(surah.startPageNumber);
               Navigator.pushNamed(
                 context,
                 NamesRouter.pageReader,

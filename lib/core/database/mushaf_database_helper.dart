@@ -41,7 +41,7 @@ class MushafDatabaseHelper {
       final dbPath = await _resolveDbPath();
 
       if (!await _isInstalledAndCurrent(dbPath)) {
-        await _copyAssetDbTo(dbPath);
+        await _ensureDatabaseInstalled(dbPath);
       }
 
       final database = await openDatabase(
@@ -117,6 +117,26 @@ class MushafDatabaseHelper {
 
     if (database != null && database.isOpen) {
       await database.close();
+    }
+  }
+
+  Future<void> _ensureDatabaseInstalled(String dbPath) async {
+    final installed = await _installedVersion(dbPath);
+    if (installed >= _dbVersion) return;
+    await _copyAssetDbTo(dbPath);
+  }
+
+  Future<int> _installedVersion(String dbPath) async {
+    if (!await File(dbPath).exists()) return 0;
+
+    Database? probe;
+    try {
+      probe = await openDatabase(dbPath, readOnly: true, singleInstance: false);
+      return await probe.getVersion();
+    } catch (_) {
+      return 0;
+    } finally {
+      await probe?.close();
     }
   }
 

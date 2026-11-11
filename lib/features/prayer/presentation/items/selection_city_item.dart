@@ -40,10 +40,10 @@ class SelectionCityItem extends StatelessWidget {
                 crossAxisAlignment: .stretch,
                 children: [
                   OutlinedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final prayerState = context.read<PrayerState>();
                       final navigator = Navigator.of(context);
-                      prayerState.setLocation(
+                      await prayerState.setLocation(
                         country: cityModel.country,
                         city: cityModel.city,
                         latitude: cityModel.latitude,

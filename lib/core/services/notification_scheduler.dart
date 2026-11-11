@@ -106,6 +106,17 @@ class NotificationScheduler with WidgetsBindingObserver {
     return future;
   }
 
+  Future<void> requestPermissionsOnce() async {
+    if (_box.get(NotificationKeys.keyPermissionAsked) == true) return;
+    await _box.put(NotificationKeys.keyPermissionAsked, true);
+
+    await _service.setupNotification();
+    final granted = await _service.requestPermissions();
+    if (granted) await _service.requestExactAlarmsPermission();
+
+    await syncNow();
+  }
+
   Future<void> _loop() async {
     do {
       _dirty = false;

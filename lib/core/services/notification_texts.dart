@@ -14,9 +14,9 @@ class NotificationTexts {
       ? 'Восход солнца: время утреннего намаза закончилось'
       : 'Наступило время намаза «${p.label}»';
 
-  String ikamahTitle(PrayerLabels p, String time) => 'Икама: ${p.label} — $time';
+  String iqamahTitle(PrayerLabels p, String time) => 'Икама: ${p.label} — $time';
 
-  String ikamahBody(PrayerLabels p) => 'Время икамы намаза «${p.label}»';
+  String iqamahBody(PrayerLabels p) => 'Время икамы намаза «${p.label}»';
 
   String eventTitle(NotificationEvent e) => e.label;
 

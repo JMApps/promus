@@ -4,6 +4,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/icon_paths.dart';
+import '../../../core/services/notification_scheduler.dart';
 import '../../../core/theme/app_paddings.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_shapes.dart';
@@ -58,6 +59,11 @@ class _HomePageState extends State<HomePage> {
       FortressPage(scrollController: _fortressChaptersController),
       const CounterMainPage(),
     ];
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      await context.read<NotificationScheduler>().requestPermissionsOnce();
+    });
   }
 
   @override

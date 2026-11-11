@@ -34,17 +34,17 @@ class MainNotificationList extends StatelessWidget {
           ],
         ),
         NotificationSection(
-          title: AppStrings.ikamahs,
+          title: AppStrings.iqamahs,
           children: [
-            for (final ikamah in PrayerLabels.withIkamah)
+            for (final iqamah in PrayerLabels.withIqamah)
               NotificationSwitchTile(
-                label: ikamah.label,
-                value: notificationsState.ikamahEnabled(ikamah),
-                onChanged: (v) => notificationsState.setIkamah(ikamah, v),
+                label: iqamah.label,
+                value: notificationsState.iqamahEnabled(iqamah),
+                onChanged: (v) => notificationsState.setIqamah(iqamah, v),
                 extra: MinutesSelector(
-                  value: notificationsState.ikamahMinutes(ikamah),
-                  enabled: notificationsState.ikamahEnabled(ikamah),
-                  onChanged: (m) => notificationsState.setIkamahMinutes(ikamah, m),
+                  value: notificationsState.iqamahMinutes(iqamah),
+                  enabled: notificationsState.iqamahEnabled(iqamah),
+                  onChanged: (m) => notificationsState.setIqamahMinutes(iqamah, m),
                 ),
               ),
           ],

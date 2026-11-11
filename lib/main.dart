@@ -55,16 +55,12 @@ void main() async {
     NotificationKeys.keyMainNotificationsBox,
   );
   final mainAppSettingsBox = Hive.box(AppConstantKeys.keyMainAppSettingsBox);
-  final settingsPrayerTimeBox = Hive.box(
-    AppConstantKeys.keySettingsPrayerTimeBox,
-  );
+  final settingsPrayerTimeBox = Hive.box(AppConstantKeys.keySettingsPrayerTimeBox);
   final bookmarksSurahsBox = Hive.box(AppConstantKeys.keyBookmarksSurahsBox);
   final appCounterBox = Hive.box(AppConstantKeys.keyMainCounterBox);
 
-  final FortressDatabaseHelper fortressDatabaseHelper =
-      FortressDatabaseHelper.instance;
-  final MushafDatabaseHelper mushafDatabaseHelper =
-      MushafDatabaseHelper.instance;
+  final FortressDatabaseHelper fortressDatabaseHelper = FortressDatabaseHelper.instance;
+  final MushafDatabaseHelper mushafDatabaseHelper = MushafDatabaseHelper.instance;
 
   runApp(
     MultiProvider(
@@ -147,7 +143,7 @@ void main() async {
               service: LocalNotificationService(),
               notificationsBox: mainNotificationsBox,
               loadPrayerTimes: () {
-                final coordinates = prayerState.coordinates; // город ещё не выбран
+                final coordinates = prayerState.coordinates;
                 return AdhanPrayerTimesSource(
                   coordinates,
                   prayerState.calculationParameters,

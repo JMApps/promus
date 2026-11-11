@@ -73,7 +73,7 @@ class AppStrings {
   static const String nearWhiteDays = 'Приближаются белые дни';
   static const String whiteDays = 'Белые дни';
   static const String prayers = 'Молитвы';
-  static const String ikamahs = 'Икамы';
+  static const String iqamahs = 'Икамы';
   static const String friday = 'Пятница';
   static const String fasting = 'Пост';
   static const String fastMonday = 'Пост в понедельник';

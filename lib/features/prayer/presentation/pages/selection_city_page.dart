@@ -21,6 +21,7 @@ class SelectionCityPage extends StatefulWidget {
 }
 
 class _SelectionCityPageState extends State<SelectionCityPage> {
+  late final CityDatabaseHelper _cityDatabase = CityDatabaseHelper();
   late final TextEditingController _editingController;
   late final AllCitiesState _state;
 
@@ -35,7 +36,7 @@ class _SelectionCityPageState extends State<SelectionCityPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _waitForTransition();
-      if (mounted) _state.loadAllCitiesList();
+      if (mounted) await _state.loadAllCitiesList();
     });
   }
 
@@ -56,9 +57,10 @@ class _SelectionCityPageState extends State<SelectionCityPage> {
   }
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
     _editingController.dispose();
     _state.dispose();
+    await _cityDatabase.close();
     super.dispose();
   }
 

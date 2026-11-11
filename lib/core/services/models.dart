@@ -6,7 +6,7 @@ import '../enums/notification_event.dart';
 import '../enums/prayer_labels.dart';
 
 /// Канал уведомления: от него зависят звук, важность и режим будильника.
-enum NotificationChannelKind { prayer, ikamah, reminder }
+enum NotificationChannelKind { prayer, iqamah, reminder }
 
 /// Времена намазов на один календарный день.
 ///
@@ -75,7 +75,7 @@ abstract final class NotificationIds {
   static int prayerSlot(PrayerLabels p) => p.index;
 
   /// 8–13 (слот восхода не используется).
-  static int ikamahSlot(PrayerLabels p) => 8 + p.index;
+  static int iqamahSlot(PrayerLabels p) => 8 + p.index;
 
   static int eventSlot(NotificationEvent e) => switch (e) {
     NotificationEvent.friday => 16,
@@ -86,7 +86,7 @@ abstract final class NotificationIds {
   };
 }
 
-enum NotificationPayloadType { prayer, ikamah, event, openApp }
+enum NotificationPayloadType { prayer, iqamah, event, openApp }
 
 /// Payload запланированного уведомления.
 ///

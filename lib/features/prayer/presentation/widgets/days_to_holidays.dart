@@ -26,8 +26,8 @@ class DaysToHolidays extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        onTap: () {
-          showModalBottomSheet(
+        onTap: () async {
+          await showModalBottomSheet(
             context: context,
             isScrollControlled: true,
             useSafeArea: true,

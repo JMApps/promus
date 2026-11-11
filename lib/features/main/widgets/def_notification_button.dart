@@ -11,8 +11,8 @@ class DefNotificationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: () {
-        context.read<NotificationSettingsState>().defNotificationValues();
+      onPressed: () async {
+        await context.read<NotificationSettingsState>().defNotificationValues();
       },
       child: const Text(
         AppStrings.labelDefault,
