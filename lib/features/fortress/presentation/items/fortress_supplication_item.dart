@@ -26,7 +26,8 @@ class FortressSupplicationItem extends StatelessWidget {
       margin: AppPaddings.withoutTopSmallBottomMedium,
       color: appColors.surface,
       elevation: 3,
-      child: Padding(
+      clipBehavior: .antiAlias,
+      child: SingleChildScrollView(
         padding: AppPaddings.small,
         child: Column(
           crossAxisAlignment: .stretch,

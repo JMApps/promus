@@ -20,12 +20,10 @@ class FortressHorizontalSupplicationsList extends StatelessWidget {
       itemCount: fortressChapterSupplications.length,
       itemBuilder: (context, index) {
         final supplication = fortressChapterSupplications[index];
-        return SingleChildScrollView(
-          child: FortressSupplicationItem(
-            supplicationModel: supplication,
-            supplicationsLength: fortressChapterSupplications.length,
-            index: index,
-          ),
+        return FortressSupplicationItem(
+          supplicationModel: supplication,
+          supplicationsLength: fortressChapterSupplications.length,
+          index: index,
         );
       },
     );
