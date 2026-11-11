@@ -44,7 +44,7 @@ class AppStrings {
   static const String searchIsEmpty = 'По вашему запросу ничего не найдено';
   static const String errorLoadData = 'Ошибка загрузки данных';
   static const String reset = 'Сброс';
-  static const String vibration = 'Цибрация';
+  static const String vibration = 'Вибрация';
   static const String showCountLabel = 'Показать количество';
   static const String countReset = 'Счётчик сброшен';
   static const String undo = 'Отменить';
@@ -59,7 +59,7 @@ class AppStrings {
 
   static String qiblahDirectionDescription(String qiblahDirection) => 'Кибла на $qiblahDirection\u00B0';
 
-  static const List weekDays = <String>[
+  static const List<String> weekDays = [
     'Пн',
     'Вт',
     'Ср',
@@ -70,7 +70,7 @@ class AppStrings {
   ];
 
   static const String notifications = 'Уведомления';
-  static const String nearWhiteDays = 'Приблизились белые дни';
+  static const String nearWhiteDays = 'Приближаются белые дни';
   static const String whiteDays = 'Белые дни';
   static const String prayers = 'Молитвы';
   static const String ikamahs = 'Икамы';
@@ -111,8 +111,8 @@ class AppStrings {
   static const String copied = 'Скопировано';
 
   static const String selectedCity = 'Выбранный город';
-  static const String prayerMethodCalculate = 'Методы расчета времени молитв';
-  static const String highLatitude = 'Широкие высоты';
+  static const String prayerMethodCalculate = 'Методы расчёта времени молитв';
+  static const String highLatitude = 'Высокие широты';
   static const String correctionMinutes = 'Корректировка минут';
   static const String asrMethod = 'Молитва \'аср';
   static const String winterTime = 'Зимнее время';
@@ -212,12 +212,6 @@ class AppStrings {
     'Hanafi',
   ];
 
-  static final List<Duration> calculationUtcOffset = [
-    const Duration(hours: -1),
-    const Duration(),
-    const Duration(hours: 1),
-  ];
-
   static const List<String> gregorianMonthsList = <String>[
     'января',
     'февраля',
@@ -239,12 +233,12 @@ class AppStrings {
     'раби аль-авваль',
     'раби ас-сани',
     'джумада аль-уля',
-    'джумада ас-сани',
+    'джумада ас-сания',
     'раджаб',
-    'шаабан',
+    'ша’абан',
     'рамадан',
     'шавваль',
-    'зуль-каада',
+    'зуль-ка’ада',
     'зуль-хиджа',
   ];
 
