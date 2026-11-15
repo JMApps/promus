@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:adhan/adhan.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:intl/intl.dart';

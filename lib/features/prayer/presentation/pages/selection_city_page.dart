@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -21,7 +21,7 @@ class SelectionCityPage extends StatefulWidget {
 }
 
 class _SelectionCityPageState extends State<SelectionCityPage> {
-  late final CityDatabaseHelper _cityDatabase = CityDatabaseHelper();
+  late final CityDatabaseHelper _cityDatabase = CityDatabaseHelper.instance;
   late final TextEditingController _editingController;
   late final AllCitiesState _state;
 
@@ -30,7 +30,7 @@ class _SelectionCityPageState extends State<SelectionCityPage> {
     super.initState();
     _editingController = TextEditingController();
     _state = AllCitiesState(
-      CityRepositoryImpl(CityDatabaseHelper()),
+      CityRepositoryImpl(_cityDatabase),
       context.read<PrayerState>().country,
     );
 

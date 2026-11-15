@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../ayahs/lists/ayah_by_ayah_list.dart';
 import '../../domain/entities/mushaf_page_entity.dart';

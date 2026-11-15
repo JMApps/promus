@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
-class AppSettingStrings {
-  AppSettingStrings._();
+class AppSettingKeys {
+  AppSettingKeys._();
 
   static const MaterialColor defaultThemeColor = Colors.amber;
 

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/app_strings.dart';
@@ -63,8 +63,8 @@ class SurahNamePage extends StatelessWidget {
                 title: const Text(AppStrings.titleMushaf),
                 actions: [
                   IconButton.filledTonal(
-                    onPressed: () {
-                      showSearch<void>(
+                    onPressed: () async {
+                      await showSearch<void>(
                         context: context,
                         delegate: SearchAyahsDelegate(),
                       );

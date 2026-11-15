@@ -1,15 +1,21 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:flutter_localizations/flutter_localizations.dart' hide GlobalMaterialLocalizations, GlobalCupertinoLocalizations;
+import 'package:material_ui/material_ui.dart';
+import 'package:promus/core/database/city_database_helper.dart';
+import 'package:promus/core/database/custom_city_database_helper.dart';
+import 'package:promus/core/database/fortress_database_helper.dart';
+import 'package:promus/features/main/pages/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 import '../../../core/constants/app_strings.dart';
+import '../../../core/database/mushaf_database_helper.dart';
+import '../../../core/database/service/database_gate.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 import '../state/main_settings_state.dart';
-import 'home_page.dart';
 
 class RootPage extends StatelessWidget {
   const RootPage({super.key});
@@ -17,7 +23,10 @@ class RootPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (mode, color) = context.select<MainSettingsState, (ThemeMode, Color)>(
-          (s) => (s.themeMode, s.themeColor),
+      (s) => (
+        s.themeMode,
+        s.themeColor,
+      ),
     );
     final appTheme = AppTheme(seedColor: color);
     return MaterialApp(
@@ -46,7 +55,15 @@ class RootPage extends StatelessWidget {
           child: child ?? const SizedBox.shrink(),
         ),
       ),
-      home: const HomePage(),
+      home: DatabaseGate(
+        databases: [
+          MushafDatabaseHelper.instance,
+          FortressDatabaseHelper.instance,
+          CityDatabaseHelper.instance,
+          CustomCityDatabaseHelper.instance,
+        ],
+        child: const HomePage(),
+      ),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:provider/provider.dart';
@@ -47,6 +47,7 @@ class SupplicationOptionCard extends StatelessWidget {
               ),
             );
           },
+          iconSize: AppSpacing.large,
           icon: const Icon(Icons.copy_rounded),
         ),
         const SizedBox(width: AppSpacing.small),
@@ -58,12 +59,11 @@ class SupplicationOptionCard extends StatelessWidget {
             await SharePlus.instance.share(
               ShareParams(
                 text: content,
-                sharePositionOrigin: box != null
-                    ? box.localToGlobal(Offset.zero) & box.size
-                    : null,
+                sharePositionOrigin: box != null ? box.localToGlobal(Offset.zero) & box.size : null,
               ),
             );
           },
+          iconSize: AppSpacing.large,
           icon: const Icon(Icons.ios_share),
         ),
         const SizedBox(width: AppSpacing.small),
@@ -99,10 +99,7 @@ class SupplicationOptionCard extends StatelessWidget {
     return parts.join('\n\n');
   }
 
-  Future<String> _footnoteContent(
-    BuildContext context,
-    int supplicationId,
-  ) async {
+  Future<String> _footnoteContent(BuildContext context, int supplicationId) async {
     final footnoteState = context.read<FortressFootnoteState>();
     await footnoteState.loadFootnotesBySupplication(supplicationId);
     return _stripHtml(
@@ -110,6 +107,5 @@ class SupplicationOptionCard extends StatelessWidget {
     );
   }
 
-  String _stripHtml(String htmlString) =>
-      html_parser.parse(htmlString).body?.text ?? '';
+  String _stripHtml(String htmlString) => html_parser.parse(htmlString).body?.text ?? '';
 }

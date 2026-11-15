@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:promus/core/database/city_database_helper.dart';
+import 'package:promus/core/database/custom_city_database_helper.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/app_constant_keys.dart';
@@ -44,6 +46,10 @@ void main() async {
   Hive.init(dir.path);
 
   await Future.wait([
+    MushafDatabaseHelper.instance.openIfInstalled(),
+    FortressDatabaseHelper.instance.openIfInstalled(),
+    CityDatabaseHelper.instance.openIfInstalled(),
+    CustomCityDatabaseHelper.instance.openIfInstalled(),
     Hive.openBox(NotificationKeys.keyMainNotificationsBox),
     Hive.openBox(AppConstantKeys.keyMainAppSettingsBox),
     Hive.openBox(AppConstantKeys.keySettingsPrayerTimeBox),
@@ -51,9 +57,7 @@ void main() async {
     Hive.openBox(AppConstantKeys.keyMainCounterBox),
   ]);
 
-  final mainNotificationsBox = Hive.box(
-    NotificationKeys.keyMainNotificationsBox,
-  );
+  final mainNotificationsBox = Hive.box(NotificationKeys.keyMainNotificationsBox);
   final mainAppSettingsBox = Hive.box(AppConstantKeys.keyMainAppSettingsBox);
   final settingsPrayerTimeBox = Hive.box(AppConstantKeys.keySettingsPrayerTimeBox);
   final bookmarksSurahsBox = Hive.box(AppConstantKeys.keyBookmarksSurahsBox);
@@ -151,7 +155,7 @@ void main() async {
               },
               loadHijri: () {
                 final offset = prayerState.hijriOffset;
-                return (date) {
+                return (DateTime date) {
                   final h = HijriCalendar.fromDate(
                     date.add(Duration(days: offset)),
                   );

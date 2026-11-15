@@ -119,6 +119,10 @@ class AppStrings {
   static const String dstMode = 'Зимнее время (DST)';
   static const String labelDefault = 'По умолчанию';
 
+  static const String databasePreparing = 'Подготовка базы данных…';
+  static const String databaseFailed = 'Не удалось подготовить базу данных';
+  static const String databaseRetry = 'Попробовать заново';
+
   static const String defCity = 'Mecca';
   static const String defCountry = 'Saudi Arabia';
   static const double defLatitude = 21.42580;
@@ -258,4 +262,8 @@ class AppStrings {
   static String searchByQuery(String query, String matches) => 'По запросу «$query»\n$matches';
 
   static String searchError(String error) => 'Ошибка поиска: $error';
+
+  static String databaseOfCount(int index, int count) => 'База $index из $count. ';
+
+  static String databaseCopying(int percent) => 'Копирование: $percent %';
 }

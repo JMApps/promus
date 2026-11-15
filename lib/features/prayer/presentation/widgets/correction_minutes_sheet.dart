@@ -1,5 +1,5 @@
 import 'package:adhan/adhan.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -87,8 +87,8 @@ class CorrectionMinutesSheet extends StatelessWidget {
             ),
           const SizedBox(height: AppSpacing.small),
           OutlinedButton(
-            onPressed: () {
-              state.resetAdjustments();
+            onPressed: () async {
+              await state.resetAdjustments();
             },
             child: const Text(
               AppStrings.labelDefault,

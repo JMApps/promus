@@ -13,7 +13,7 @@ class CityRepositoryImpl implements CityRepository {
 
   @override
   Future<List<CityEntity>> fetchAllCities({required String country}) async {
-    final database = await _databaseHelper.open();
+    final database = await _databaseHelper.db;
 
     final rows = await database.query(
       TableNames.tableOfCityCoordinates,

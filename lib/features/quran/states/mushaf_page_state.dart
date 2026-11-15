@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../core/constants/app_constant_keys.dart';
 import '../../../core/database/constants/column_names.dart';
@@ -85,7 +85,7 @@ class MushafPageState extends ChangeNotifier {
         _pages[page] = MushafPageLoadState.error(e);
       }
     } finally {
-      _runningLoads.remove(page);
+      await _runningLoads.remove(page);
 
       if (_activeWindow.contains(page)) {
         notifyListeners();

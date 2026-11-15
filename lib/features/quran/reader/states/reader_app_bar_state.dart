@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 class ReaderAppBarState extends ChangeNotifier {
@@ -36,8 +36,9 @@ class ReaderAppBarState extends ChangeNotifier {
   }
 
   @override
-  void dispose() {
-    _showSystemUi();
+  Future<void> dispose() async {
+
+    await _showSystemUi();
     super.dispose();
   }
 }

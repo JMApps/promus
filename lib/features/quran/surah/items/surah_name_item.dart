@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/app_strings.dart';
@@ -32,9 +32,9 @@ class SurahNameItem extends StatelessWidget {
       elevation: 0,
       color: index.isOdd ? itemEvenColor : itemOddColor,
       child: ListTile(
-        onTap: () {
+        onTap: () async {
           context.read<MushafPageNumberState>().setPageNumber(surah.startPageNumber);
-          context.read<SurahBookmarkState>().addLastOpenedPage(surah.startPageNumber);
+          await context.read<SurahBookmarkState>().addLastOpenedPage(surah.startPageNumber);
           Navigator.pushNamed(
             context,
             NamesRouter.pageReader,

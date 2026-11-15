@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../ayahs/states/ayah_flash_state.dart';
@@ -32,8 +32,8 @@ class _MushafReaderPageState extends State<MushafReaderPage> {
   }
 
   @override
-  void dispose() {
-    _appBarState.restoreSystemUI();
+  Future<void> dispose() async {
+    await _appBarState.restoreSystemUI();
     _pageController.dispose();
     super.dispose();
   }

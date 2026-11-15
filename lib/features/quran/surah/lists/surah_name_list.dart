@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../domain/entities/surah_name_entity.dart';
 import '../items/surah_name_item.dart';

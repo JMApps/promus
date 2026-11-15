@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../other/widgets/search_is_empty_widget.dart';
 import '../../domain/entities/city_entity.dart';

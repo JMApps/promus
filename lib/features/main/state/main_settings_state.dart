@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:hive_ce/hive_ce.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import '../../../core/constants/app_setting_strings.dart';
+import '../../../core/constants/app_setting_keys.dart';
 
 class MainSettingsState extends ChangeNotifier {
   MainSettingsState({required this._mainAppSettingsBox}) {
@@ -15,7 +15,7 @@ class MainSettingsState extends ChangeNotifier {
   final Box _mainAppSettingsBox;
 
   ThemeMode _themeMode = .system;
-  Color _themeColor = AppSettingStrings.defaultThemeColor;
+  Color _themeColor = AppSettingKeys.defaultThemeColor;
   bool _alwaysOnDisplay = true;
 
   ThemeMode get themeMode => _themeMode;
@@ -27,30 +27,34 @@ class MainSettingsState extends ChangeNotifier {
   void setThemeMode(ThemeMode mode) {
     if (_themeMode == mode) return;
     _themeMode = mode;
-    unawaited(_persist(AppSettingStrings.keyThemeMode, mode.name));
+    unawaited(_persist(AppSettingKeys.keyThemeMode, mode.name));
     notifyListeners();
   }
 
   void setThemeColor(Color color) {
     if (_themeColor == color) return;
     _themeColor = color;
-    unawaited(_persist(AppSettingStrings.keyThemeColor, color.toARGB32()));
+    unawaited(_persist(AppSettingKeys.keyThemeColor, color.toARGB32()));
     notifyListeners();
   }
 
   void setAlwaysOnDisplay(bool value) {
     if (_alwaysOnDisplay == value) return;
     _alwaysOnDisplay = value;
-    unawaited(_persist(AppSettingStrings.keyAlwaysOnDisplay, value));
+    unawaited(_persist(AppSettingKeys.keyAlwaysOnDisplay, value));
     _applyWakeLock();
     notifyListeners();
   }
 
   void _load() {
-    _themeMode = ThemeMode.values.asNameMap()[_mainAppSettingsBox.get(AppSettingStrings.keyThemeMode)] ?? ThemeMode.system;
-    _alwaysOnDisplay = _read(AppSettingStrings.keyAlwaysOnDisplay, true);
+    _themeMode =
+        ThemeMode.values.asNameMap()[_mainAppSettingsBox.get(
+          AppSettingKeys.keyThemeMode,
+        )] ??
+        ThemeMode.system;
+    _alwaysOnDisplay = _read(AppSettingKeys.keyAlwaysOnDisplay, true);
 
-    final storedColor = _read<int?>(AppSettingStrings.keyThemeColor, null);
+    final storedColor = _read<int?>(AppSettingKeys.keyThemeColor, null);
     if (storedColor != null) _themeColor = Color(storedColor);
   }
 

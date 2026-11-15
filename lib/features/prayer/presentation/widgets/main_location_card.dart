@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/constants/icon_paths.dart';
 import '../../../../core/routes/names_router.dart';

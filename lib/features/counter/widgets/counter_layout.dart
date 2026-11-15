@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'count_vibration_button.dart';
 import 'counter_mode_selector.dart';

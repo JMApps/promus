@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../domain/entities/fortress_supplication_entity.dart';
 import '../items/fortress_supplication_item.dart';
