@@ -1,11 +1,12 @@
 import 'package:adhan/adhan.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart' as fm;
-import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/font_families.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../state/prayer_state.dart';
 
@@ -15,17 +16,24 @@ class EventTimesStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (:times, :sunnah, :step) = context.select<PrayerState, ({PrayerTimes times, SunnahTimes sunnah, int step})>((s) => (
-        times: s.prayerTimes,
-        sunnah: s.sunnahTimes,
-        step: s.currentEventStep,
-      ),
-    );
+            times: s.prayerTimes,
+            sunnah: s.sunnahTimes,
+            step: s.currentEventStep,
+          ),
+        );
     final format = context.read<PrayerState>().formatTime;
     final appColors = Theme.of(context).colorScheme;
 
     EasyStep stepOf(IconData icon, String name, DateTime time) => EasyStep(
       icon: Icon(icon),
-      customTitle: Text('$name\n${format(time)}', textAlign: .center),
+      customTitle: Text(
+        '$name\n${format(time)}',
+        textAlign: .center,
+        style: TextStyle(
+          color: appColors.onSurface,
+          fontFamily: FontFamilies.ptSans,
+        ),
+      ),
     );
 
     return fm.Material(
@@ -43,6 +51,7 @@ class EventTimesStepper extends StatelessWidget {
         activeStepBorderColor: Colors.transparent,
         unreachedStepIconColor: appColors.secondaryContainer,
         activeStepIconColor: appColors.primaryContainer,
+        finishedStepIconColor: appColors.onPrimary,
         borderThickness: 3.5,
         activeStepBorderType: .normal,
         unreachedStepBorderType: .normal,

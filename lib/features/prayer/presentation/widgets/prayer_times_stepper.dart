@@ -15,10 +15,9 @@ class PrayerTimesStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (:times, :step) = context
-        .select<PrayerState, ({PrayerTimes times, int step})>(
+    final (:times, :step) = context.select<PrayerState, ({PrayerTimes times, int step})>(
           (s) => (times: s.prayerTimes, step: s.currentPrayerStep),
-        );
+    );
     final format = context.read<PrayerState>().formatTime;
     final appColors = Theme.of(context).colorScheme;
 
@@ -48,6 +47,7 @@ class PrayerTimesStepper extends StatelessWidget {
         activeStepBorderColor: Colors.transparent,
         unreachedStepIconColor: appColors.secondaryContainer,
         activeStepIconColor: appColors.primaryContainer,
+        finishedStepIconColor: appColors.onPrimary,
         borderThickness: 3.5,
         activeStepBorderType: .normal,
         unreachedStepBorderType: .normal,

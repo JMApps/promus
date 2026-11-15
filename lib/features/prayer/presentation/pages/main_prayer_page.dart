@@ -8,8 +8,10 @@ import '../lists/week_days_row.dart';
 import '../widgets/adhkar_reminder_section.dart';
 import '../widgets/days_to_holidays.dart';
 import '../widgets/events_card.dart';
+import '../widgets/friday_salawah_card.dart';
 import '../widgets/gregorian_date_card.dart';
 import '../widgets/hijri_date_card.dart';
+import '../widgets/last_friday_hour_card.dart';
 import '../widgets/main_icon_item.dart';
 import '../widgets/main_location_card.dart';
 import '../widgets/prayers_card.dart';
@@ -74,6 +76,8 @@ class MainPrayerPage extends StatelessWidget {
             HijriDateCard(),
             SizedBox(height: AppSpacing.medium),
             WeekDaysRow(),
+            FridaySalawahCard(),
+            LastFridayHourCard(),
             SizedBox(height: AppSpacing.medium),
             PrayersCard(),
             AdhkarReminderSection(),

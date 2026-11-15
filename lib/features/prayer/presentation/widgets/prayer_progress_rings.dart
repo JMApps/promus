@@ -13,7 +13,7 @@ class PrayerProgressRings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (elapsed, remaining) = context.select<PrayerState, (SleekEntity, SleekEntity)>(
-      (s) => (s.elapsed, s.remaining),
+      (s) => (s.elapsedPrayerTime, s.remainingPrayerTime),
     );
     return Column(
       crossAxisAlignment: .stretch,

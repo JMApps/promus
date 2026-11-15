@@ -1,4 +1,3 @@
-import 'package:adhan/adhan.dart';
 import 'package:intl/intl.dart';
 
 class AppStrings {
@@ -80,6 +79,7 @@ class AppStrings {
   static const String fastThursday = 'Пост в четверг';
   static const String tomorrowFriday = 'Завтра пятница';
   static const String lastFridayHour = 'Последний час пятницы';
+  static const String ayahFriday = 'إِنَّ ٱللَّهَ وَمَلَٰٓئِكَتَهُۥ يُصَلُّونَ عَلَى ٱلنَّبِيِّۚ يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ صَلُّواْ عَلَيۡهِ وَسَلِّمُواْ تَسۡلِيمًا\n\nВоистину, Аллах и Его ангелы благословляют Пророка. О те, которые уверовали! Благословляйте его и приветствуйте миром.';
   static const String tomorrowDesirableFastingDay = 'Завтра день желательного поста';
   static const String desirableFastingDay = 'День желательного поста';
   static const String remind = 'Напоминание';
@@ -123,10 +123,7 @@ class AppStrings {
   static const String databaseFailed = 'Не удалось подготовить базу данных';
   static const String databaseRetry = 'Попробовать заново';
 
-  static const String defCity = 'Mecca';
-  static const String defCountry = 'Saudi Arabia';
-  static const double defLatitude = 21.42580;
-  static const double defLongitude = 39.82410;
+
 
   static String ayahsCount(int count) => Intl.plural(
     count,
@@ -146,36 +143,6 @@ class AppStrings {
     other: 'Найдено $count результата',
     locale: 'ru',
   );
-
-  static const List<CalculationMethod> prayerCalculationMethodList = [
-    CalculationMethod.russia,
-    CalculationMethod.tatarstan,
-    CalculationMethod.dagestan,
-    CalculationMethod.chechnya,
-    CalculationMethod.north_america,
-    CalculationMethod.muslim_world_league,
-    CalculationMethod.umm_al_qura,
-    CalculationMethod.france,
-    CalculationMethod.dubai,
-    CalculationMethod.egyptian,
-    CalculationMethod.karachi,
-    CalculationMethod.kuwait,
-    CalculationMethod.moon_sighting_committee,
-    CalculationMethod.qatar,
-    CalculationMethod.turkey,
-    CalculationMethod.singapore,
-  ];
-
-  static const List<HighLatitudeRule> highLatitudeList = [
-    HighLatitudeRule.middle_of_the_night,
-    HighLatitudeRule.seventh_of_the_night,
-    HighLatitudeRule.twilight_angle,
-  ];
-
-  static const List<Madhab> calculationMadhabList = [
-    Madhab.shafi,
-    Madhab.hanafi,
-  ];
 
   static const holidayRamadanStart = 'Начало Рамадана';
   static const holidayEidAlFitr = '\'Ид аль-Фитр';

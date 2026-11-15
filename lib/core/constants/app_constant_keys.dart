@@ -11,21 +11,7 @@ class AppConstantKeys {
   static const String keyMainCounterBox = 'key_main_counter_box';
   static const String keyBookmarkSurahs = 'key_bookmarks_surahs';
 
-  static const String keyFajrAdjustment = 'key_fajr_adjustment';
-  static const String keySunriseAdjustment = 'key_sunrise_adjustment';
-  static const String keyDhuhrAdjustment = 'key_dhuhr_adjustment';
-  static const String keyAsrAdjustment = 'key_asr_adjustment';
-  static const String keyMaghribAdjustment = 'key_maghrib_adjustment';
-  static const String keyIshaAdjustment = 'key_isha_adjustment';
 
-  static const String keyCountry = 'key_country';
-  static const String keyCity = 'key_city';
-  static const String keyCurrentLatitude = 'key_current_latitude';
-  static const String keyCurrentLongitude = 'key_current_longitude';
-  static const String keyCalculationIndex = 'key_calculation_index';
-  static const String keyHighLatitudeIndex = 'key_high_latitude_index';
-  static const String keyMadhabIndex = 'key_madhab_index';
-  static const String keyDST = 'key_dst';
 
   static const String keyFreeCounterValue = 'key_free_counter_value';
   static const String key33CounterValue = 'key_33_counter_value';
@@ -53,7 +39,5 @@ class AppConstantKeys {
   static const String keyAyahArabicTextSize = 'key_ayah_arabic_text_size';
   static const String keyAyahTranslationTextSize = 'key_ayah_translation_text_size';
 
-  static const String keyHijriOffset = 'key_hijri_offset';
-  static const int minHijriOffset = -2;
-  static const int maxHijriOffset = 2;
+
 }

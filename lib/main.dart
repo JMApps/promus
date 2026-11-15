@@ -1,13 +1,12 @@
-import 'package:hijri/hijri_calendar.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:promus/core/database/city_database_helper.dart';
-import 'package:promus/core/database/custom_city_database_helper.dart';
 import 'package:provider/provider.dart';
 
 import 'core/constants/app_constant_keys.dart';
 import 'core/constants/notification_keys.dart';
+import 'core/database/city_database_helper.dart';
+import 'core/database/custom_city_database_helper.dart';
 import 'core/database/fortress_database_helper.dart';
 import 'core/database/mushaf_database_helper.dart';
 import 'core/services/local_notification_service.dart';
@@ -46,10 +45,12 @@ void main() async {
   Hive.init(dir.path);
 
   await Future.wait([
+    // Имеющиеся базы данных
     MushafDatabaseHelper.instance.openIfInstalled(),
     FortressDatabaseHelper.instance.openIfInstalled(),
     CityDatabaseHelper.instance.openIfInstalled(),
     CustomCityDatabaseHelper.instance.openIfInstalled(),
+    // Боксы настроек
     Hive.openBox(NotificationKeys.keyMainNotificationsBox),
     Hive.openBox(AppConstantKeys.keyMainAppSettingsBox),
     Hive.openBox(AppConstantKeys.keySettingsPrayerTimeBox),
@@ -146,21 +147,13 @@ void main() async {
             return NotificationScheduler(
               service: LocalNotificationService(),
               notificationsBox: mainNotificationsBox,
-              loadPrayerTimes: () {
-                final coordinates = prayerState.coordinates;
-                return AdhanPrayerTimesSource(
-                  coordinates,
-                  prayerState.calculationParameters,
-                );
-              },
-              loadHijri: () {
-                final offset = prayerState.hijriOffset;
-                return (DateTime date) {
-                  final h = HijriCalendar.fromDate(
-                    date.add(Duration(days: offset)),
-                  );
-                  return HijriDate(year: h.hYear, month: h.hMonth, day: h.hDay);
-                };
+              loadPrayerTimes: () => AdhanPrayerTimesSource(
+                prayerState.coordinates,
+                prayerState.calculationParameters,
+              ),
+              loadHijri: () => (DateTime date) {
+                final h = prayerState.hijriFor(date);
+                return HijriDate(year: h.hYear, month: h.hMonth, day: h.hDay);
               },
             )..start(watchBoxes: [settingsPrayerTimeBox]);
           },
