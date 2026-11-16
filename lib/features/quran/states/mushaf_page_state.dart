@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
 
 import '../../../core/constants/app_constant_keys.dart';
@@ -13,6 +15,8 @@ class MushafPageState extends ChangeNotifier {
 
   final Map<int, MushafPageLoadState> _pages = {};
   final Map<int, Future<void>> _runningLoads = {};
+
+  int _windowGeneration = 0;
 
   Set<int> _activeWindow = const {};
 
@@ -55,14 +59,15 @@ class MushafPageState extends ChangeNotifier {
   Future<void> loadWindow(int page) async {
     if (!_isValidPage(page)) return;
 
-    final window = _buildWindow(page); // List, порядок важен
+    final generation = ++_windowGeneration;
+    final window = _buildWindow(page);
     _activeWindow = window.toSet();
 
     _pages.removeWhere((pageNumber, _) => !_activeWindow.contains(pageNumber));
-
     notifyListeners();
 
     for (final pageNumber in window) {
+      if (generation != _windowGeneration) return; // пользователь уже перелистнул
       await loadPage(pageNumber);
     }
   }
@@ -85,11 +90,8 @@ class MushafPageState extends ChangeNotifier {
         _pages[page] = MushafPageLoadState.error(e);
       }
     } finally {
-      await _runningLoads.remove(page);
-
-      if (_activeWindow.contains(page)) {
-        notifyListeners();
-      }
+      unawaited(_runningLoads.remove(page));
+      if (_activeWindow.contains(page)) notifyListeners();
     }
   }
 

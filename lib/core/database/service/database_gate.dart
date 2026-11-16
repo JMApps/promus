@@ -33,13 +33,13 @@ class _DatabaseGateState extends State<DatabaseGate> {
   @override
   void initState() {
     super.initState();
-    _openAll().ignore();
+    _installAll().ignore();
   }
 
-  Future<void> _openAll() async {
+  Future<void> _installAll() async {
     for (final database in widget.databases) {
       try {
-        await database.db;
+        await database.ensureInstalled();
       } catch (_) {
         // Ошибка уже в database.status; продолжаем со следующей базой.
       }
@@ -50,7 +50,7 @@ class _DatabaseGateState extends State<DatabaseGate> {
     for (final database in widget.databases) {
       if (database.status.value.phase != DbInstallPhase.failed) continue;
       try {
-        await database.reinstallFromAssets();
+        await database.ensureInstalled();
       } catch (_) {
         // Ошибка снова попадёт в database.status.
       }
@@ -67,8 +67,8 @@ class _DatabaseGateState extends State<DatabaseGate> {
             for (final database in widget.databases) database.status.value,
           ];
           final count = statuses.length;
-          final copyingIndex = statuses.indexWhere((s) =>
-            s.phase == DbInstallPhase.copying || s.phase == DbInstallPhase.idle,
+          final copyingIndex = statuses.indexWhere(
+                (s) => s.phase == DbInstallPhase.copying,
           );
           if (copyingIndex != -1) {
             final progress = statuses[copyingIndex].progress;

@@ -20,14 +20,6 @@ class ReaderAppBarState extends ChangeNotifier {
 
   Future<void> _showSystemUi() async {
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarContrastEnforced: false,
-      ),
-    );
     _showAppBar = true;
   }
 
@@ -37,8 +29,7 @@ class ReaderAppBarState extends ChangeNotifier {
 
   @override
   Future<void> dispose() async {
-
-    await _showSystemUi();
+    unawaited(_showSystemUi());
     super.dispose();
   }
 }

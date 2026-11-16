@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -6,7 +8,7 @@ import '../../domain/repositories/surah_name_repository.dart';
 
 class SurahNameState extends ChangeNotifier {
   SurahNameState(this._repository) {
-    _load();
+    unawaited(_load());
   }
 
   final SurahNameRepository _repository;

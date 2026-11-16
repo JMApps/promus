@@ -5,81 +5,93 @@ import '../../domain/entities/ayah_by_ayah_entity.dart';
 import '../../domain/repositories/ayah_by_ayah_repository.dart';
 import '../mappers/ayah_by_ayah_mapper.dart';
 import '../models/ayah_by_ayah_model.dart';
+import 'search_normalizer.dart';
 
 class AyahByAyahRepositoryImpl implements AyahByAyahRepository {
+  const AyahByAyahRepositoryImpl(this._databaseHelper);
+
   final MushafDatabaseHelper _databaseHelper;
 
-  const AyahByAyahRepositoryImpl(this._databaseHelper);
+  static const int _searchLimit = 200;
+
+  static final String _selectColumns = '''
+    a.${ColumnNames.ayahId},
+    a.${ColumnNames.verseKey},
+    a.${ColumnNames.surahNumber},
+    a.${ColumnNames.ayahNumber},
+    a.${ColumnNames.ayah} AS ${ColumnNames.ayahArabic},
+    a.${ColumnNames.ayahPageNumber},
+    a.${ColumnNames.ayahPosition},
+    COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
+  ''';
 
   @override
   Future<List<AyahByAyahEntity>> searchAyahs({required String query}) async {
-    final trimmed = query.trim();
-    if (trimmed.isEmpty) return const [];
-
-    final isArabic = RegExp(r'[\u0600-\u06FF]').hasMatch(trimmed);
-
-    final words = (isArabic ? _normalizeArabic(trimmed) : trimmed)
-        .split(RegExp(r'[^\p{L}\p{N}]+', unicode: true))
-        .where((w) => w.isNotEmpty)
-        .toList();
+    final isArabic = containsArabic(query);
+    final words = splitSearchWords(
+      isArabic ? normalizeArabic(query) : normalizeRussian(query),
+    );
     if (words.isEmpty) return const [];
 
-    final ftsTable = isArabic ? TableNames.ftsArabicTable : TableNames.ftsTranslationsTable;
-
-    final matchExpr = isArabic ? words.map((w) => '$w*').join(' ') : words.map((w) => '${ColumnNames.ayahRuKuliev}:$w*').join(' ');
+    // Слово из одной буквы ищем целиком, длиннее — по началу слова.
+    final terms = words.map((word) => word.length > 1 ? '$word*' : word);
 
     final database = await _databaseHelper.db;
 
-    final result = await database.rawQuery(
-      '''
-      SELECT
-        a.${ColumnNames.ayahId},
-        a.${ColumnNames.verseKey},
-        a.${ColumnNames.surahNumber},
-        a.${ColumnNames.ayahNumber},
-        a.${ColumnNames.ayah} AS ${ColumnNames.ayahArabic},
-        a.${ColumnNames.ayahPageNumber},
-        a.${ColumnNames.ayahPosition},
-        COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
-      FROM $ftsTable
-      JOIN ${TableNames.tableOfAyah} a
-        ON a.${ColumnNames.ayahId} = $ftsTable.rowid
-      LEFT JOIN ${TableNames.tableOfTranslations} t
-        ON t.ayah_key = a.${ColumnNames.verseKey}
-      WHERE $ftsTable MATCH ?
-      ORDER BY a.${ColumnNames.surahNumber}, a.${ColumnNames.ayahNumber}
-      LIMIT 200
-      ''',
-      [matchExpr],
-    );
+    final List<Map<String, Object?>> rows;
+    if (isArabic) {
+      final fts = TableNames.ftsArabicTable;
+      rows = await database.rawQuery(
+        '''
+        SELECT $_selectColumns
+        FROM $fts
+        JOIN ${TableNames.tableOfAyah} a
+          ON a.${ColumnNames.ayahId} = $fts.rowid
+        LEFT JOIN ${TableNames.tableOfTranslations} t
+          ON t.ayah_key = a.${ColumnNames.verseKey}
+        WHERE $fts MATCH ?
+        ORDER BY a.${ColumnNames.surahNumber}, a.${ColumnNames.ayahNumber}
+        LIMIT $_searchLimit
+        ''',
+        [terms.join(' ')],
+      );
+    } else {
+      // rowid в fts_translations — это Table_of_translation.id,
+      // поэтому идём через таблицу переводов, а аят находим по ключу.
+      final fts = TableNames.ftsTranslationsTable;
+      rows = await database.rawQuery(
+        '''
+        SELECT $_selectColumns
+        FROM $fts
+        JOIN ${TableNames.tableOfTranslations} t
+          ON t.id = $fts.rowid
+        JOIN ${TableNames.tableOfAyah} a
+          ON a.${ColumnNames.verseKey} = t.ayah_key
+        WHERE $fts MATCH ?
+        ORDER BY a.${ColumnNames.surahNumber}, a.${ColumnNames.ayahNumber}
+        LIMIT $_searchLimit
+        ''',
+        [terms.map((term) => '${ColumnNames.ayahRuKuliev}:$term').join(' ')],
+      );
+    }
 
-    return result.map((row) => AyahByAyahModel.fromMap(row).ayahByAyahToEntity()).toList(growable: false);
-  }
-
-  static String _normalizeArabic(String s) {
-    return s.replaceAll(RegExp(r'[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]'), '').replaceAll(RegExp(r'[\u0622\u0623\u0625\u0671]'), '\u0627');
+    return rows
+        .map((row) => AyahByAyahModel.fromMap(row).ayahByAyahToEntity())
+        .toList(growable: false);
   }
 
   @override
   Future<List<AyahByAyahEntity>> fetchAyahsByIds({
     required List<int> ayahIds,
   }) async {
-    final database = await _databaseHelper.db;
-
     if (ayahIds.isEmpty) return const [];
 
+    final database = await _databaseHelper.db;
     final placeholders = List.filled(ayahIds.length, '?').join(',');
-    final result = await database.rawQuery(
+
+    final rows = await database.rawQuery(
       '''
-      SELECT
-        a.${ColumnNames.ayahId},
-        a.${ColumnNames.verseKey},
-        a.${ColumnNames.surahNumber},
-        a.${ColumnNames.ayahNumber},
-        a.${ColumnNames.ayah} AS ${ColumnNames.ayahArabic},
-        a.${ColumnNames.ayahPageNumber},
-        a.${ColumnNames.ayahPosition},
-        COALESCE(t.${ColumnNames.ayahRuKuliev}, '') AS ${ColumnNames.ayahTranslation}
+      SELECT $_selectColumns
       FROM ${TableNames.tableOfAyah} a
       LEFT JOIN ${TableNames.tableOfTranslations} t
         ON t.ayah_key = a.${ColumnNames.verseKey}
@@ -88,14 +100,13 @@ class AyahByAyahRepositoryImpl implements AyahByAyahRepository {
       ayahIds,
     );
 
-    final orderMap = {for (var i = 0; i < ayahIds.length; i++) ayahIds[i]: i};
-    final models = result.map(AyahByAyahModel.fromMap).toList();
-    models.sort(
-      (a, b) => (orderMap[a.ayahId] ?? 1 << 30).compareTo(
-        orderMap[b.ayahId] ?? 1 << 30,
-      ),
-    );
+    final byId = {
+      for (final row in rows)
+        row[ColumnNames.ayahId] as int:
+        AyahByAyahModel.fromMap(row).ayahByAyahToEntity(),
+    };
 
-    return List.unmodifiable(models);
+    // Порядок как в ayahIds; несуществующие id пропускаются.
+    return List.unmodifiable([for (final id in ayahIds) ?byId[id]]);
   }
 }

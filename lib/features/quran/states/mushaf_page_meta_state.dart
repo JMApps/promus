@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../domain/entities/mushaf_page_meta_entity.dart';
@@ -5,7 +7,7 @@ import '../domain/repositories/mushaf_page_meta_repository.dart';
 
 class MushafPageMetaState extends ChangeNotifier {
   MushafPageMetaState(this._pageMetaRepository) {
-    loadAllPagesMeta();
+    unawaited(loadAllPagesMeta());
   }
 
   final MushafPageMetaRepository _pageMetaRepository;

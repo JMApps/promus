@@ -38,46 +38,48 @@ class EventTimesStepper extends StatelessWidget {
 
     return fm.Material(
       type: fm.MaterialType.transparency,
-      child: EasyStepper(
-        verticalAlignment: .start,
-        activeStep: step,
-        direction: .horizontal,
-        showTitle: true,
-        showLoadingAnimation: false,
-        stepRadius: AppSpacing.large,
-        finishedStepBackgroundColor: appColors.primary,
-        activeStepBackgroundColor: appColors.tertiary,
-        unreachedStepBorderColor: appColors.secondaryContainer,
-        activeStepBorderColor: Colors.transparent,
-        unreachedStepIconColor: appColors.secondaryContainer,
-        activeStepIconColor: appColors.primaryContainer,
-        finishedStepIconColor: appColors.onPrimary,
-        borderThickness: 3.5,
-        activeStepBorderType: .normal,
-        unreachedStepBorderType: .normal,
-        lineStyle: LineStyle(
-          lineType: .dotted,
-          unreachedLineType: .dotted,
-          defaultLineColor: appColors.inversePrimary,
-          finishedLineColor: appColors.primary,
+      child: IgnorePointer(
+        child: EasyStepper(
+          verticalAlignment: .start,
+          activeStep: step,
+          direction: .horizontal,
+          showTitle: true,
+          showLoadingAnimation: false,
+          stepRadius: AppSpacing.large,
+          finishedStepBackgroundColor: appColors.primary,
+          activeStepBackgroundColor: appColors.tertiary,
+          unreachedStepBorderColor: appColors.secondaryContainer,
+          activeStepBorderColor: Colors.transparent,
+          unreachedStepIconColor: appColors.secondaryContainer,
+          activeStepIconColor: appColors.primaryContainer,
+          finishedStepIconColor: appColors.onPrimary,
+          borderThickness: 3.5,
+          activeStepBorderType: .normal,
+          unreachedStepBorderType: .normal,
+          lineStyle: LineStyle(
+            lineType: .dotted,
+            unreachedLineType: .dotted,
+            defaultLineColor: appColors.inversePrimary,
+            finishedLineColor: appColors.primary,
+          ),
+          steps: [
+            stepOf(
+              CupertinoIcons.sunrise_fill,
+              AppStrings.sunrise,
+              times.sunrise,
+            ),
+            stepOf(
+              CupertinoIcons.moon_fill,
+              AppStrings.midnight,
+              sunnah.middleOfTheNight,
+            ),
+            stepOf(
+              Icons.donut_small,
+              AppStrings.lastThirdNight,
+              sunnah.lastThirdOfTheNight,
+            ),
+          ],
         ),
-        steps: [
-          stepOf(
-            CupertinoIcons.sunrise_fill,
-            AppStrings.sunrise,
-            times.sunrise,
-          ),
-          stepOf(
-            CupertinoIcons.moon_fill,
-            AppStrings.midnight,
-            sunnah.middleOfTheNight,
-          ),
-          stepOf(
-            Icons.donut_small,
-            AppStrings.lastThirdNight,
-            sunnah.lastThirdOfTheNight,
-          ),
-        ],
       ),
     );
   }

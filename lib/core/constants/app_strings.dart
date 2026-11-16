@@ -13,6 +13,11 @@ class AppStrings {
   static const String settings = 'Настройки';
   static const String params = 'Параметры';
 
+  static const String timeModeLabel = 'Формат времени';
+  static const String system = 'Системный';
+  static const String timeMode12 = '12 часовой';
+  static const String timeMode24 = '24 часовой';
+
   static const String alwaysOnDisplay = 'Дисплей всегда включён';
   static const String theme = 'Тема';
   static const String themeSystem = 'Системная';
@@ -23,14 +28,12 @@ class AppStrings {
   static const String close = 'Закрыть';
 
   static const String searchByChapters = 'Поиск по главам';
-  static const String searchBySurahs = 'Поиск по сурам';
   static const String startSearch = 'Начните поиск';
   static const String searchAyahs = 'Поиск аятов';
   static const String strShort = 'Стр.';
   static const String minShort = 'Мин.';
   static const String medina = 'Медина';
   static const String mecca = 'Мекка';
-  static const String favorites = 'Избранное';
   static const String retry = 'Повторить';
   static const String lastSurahs = 'Последнее';
   static const String surahs = 'Суры';
@@ -53,7 +56,6 @@ class AppStrings {
   static const String monthlySchedule = 'Расписание на месяц';
 
   static const String selectionCity = 'Выбор города';
-  static const String selectCity = 'Выбрать город';
   static const String enterQuery = 'Введите запрос';
 
   static String qiblahDirectionDescription(String qiblahDirection) => 'Кибла на $qiblahDirection\u00B0';
@@ -115,8 +117,9 @@ class AppStrings {
   static const String highLatitude = 'Высокие широты';
   static const String correctionMinutes = 'Корректировка минут';
   static const String asrMethod = 'Молитва \'аср';
-  static const String winterTime = 'Зимнее время';
-  static const String dstMode = 'Зимнее время (DST)';
+  static const String winterTime = 'Зимнее/Летнее время';
+  static const String minusHour = '– 1';
+  static const String plusHour = '+ 1';
   static const String labelDefault = 'По умолчанию';
 
   static const String databasePreparing = 'Подготовка базы данных…';

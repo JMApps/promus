@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -6,7 +8,7 @@ import '../../domain/repositories/fortress_chapter_repository.dart';
 
 class FortressChapterState extends ChangeNotifier {
   FortressChapterState(this._fortressRepository) {
-    _loadAllChapters();
+    unawaited(_loadAllChapters());
   }
 
   final FortressChapterRepository _fortressRepository;
@@ -33,7 +35,7 @@ class FortressChapterState extends ChangeNotifier {
       _chapterById = {for (final c in _fortressChapters) c.chapterId: c};
       _index = [
         for (final c in _fortressChapters)
-          '${c.chapterId} ${c.chapterTitle}'.toLowerCase(),
+          '${c.chapterId} ${c.chapterTitle}'.replaceAll(RegExp(r'<[^>]*>'), '').toLowerCase().replaceAll('ё', 'е')
       ];
     } catch (e, s) {
       _error = e;

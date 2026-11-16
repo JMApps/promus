@@ -6,10 +6,11 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../other/widgets/main_gradient_text.dart';
 import '../widgets/asr_method_selector.dart';
 import '../widgets/correct_prayer_minutes.dart';
-import '../widgets/dst_mode_item.dart';
+import '../widgets/dst_format_mode_segment.dart';
 import '../widgets/high_latitude_selector.dart';
 import '../widgets/main_city_cupertino_button.dart';
 import '../widgets/prayer_methods_selector.dart';
+import '../widgets/time_format_mode_segment.dart';
 
 class PrayerParamsPage extends StatelessWidget {
   const PrayerParamsPage({super.key});
@@ -37,8 +38,10 @@ class PrayerParamsPage extends StatelessWidget {
             HighLatitudeSelector(),
             MainGradientText(text: AppStrings.asrMethod),
             AsrMethodSelector(),
+            MainGradientText(text: AppStrings.timeModeLabel),
+            TimeFormatModeSegment(),
             MainGradientText(text: AppStrings.winterTime),
-            DstModeItem(),
+            DSTFormatModeSegment(),
             SizedBox(),
           ],
         ),

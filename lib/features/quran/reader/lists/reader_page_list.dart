@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -48,11 +50,10 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
     _currentPage = widget.pageNumber;
     _pageNumberState.setPageNumber(_currentPage);
 
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       await _mushafPageState.loadWindow(_currentPage);
-      await _bookmarkState.addLastOpenedPage(_currentPage);
+      unawaited(_bookmarkState.addLastOpenedPage(_currentPage));
     });
   }
 
@@ -77,8 +78,8 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
         _currentPage = page;
 
         _pageNumberState.setPageNumber(page);
+        unawaited(_bookmarkState.addLastOpenedPage(page));
         await _mushafPageState.loadWindow(page);
-        await _bookmarkState.addLastOpenedPage(page);
       },
       itemBuilder: (context, index) {
         final page = index + 1;

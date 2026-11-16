@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 
 import 'core/constants/app_constant_keys.dart';
 import 'core/constants/notification_keys.dart';
-import 'core/database/city_database_helper.dart';
-import 'core/database/custom_city_database_helper.dart';
 import 'core/database/fortress_database_helper.dart';
 import 'core/database/mushaf_database_helper.dart';
 import 'core/services/local_notification_service.dart';
@@ -45,12 +43,6 @@ void main() async {
   Hive.init(dir.path);
 
   await Future.wait([
-    // Имеющиеся базы данных
-    MushafDatabaseHelper.instance.openIfInstalled(),
-    FortressDatabaseHelper.instance.openIfInstalled(),
-    CityDatabaseHelper.instance.openIfInstalled(),
-    CustomCityDatabaseHelper.instance.openIfInstalled(),
-    // Боксы настроек
     Hive.openBox(NotificationKeys.keyMainNotificationsBox),
     Hive.openBox(AppConstantKeys.keyMainAppSettingsBox),
     Hive.openBox(AppConstantKeys.keySettingsPrayerTimeBox),
@@ -120,7 +112,6 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
-          lazy: false,
           create: (_) => FortressChapterState(
             FortressChapterRepositoryImpl(fortressDatabaseHelper),
           ),

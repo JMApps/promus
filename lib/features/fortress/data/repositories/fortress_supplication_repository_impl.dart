@@ -19,6 +19,7 @@ class FortressSupplicationRepositoryImpl implements FortressSupplicationReposito
       TableNames.tableOfSupplications,
       where: '${ColumnNames.sampleBy} = ?',
       whereArgs: [chapterId],
+      orderBy: ColumnNames.supplicationId,
     );
 
     return rows.map(FortressSupplicationModel.fromMap).toList(growable: false).toEntities();

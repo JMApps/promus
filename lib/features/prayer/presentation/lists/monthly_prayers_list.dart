@@ -36,31 +36,41 @@ class _MonthlyPrayersListState extends State<MonthlyPrayersList> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<PrayerState>();
-    final now = context.watch<TimeState>().getDateTime;
-    final daysInMonth = DateUtils.getDaysInMonth(now.year, now.month);
+    context.select((PrayerState state) => (
+    state.coordinates,
+    state.calculationParameters,
+    state.use24HourFormat,
+    ));
+
+    final today = context.select(
+          (TimeState state) => DateUtils.dateOnly(state.getDateTime),
+    );
+
+    final prayerState = Provider.of<PrayerState>(context, listen: false);
+    final daysInMonth = DateUtils.getDaysInMonth(today.year, today.month);
 
     return Scrollbar(
       controller: _controller,
       child: ListView.separated(
         controller: _controller,
         itemCount: daysInMonth,
-        separatorBuilder: (context, index) => const Divider(height: _dividerHeight),
+        separatorBuilder: (context, index) =>
+        const Divider(height: _dividerHeight),
         itemBuilder: (context, index) {
-          final date = DateTime(now.year, now.month, index + 1);
-          final times = state.prayerTimeSchedule(time: date);
+          final date = DateTime(today.year, today.month, index + 1);
+          final times = prayerState.prayerTimeSchedule(time: date);
 
           return MonthlyPrayersDayRow(
             day: date.day,
-            isToday: date.day == now.day,
+            isToday: date.day == today.day,
             isFriday: date.weekday == DateTime.friday,
             values: [
-              state.formatTime(times.fajr),
-              state.formatTime(times.sunrise),
-              state.formatTime(times.dhuhr),
-              state.formatTime(times.asr),
-              state.formatTime(times.maghrib),
-              state.formatTime(times.isha),
+              prayerState.formatTime(times.fajr, compact: true),
+              prayerState.formatTime(times.sunrise, compact: true),
+              prayerState.formatTime(times.dhuhr, compact: true),
+              prayerState.formatTime(times.asr, compact: true),
+              prayerState.formatTime(times.maghrib, compact: true),
+              prayerState.formatTime(times.isha, compact: true),
             ],
           );
         },

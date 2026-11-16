@@ -8,6 +8,8 @@ import 'package:material_ui/material_ui.dart';
 import '../../../core/constants/adhkar_reminders.dart';
 import '../../../core/constants/app_prayer_keys.dart';
 import '../../../core/constants/app_strings.dart';
+import '../../../core/enums/dst_format_mode.dart';
+import '../../../core/enums/time_format_mode.dart';
 import '../domain/entities/prayer_records.dart';
 import '../domain/entities/sleek_entity.dart';
 
@@ -16,15 +18,18 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     _adjustments = {
       for (final e in AppPrayerKeys.adjustmentKeys.entries) e.key: _read<int>(e.value, 0),
     };
-    _calculationMethodIndex = _read(AppPrayerKeys.keyCalculationIndex, 5);
-    _highLatitudeMethodIndex = _read(AppPrayerKeys.keyHighLatitudeIndex, 0);
-    _asrMethodIndex = _read(AppPrayerKeys.keyMadhabIndex, 0);
-    _dst = _read(AppPrayerKeys.keyDST, false);
+    _calculationMethodIndex = _read<int>(AppPrayerKeys.keyCalculationIndex, 5).clamp(0, AppPrayerKeys.prayerCalculationMethodList.length - 1);
+    _highLatitudeMethodIndex = _read<int>(AppPrayerKeys.keyHighLatitudeIndex, 0).clamp(0, AppPrayerKeys.highLatitudeList.length - 1);
+    _asrMethodIndex = _read<int>(AppPrayerKeys.keyMadhabIndex, 0).clamp(0, AppPrayerKeys.calculationMadhabList.length - 1);
+    _dstMode = _readDstMode();
     _country = _read(AppPrayerKeys.keyCountry, AppPrayerKeys.defCountry);
     _city = _read(AppPrayerKeys.keyCity, AppPrayerKeys.defCity);
     _latitude = _read<num>(AppPrayerKeys.keyCurrentLatitude, AppPrayerKeys.defLatitude).toDouble();
     _longitude = _read<num>(AppPrayerKeys.keyCurrentLongitude, AppPrayerKeys.defLongitude).toDouble();
     _hijriOffset = _read(AppPrayerKeys.keyHijriOffset, 0);
+    _timeFormatMode = TimeFormatMode.values[
+    _read<int>(AppPrayerKeys.keyTimeFormat, 0).clamp(0, TimeFormatMode.values.length - 1)];
+    _resolveTimeFormat();
 
     WidgetsBinding.instance.addObserver(this);
     initPrayerTime();
@@ -53,11 +58,14 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   late String _country, _city;
   late double _latitude, _longitude;
   late int _calculationMethodIndex, _highLatitudeMethodIndex, _asrMethodIndex;
-  late bool _dst;
+  late DSTFormatMode _dstMode;
   late int _hijriOffset;
   late Map<Prayer, int> _adjustments;
 
   T _read<T>(String key, T defaultValue) => _settingsPrayerTimeBox.get(key, defaultValue: defaultValue) as T;
+
+  late TimeFormatMode _timeFormatMode;
+  bool _use24HourFormat = true;
 
   // ---------------------------------------------------------------------------
   // Результаты расчёта
@@ -83,7 +91,11 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   void initPrayerTime() {
     _coordinates = Coordinates(_latitude, _longitude);
 
-    final offset = _dst ? 60 : 0;
+    final offset = switch (_dstMode) {
+      DSTFormatMode.system => 0,
+      DSTFormatMode.minusHour => -60,
+      DSTFormatMode.plusHour => 60,
+    };
 
     _prayerParams = AppPrayerKeys.prayerCalculationMethodList[_calculationMethodIndex].getParameters()
       ..highLatitudeRule = AppPrayerKeys.highLatitudeList[_highLatitudeMethodIndex]
@@ -309,7 +321,31 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   // Даты и форматирование
   // ---------------------------------------------------------------------------
 
-  String formatTime(DateTime time) => AppPrayerKeys.hMDateFormat.format(time);
+  TimeFormatMode get timeFormatMode => _timeFormatMode;
+
+  bool get use24HourFormat => _use24HourFormat;
+
+  void _resolveTimeFormat() {
+    _use24HourFormat = switch (_timeFormatMode) {
+      TimeFormatMode.system =>
+      WidgetsBinding.instance.platformDispatcher.alwaysUse24HourFormat,
+      TimeFormatMode.h24 => true,
+      TimeFormatMode.h12 => false,
+    };
+  }
+
+  String formatTime(DateTime time, {bool compact = false}) {
+    if (_use24HourFormat) return AppPrayerKeys.hMDateFormat.format(time);
+    return (compact ? AppPrayerKeys.hMDateFormat12Compact : AppPrayerKeys.hMDateFormat12).format(time);
+  }
+
+  set setTimeFormatMode(TimeFormatMode mode) {
+    if (mode == _timeFormatMode) return;
+    _timeFormatMode = mode;
+    _resolveTimeFormat();
+    unawaited(_settingsPrayerTimeBox.put(AppPrayerKeys.keyTimeFormat, mode.index));
+    notifyListeners();
+  }
 
   String get gregorianDateText => '${_dateTime.day} ${AppStrings.gregorianMonthsList[_dateTime.month - 1]}, ${_dateTime.year}';
 
@@ -363,7 +399,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set setCalculationIndex(int index) {
     if (index == _calculationMethodIndex) return;
     _calculationMethodIndex = index;
-    _persist(AppPrayerKeys.keyCalculationIndex, index);
+    unawaited(_persist(AppPrayerKeys.keyCalculationIndex, index));
   }
 
   int get highLatitudeMethodIndex => _highLatitudeMethodIndex;
@@ -371,7 +407,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set setHighLatitudeIndex(int index) {
     if (index == _highLatitudeMethodIndex) return;
     _highLatitudeMethodIndex = index;
-    _persist(AppPrayerKeys.keyHighLatitudeIndex, index);
+    unawaited(_persist(AppPrayerKeys.keyHighLatitudeIndex, index));
   }
 
   int get asrMethodIndex => _asrMethodIndex;
@@ -379,15 +415,23 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   set setAsrMethodIndex(int index) {
     if (index == _asrMethodIndex) return;
     _asrMethodIndex = index;
-    _persist(AppPrayerKeys.keyMadhabIndex, index);
+    unawaited(_persist(AppPrayerKeys.keyMadhabIndex, index));
   }
 
-  bool get dst => _dst;
+  DSTFormatMode get dstMode => _dstMode;
 
-  set setDst(bool value) {
-    if (value == _dst) return;
-    _dst = value;
-    _persist(AppPrayerKeys.keyDST, value);
+  set setDstMode(DSTFormatMode mode) {
+    if (mode == _dstMode) return;
+    _dstMode = mode;
+    unawaited(_persist(AppPrayerKeys.keyDSTMode, mode.index));
+  }
+
+  DSTFormatMode _readDstMode() {
+    final stored = _settingsPrayerTimeBox.get(AppPrayerKeys.keyDSTMode);
+    if (stored is int) {
+      return DSTFormatMode.values[stored.clamp(0, DSTFormatMode.values.length - 1)];
+    }
+    return _read(AppPrayerKeys.keyDSTMode, false) ? DSTFormatMode.plusHour : DSTFormatMode.system;
   }
 
   int get hijriOffset => _hijriOffset;
@@ -397,7 +441,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     final v = value.clamp(AppPrayerKeys.minHijriOffset, AppPrayerKeys.maxHijriOffset);
     if (v == _hijriOffset) return;
     _hijriOffset = v;
-    _settingsPrayerTimeBox.put(AppPrayerKeys.keyHijriOffset, v);
+    unawaited(_settingsPrayerTimeBox.put(AppPrayerKeys.keyHijriOffset, v));
     notifyListeners(); // меняется только дата хиджры; initPrayerTime() не нужен
   }
 
@@ -452,7 +496,9 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-      // Закрывает и «ночь в фоне», и смену пояса, пока приложение спало.
+        final wasUse24 = _use24HourFormat;
+        _resolveTimeFormat();
+        if (wasUse24 != _use24HourFormat) notifyListeners();
         _updateDateTime();
         _scheduleTick();
       case AppLifecycleState.paused:

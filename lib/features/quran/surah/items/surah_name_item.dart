@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:promus/core/theme/app_spacing.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/app_strings.dart';
@@ -70,7 +71,7 @@ class SurahNameItem extends StatelessWidget {
                 Flexible(
                   child: Text(
                     surah.nameTranscription,
-                    style: AppTextStyles.medium.copyWith(fontSize: 16),
+                    style: AppTextStyles.medium,
                     maxLines: 1,
                     overflow: .ellipsis,
                   ),
@@ -78,7 +79,7 @@ class SurahNameItem extends StatelessWidget {
                 Flexible(
                   child: Text(
                     ' (${surah.nameTranslation})',
-                    style: AppTextStyles.medium,
+                    style: AppTextStyles.medium.copyWith(fontSize: AppSpacing.medium),
                     maxLines: 1,
                     overflow: .ellipsis,
                   ),

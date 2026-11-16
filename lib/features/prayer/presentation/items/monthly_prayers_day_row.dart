@@ -44,6 +44,7 @@ class MonthlyPrayersDayRow extends StatelessWidget {
               child: Text(
                 day.toString(),
                 style: AppTextStyles.small,
+                textAlign: .start,
               ),
             ),
           ),

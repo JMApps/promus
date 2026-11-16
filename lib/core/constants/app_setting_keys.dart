@@ -5,7 +5,8 @@ class AppSettingKeys {
 
   static const MaterialColor defaultThemeColor = Colors.amber;
 
-  static const String keyThemeMode = 'theme_mode';
-  static const String keyThemeColor = 'theme_color';
-  static const String keyAlwaysOnDisplay = 'always_on_display';
+  static const String keyThemeMode = 'key_theme_mode';
+  static const String keyThemeColor = 'key_theme_color';
+  static const String keyAlwaysOnDisplay = 'key_always_on_display';
+  static const String keyTimeModeFormat = 'key_time_mode_format';
 }

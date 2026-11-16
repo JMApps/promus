@@ -32,10 +32,7 @@ dependencies:
   hijri: ^3.0.1
   intl: ^0.20.3
   timezone: ^0.11.2
-  cron: ^0.6.2
   wakelock_plus: ^1.8.2
-  url_launcher: ^6.3.3
-  flutter_compass: ^0.8.1
   vibration: ^3.2.1
   flutter_local_notifications: ^23.0.2
   hive_ce: ^2.23.3

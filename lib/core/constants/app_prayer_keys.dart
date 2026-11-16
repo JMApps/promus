@@ -18,7 +18,13 @@ class AppPrayerKeys {
   static const String keyCalculationIndex = 'key_calculation_index';
   static const String keyHighLatitudeIndex = 'key_high_latitude_index';
   static const String keyMadhabIndex = 'key_madhab_index';
-  static const String keyDST = 'key_dst';
+  static const String keyDSTMode = 'key_dst_mode';
+
+  static const String keyTimeFormat = 'key_time_format';
+
+  static final DateFormat hMDateFormat = DateFormat('HH:mm');        // как сейчас
+  static final DateFormat hMDateFormat12 = DateFormat('h:mm a');     // 7:25 PM
+  static final DateFormat hMDateFormat12Compact = DateFormat('h:mm'); // 7:25
 
   static const String keyHijriOffset = 'key_hijri_offset';
   static const int minHijriOffset = -2;
@@ -62,7 +68,6 @@ class AppPrayerKeys {
   static const Duration hourInterval = Duration(hours: 1);
   static const Duration adhanWindow = Duration(minutes: 3);
   static const Duration dhikrWindow = Duration(minutes: 30);
-  static final DateFormat hMDateFormat = DateFormat('HH:mm');
 
   static const List<Prayer> fivePrayers = [
     Prayer.fajr,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -32,8 +34,8 @@ class _MushafReaderPageState extends State<MushafReaderPage> {
   }
 
   @override
-  Future<void> dispose() async {
-    await _appBarState.restoreSystemUI();
+  void dispose() {
+    unawaited(_appBarState.restoreSystemUI());
     _pageController.dispose();
     super.dispose();
   }

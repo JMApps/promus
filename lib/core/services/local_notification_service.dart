@@ -79,14 +79,16 @@ class LocalNotificationService {
 
   final StreamController<String?> _tapController = StreamController<String?>.broadcast();
 
-  bool _initialized = false;
-
   Stream<String?> get onTap => _tapController.stream;
 
   AndroidFlutterLocalNotificationsPlugin? get _android => _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
 
   IOSFlutterLocalNotificationsPlugin? get _ios => _plugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
 
+  Future<void>? _initFuture;
+
+  /// Инициализирует плагин и каналы один раз. Параллельные вызовы ждут
+  /// одну и ту же инициализацию; после ошибки следующий вызов попробует снова.
   Future<void> setupNotification({
     String prayerChannelName = NotificationKeys.defaultPrayerChannelName,
     String prayerChannelDescription = NotificationKeys.defaultPrayerChannelDescription,
@@ -94,60 +96,62 @@ class LocalNotificationService {
     String iqamahChannelDescription = NotificationKeys.defaultIqamahChannelDescription,
     String reminderChannelName = NotificationKeys.defaultReminderChannelName,
     String reminderChannelDescription = NotificationKeys.defaultReminderChannelDescription,
-  }) async {
-    if (_initialized) return;
+  }) {
+    return _initFuture ??= () async {
+      try {
+        tz.initializeTimeZones();
+        await refreshTimezone();
 
-    tz.initializeTimeZones();
-    await refreshTimezone();
+        await _plugin.initialize(
+          settings: const InitializationSettings(
+            android: AndroidInitializationSettings(NotificationKeys.appIconName),
+            iOS: DarwinInitializationSettings(
+              requestAlertPermission: false,
+              requestBadgePermission: false,
+              requestSoundPermission: false,
+            ),
+          ),
+          onDidReceiveNotificationResponse: _onResponse,
+        );
 
-    await _plugin.initialize(
-      settings: const InitializationSettings(
-        android: AndroidInitializationSettings(NotificationKeys.appIconName),
-        iOS: DarwinInitializationSettings(
-          requestAlertPermission: false,
-          requestBadgePermission: false,
-          requestSoundPermission: false,
-        ),
-      ),
-      onDidReceiveNotificationResponse: _onResponse,
-    );
-
-    final android = _android;
-
-    if (android != null) {
-      // Звук канала фиксируется при создании и потом не меняется.
-      // Для другого звука нужен канал с другим id.
-      await android.createNotificationChannel(
-        AndroidNotificationChannel(
-          NotificationKeys.prayerChannelId,
-          prayerChannelName,
-          description: prayerChannelDescription,
-          importance: Importance.max,
-          playSound: true,
-          sound: _adhanSound,
-        ),
-      );
-      await android.createNotificationChannel(
-        AndroidNotificationChannel(
-          NotificationKeys.iqamahChannelId,
-          iqamahChannelName,
-          description: iqamahChannelDescription,
-          importance: .max,
-          playSound: true,
-          sound: _iqamahSound,
-        ),
-      );
-      await android.createNotificationChannel(
-        AndroidNotificationChannel(
-          NotificationKeys.reminderChannelId,
-          reminderChannelName,
-          description: reminderChannelDescription,
-          importance: .high,
-        ),
-      );
-    }
-
-    _initialized = true;
+        final android = _android;
+        if (android != null) {
+          // Звук канала фиксируется при создании и потом не меняется.
+          // Для другого звука нужен канал с другим id.
+          await android.createNotificationChannel(
+            AndroidNotificationChannel(
+              NotificationKeys.prayerChannelId,
+              prayerChannelName,
+              description: prayerChannelDescription,
+              importance: .max,
+              playSound: true,
+              sound: _adhanSound,
+            ),
+          );
+          await android.createNotificationChannel(
+            AndroidNotificationChannel(
+              NotificationKeys.iqamahChannelId,
+              iqamahChannelName,
+              description: iqamahChannelDescription,
+              importance: .max,
+              playSound: true,
+              sound: _iqamahSound,
+            ),
+          );
+          await android.createNotificationChannel(
+            AndroidNotificationChannel(
+              NotificationKeys.reminderChannelId,
+              reminderChannelName,
+              description: reminderChannelDescription,
+              importance: .high,
+            ),
+          );
+        }
+      } catch (_) {
+        _initFuture = null;
+        rethrow;
+      }
+    }();
   }
 
   Future<void> refreshTimezone() async {
@@ -247,8 +251,10 @@ class LocalNotificationService {
     required AndroidScheduleMode preferredMode,
     String? payload,
   }) async {
-    if (!_initialized) {
-      debugPrint('LocalNotificationService is not initialized, skip #$id');
+    try {
+      await setupNotification();
+    } catch (e) {
+      debugPrint('LocalNotificationService init failed, skip #$id: $e');
       return false;
     }
 

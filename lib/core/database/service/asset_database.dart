@@ -10,6 +10,12 @@ import 'package:sqflite/sqflite.dart';
 import 'db_install_phase.dart';
 import 'db_install_status.dart';
 
+/// База данных, поставляемая в ассетах.
+///
+/// Работа в два шага:
+/// 1. [ensureInstalled] — при старте: проверяет, скопирована ли база,
+///    и копирует её, только если нет.
+/// 2. [db] — там, где база нужна: просто открывает уже скопированный файл.
 class AssetDatabase {
   AssetDatabase({
     required this.assetPath,
@@ -23,7 +29,8 @@ class AssetDatabase {
   /// Имя файла базы на устройстве.
   final String fileName;
 
-  /// Версия файла из ассетов. Увеличивается при каждой замене файла.
+  /// Версия файла из ассетов. Увеличивается при каждой замене файла,
+  /// чтобы после обновления приложения база скопировалась заново.
   final int version;
 
   static const int _chunkSize = 256 * 1024;
@@ -32,99 +39,60 @@ class AssetDatabase {
     const DbInstallStatus(DbInstallPhase.idle),
   );
 
+  ValueListenable<DbInstallStatus> get status => _status;
+
+  bool _installed = false;
+  Future<void>? _installing;
+
   Database? _db;
   Future<Database>? _opening;
 
-  ValueListenable<DbInstallStatus> get status => _status;
+  // ---------------------------------------------------------------------------
+  // Шаг 1. Проверка и копирование
+  // ---------------------------------------------------------------------------
 
-  Future<Database> get db {
-    final opening = _opening;
-    if (opening != null) return opening;
-
-    final existing = _db;
-    if (existing != null && existing.isOpen) {
-      return Future.value(existing);
-    }
-
-    return _opening = _open();
+  /// Если база уже скопирована (и её версия совпадает) — ничего не делает.
+  /// Если нет — копирует из ассетов.
+  ///
+  /// Безопасно вызывать сколько угодно раз и из разных мест:
+  /// параллельные вызовы ждут одно и то же копирование.
+  Future<void> ensureInstalled() {
+    if (_installed) return Future.value();
+    return _installing ??= _ensureInstalled().whenComplete(
+          () => _installing = null,
+    );
   }
 
-  /// Открывает базу, только если нужная версия уже установлена.
-  /// Ничего не копирует, поэтому занимает миллисекунды.
-  Future<void> openIfInstalled() async {
-    if (_opening != null || (_db?.isOpen ?? false)) return;
+  Future<void> _ensureInstalled() async {
     try {
-      final dbPath = p.join(await getDatabasesPath(), fileName);
-      if (!await _isInstalled(dbPath)) return;
-      await db;
-    } catch (_) {
-      // Ошибка уже в status, её покажет DatabaseGate.
-    }
-  }
-
-  /// Копирует базу из ассетов заново, даже если она уже установлена.
-  Future<Database> reinstallFromAssets() async {
-    while (_opening != null) {
-      try {
-        await _opening;
-      } catch (_) {}
-    }
-    return _opening = _open(force: true);
-  }
-
-  /// Закрывает соединение. Следующее обращение к [db] откроет его снова.
-  Future<void> close() async {
-    while (_opening != null) {
-      try {
-        await _opening;
-      } catch (_) {}
-    }
-    await _closeHandle();
-  }
-
-  Future<Database> _open({bool force = false}) async {
-    try {
-      final dbPath = p.join(await getDatabasesPath(), fileName);
-
-      if (force || !await _isInstalled(dbPath)) {
-        await _install(dbPath);
+      final path = await _path();
+      if (!await _isInstalled(path)) {
+        await _copyFromAssets(path);
       }
-
-      final database = await openDatabase(
-        dbPath,
-        readOnly: true,
-        singleInstance: true,
-      );
-
-      _db = database;
+      _installed = true;
       _status.value = const DbInstallStatus(DbInstallPhase.ready);
-      return database;
     } catch (e, s) {
-      log('Database open failed: $fileName', error: e, stackTrace: s);
+      log('Database install failed: $fileName', error: e, stackTrace: s);
       _status.value = DbInstallStatus(DbInstallPhase.failed, error: e);
       rethrow;
-    } finally {
-      _opening = null;
     }
   }
 
-  Future<bool> _isInstalled(String dbPath) async {
+  Future<bool> _isInstalled(String path) async {
     try {
-      final marker = File('$dbPath.version');
-      if (!await marker.exists() || !await File(dbPath).exists()) {
-        return false;
-      }
+      final marker = File('$path.version');
+      if (!await marker.exists() || !await File(path).exists()) return false;
       return int.tryParse((await marker.readAsString()).trim()) == version;
     } catch (_) {
       return false;
     }
   }
 
-  Future<void> _install(String dbPath) async {
+  Future<void> _copyFromAssets(String path) async {
     _status.value = const DbInstallStatus(DbInstallPhase.copying);
 
-    final marker = File('$dbPath.version');
-    final tmp = File('$dbPath.tmp');
+    final marker = File('$path.version');
+    final tmp = File('$path.tmp');
 
     try {
       if (await marker.exists()) await marker.delete();
@@ -136,13 +104,13 @@ class AssetDatabase {
       );
       final total = bytes.length;
 
-      await Directory(p.dirname(dbPath)).create(recursive: true);
+      await Directory(p.dirname(path)).create(recursive: true);
 
       final raf = await tmp.open(mode: FileMode.write);
       try {
         for (var offset = 0; offset < total; offset += _chunkSize) {
           final end = min(offset + _chunkSize, total);
-          await raf.writeFrom(bytes.sublist(offset, end));
+          await raf.writeFrom(bytes, offset, end);
           _status.value = DbInstallStatus(
             DbInstallPhase.copying,
             copiedBytes: end,
@@ -154,9 +122,11 @@ class AssetDatabase {
         await raf.close();
       }
 
-      await _closeHandle();
-      await deleteDatabase(dbPath);
-      await tmp.rename(dbPath);
+      // Старую версию (если была) удаляем, новую ставим на её место.
+      // Маркер пишем последним: если процесс прервётся раньше,
+      // при следующем запуске база скопируется заново.
+      await deleteDatabase(path);
+      await tmp.rename(path);
       await marker.writeAsString('$version', flush: true);
     } catch (_) {
       try {
@@ -166,11 +136,44 @@ class AssetDatabase {
     }
   }
 
-  Future<void> _closeHandle() async {
+  // ---------------------------------------------------------------------------
+  // Шаг 2. Открытие
+  // ---------------------------------------------------------------------------
+
+  /// Открытая база. Первое обращение открывает файл, следующие
+  /// возвращают то же соединение.
+  ///
+  /// Если [ensureInstalled] ещё не завершился (например, экран открылся
+  /// раньше, чем закончилось копирование), сначала дождётся его.
+  Future<Database> get db {
+    final existing = _db;
+    if (existing != null && existing.isOpen) return Future.value(existing);
+    return _opening ??= _open().whenComplete(() => _opening = null);
+  }
+
+  Future<Database> _open() async {
+    await ensureInstalled();
+    final database = await openDatabase(
+      await _path(),
+      readOnly: true,
+      singleInstance: true,
+    );
+    _db = database;
+    return database;
+  }
+
+  /// Закрывает соединение. Следующее обращение к [db] откроет его снова.
+  Future<void> close() async {
+    final opening = _opening;
+    if (opening != null) {
+      try {
+        await opening;
+      } catch (_) {}
+    }
     final database = _db;
     _db = null;
-    if (database != null && database.isOpen) {
-      await database.close();
-    }
+    if (database != null && database.isOpen) await database.close();
   }
+
+  Future<String> _path() async => p.join(await getDatabasesPath(), fileName);
 }

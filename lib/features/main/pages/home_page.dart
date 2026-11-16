@@ -68,6 +68,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _mainPageController.dispose();
     _mushafSurahsController.dispose();
     _fortressChaptersController.dispose();
     super.dispose();

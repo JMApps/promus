@@ -19,10 +19,10 @@ class HolidayItem extends StatelessWidget {
   final DateTime date;
   final int daysLeft;
 
-  static final _dateFormat = DateFormat('dd.MM.yyyy');
 
   @override
   Widget build(BuildContext context) {
+    final dateFormat = DateFormat('dd.MM.yyyy');
     final appColors = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return ListTile(
@@ -38,9 +38,9 @@ class HolidayItem extends StatelessWidget {
         maxLines: 1,
         overflow: .ellipsis,
       ),
-      subtitle: Text(_dateFormat.format(date)),
+      subtitle: Text(dateFormat.format(date)),
       trailing: Text(
-        daysLeft == 0 ? AppStrings.today : '-$daysLeft ${AppStrings.daysShort}',
+        daysLeft == 0 ? AppStrings.today : '– $daysLeft ${AppStrings.daysShort}',
         style: textTheme.titleMedium?.copyWith(
           color: appColors.primary,
           fontWeight: .bold,

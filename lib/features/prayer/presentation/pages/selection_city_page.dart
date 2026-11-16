@@ -60,7 +60,7 @@ class _SelectionCityPageState extends State<SelectionCityPage> {
   Future<void> dispose() async {
     _editingController.dispose();
     _state.dispose();
-    await _cityDatabase.close();
+    unawaited(_cityDatabase.close());
     super.dispose();
   }
 
