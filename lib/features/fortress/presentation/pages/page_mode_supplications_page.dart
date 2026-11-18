@@ -61,14 +61,12 @@ class _PageModeSupplicationsPageState extends State<PageModeSupplicationsPage> {
     final error = context.select<FortressSupplicationState, Object?>(
       (s) => s.error,
     );
-    final chapter = context
-        .select<FortressChapterState, FortressChapterEntity?>(
+    final chapter = context.select<FortressChapterState, FortressChapterEntity?>(
           (s) => s.chapterById(widget.chapterId),
-        );
-    final supplications = context
-        .select<FortressSupplicationState, List<FortressSupplicationEntity>?>(
+    );
+    final supplications = context.select<FortressSupplicationState, List<FortressSupplicationEntity>?>(
           (s) => s.cachedSupplicationsByChapter(widget.chapterId),
-        );
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(chapter!.chapterNumber),

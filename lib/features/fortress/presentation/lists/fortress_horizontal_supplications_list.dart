@@ -20,10 +20,12 @@ class FortressHorizontalSupplicationsList extends StatelessWidget {
       itemCount: fortressChapterSupplications.length,
       itemBuilder: (context, index) {
         final supplication = fortressChapterSupplications[index];
-        return FortressSupplicationItem(
-          supplicationModel: supplication,
-          supplicationsLength: fortressChapterSupplications.length,
-          index: index,
+        return Center(
+          child: FortressSupplicationItem(
+            supplicationModel: supplication,
+            supplicationsLength: fortressChapterSupplications.length,
+            index: index,
+          ),
         );
       },
     );

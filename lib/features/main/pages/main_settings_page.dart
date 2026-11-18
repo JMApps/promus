@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../widgets/app_wake_lock.dart';
+import '../widgets/hijri_offset_item.dart';
 import '../widgets/theme_color_picker.dart';
 import '../widgets/theme_mode_drop_down.dart';
 
@@ -26,6 +27,11 @@ class MainSettingsPage extends StatelessWidget {
             endIndent: AppSpacing.medium,
           ),
           ThemeColorPicker(),
+          Divider(
+            indent: AppSpacing.medium,
+            endIndent: AppSpacing.medium,
+          ),
+          HijriOffsetItem(),
         ],
       ),
     );

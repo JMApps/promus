@@ -78,7 +78,6 @@ class MainNotificationList extends StatelessWidget {
               ),
           ],
         ),
-        const DefNotificationButton(),
         const SizedBox(height: AppSpacing.medium),
       ],
     );

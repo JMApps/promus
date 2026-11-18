@@ -56,7 +56,7 @@ class AppStrings {
   static const String monthlySchedule = 'Расписание на месяц';
 
   static const String selectionCity = 'Выбор города';
-  static const String enterQuery = 'Введите запрос';
+  static const String enterQueryLat = 'Введите запрос латиницей';
 
   static String qiblahDirectionDescription(String qiblahDirection) => 'Кибла на $qiblahDirection\u00B0';
 
@@ -155,6 +155,7 @@ class AppStrings {
   static const holidayAshura = 'День \'Ашура';
   static const today = 'Сегодня';
   static const daysShort = 'дн.';
+  static const String hijriOffset = 'Сдвиг даты по хиджре';
 
   static const List<String> prayerCalculationNamesList = [
     'Russia',
@@ -209,11 +210,11 @@ class AppStrings {
     'джумада аль-уля',
     'джумада ас-сания',
     'раджаб',
-    'ша’абан',
+    'шаабан',
     'рамадан',
     'шавваль',
-    'зуль-ка’ада',
-    'зуль-хиджа',
+    'зуль-каада',
+    'зуль-хиджжа',
   ];
 
   static const String adhkarDuringAdhan = 'Слова поминания во время азана';
