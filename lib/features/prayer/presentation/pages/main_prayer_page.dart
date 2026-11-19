@@ -4,7 +4,6 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/icon_paths.dart';
 import '../../../../core/routes/names_router.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/app_text_styles.dart';
 import '../lists/week_days_row.dart';
 import '../widgets/adhkar_reminder_section.dart';
 import '../widgets/days_to_holidays.dart';

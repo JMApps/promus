@@ -254,15 +254,23 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
     );
   }
 
-  /// Индекс следующей молитвы; после 'иша — сразу завтрашний фаджр.
-  int get currentPrayerStep => AppPrayerKeys.fivePrayers.indexOf(_nextPrayer.prayer);
+  /// Индекс следующей молитвы. 30 минут после азана 'иша все шаги
+  /// показываются пройденными, затем — завтрашний фаджр.
+  int get currentPrayerStep {
+    final last = _lastPrayer;
+    if (last.prayer == Prayer.isha && _dateTime.isBefore(last.time.add(AppPrayerKeys.dhikrWindow))) {
+      return AppPrayerKeys.fivePrayers.length;
+    }
+    return AppPrayerKeys.fivePrayers.indexOf(_nextPrayer.prayer);
+  }
 
-  /// Шаг степпера «Восход → Полночь → 1/3 ночи» по ближайшему событию из _events.
-  /// После последней трети следующим идёт восход, но шаг остаётся на трети:
-  /// цикл степпера начинается с восхода.
+  /// Шаг степпера «Восход → Полночь → 1/3 ночи».
+  /// Последняя треть до фаджра — все шаги пройдены; после фаджра активен восход.
   int get currentEventStep => switch (_nextEvent.name) {
     AppStrings.midnight => 1,
-    _ => 2, // впереди последняя треть или восход
+    AppStrings.lastThirdNight => 2,
+    _ when _nextPrayer.prayer == Prayer.fajr => 3,
+    _ => 0,
   };
 
   // ---------------------------------------------------------------------------
