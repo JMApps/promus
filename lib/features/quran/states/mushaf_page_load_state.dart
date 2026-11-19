@@ -1,9 +1,11 @@
-import 'package:equatable/equatable.dart';
-
 import '../domain/entities/mushaf_page_entity.dart';
 
-sealed class MushafPageLoadState extends Equatable {
-
+/// Состояние загрузки одной страницы Мусхафа.
+///
+/// Сравнение дешёвое: `Selector` в ReaderPageList вызывает `==` на каждое
+/// уведомление MushafPageState, поэтому списки строк сравниваются по ссылке,
+/// а не поэлементно.
+sealed class MushafPageLoadState {
   const MushafPageLoadState();
 
   const factory MushafPageLoadState.initial() = _Initial;
@@ -23,11 +25,10 @@ sealed class MushafPageLoadState extends Equatable {
     _Error(:final error) => error,
     _ => null,
   };
-
-  @override
-  List<Object?> get props => [loaded, loading, data, error];
 }
 
+// Константные экземпляры канонизируются: все `const _Initial()` — один объект,
+// поэтому стандартного сравнения по ссылке достаточно.
 final class _Initial extends MushafPageLoadState {
   const _Initial();
 }
@@ -37,21 +38,27 @@ final class _Loading extends MushafPageLoadState {
 }
 
 final class _Loaded extends MushafPageLoadState {
-  @override
-  final List<MushafPageEntity> data;
-
   const _Loaded(this.data);
 
   @override
-  List<Object?> get props => [data];
+  final List<MushafPageEntity> data;
+
+  @override
+  bool operator ==(Object other) => other is _Loaded && identical(other.data, data);
+
+  @override
+  int get hashCode => identityHashCode(data);
 }
 
 final class _Error extends MushafPageLoadState {
-  @override
-  final Object error;
-
   const _Error(this.error);
 
   @override
-  List<Object?> get props => [error];
+  final Object error;
+
+  @override
+  bool operator ==(Object other) => other is _Error && other.error == error;
+
+  @override
+  int get hashCode => error.hashCode;
 }

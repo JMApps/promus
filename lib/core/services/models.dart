@@ -63,8 +63,7 @@ abstract final class NotificationIds {
 
   static const int openAppSlot = 31;
 
-  static int dayKey(DateTime localDate) =>
-      DateTime.utc(localDate.year, localDate.month, localDate.day).difference(_epoch).inDays;
+  static int dayKey(DateTime localDate) => DateTime.utc(localDate.year, localDate.month, localDate.day).difference(_epoch).inDays;
 
   static int forDay(DateTime localDate, int slot) {
     assert(slot >= 0 && slot < _slotsPerDay, 'slot $slot');

@@ -7,7 +7,6 @@ import '../../../core/enums/prayer_labels.dart';
 import '../../../core/theme/app_paddings.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../state/notification_settings_state.dart';
-import '../widgets/def_notification_button.dart';
 import '../widgets/minutes_selector.dart';
 import '../widgets/notification_section.dart';
 import '../widgets/notification_switch_tile.dart';

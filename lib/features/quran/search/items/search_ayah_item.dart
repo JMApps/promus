@@ -63,19 +63,18 @@ class SearchAyahItem extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: .stretch,
+          spacing: AppSpacing.medium,
           children: [
             HighlightedAyahText(
               text: ayah.ayahArabic,
               query: query,
               isArabic: true,
             ),
-            const SizedBox(height: AppSpacing.medium),
             HighlightedAyahText(
               text: ayah.ayahTranslation,
               query: query,
               isArabic: false,
             ),
-            const SizedBox(height: AppSpacing.medium),
             AyahInfoText(
               verseKey: ayah.verseKey,
             ),

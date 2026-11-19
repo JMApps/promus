@@ -18,6 +18,8 @@ class MushafPageState extends ChangeNotifier {
 
   int _windowGeneration = 0;
 
+  static const int _windowRadius = 2;
+
   Set<int> _activeWindow = const {};
 
   MushafPageLoadState getPageState(int page) {
@@ -95,14 +97,15 @@ class MushafPageState extends ChangeNotifier {
     }
   }
 
+  /// Порядок важен: текущая, затем ближайшие — следующая раньше предыдущей
+  /// (вперёд листают чаще): 10, 11, 9, 12, 8.
   List<int> _buildWindow(int page) {
-    final next = page + 1;
-    final previous = page - 1;
-
     return [
       page,
-      if (_isValidPage(next)) next,
-      if (_isValidPage(previous)) previous,
+      for (var offset = 1; offset <= _windowRadius; offset++) ...[
+        if (_isValidPage(page + offset)) page + offset,
+        if (_isValidPage(page - offset)) page - offset,
+      ],
     ];
   }
 

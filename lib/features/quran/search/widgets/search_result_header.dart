@@ -24,7 +24,7 @@ class SearchResultsHeader extends StatelessWidget {
 
     return Container(
       padding: AppPaddings.small,
-      color: appColors.tertiaryContainer,
+      color: appColors.secondaryContainer,
       child: Text(
         AppStrings.searchByQuery(query, matchesText),
         style: AppTextStyles.medium,

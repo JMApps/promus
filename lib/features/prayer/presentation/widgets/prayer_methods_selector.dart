@@ -22,10 +22,12 @@ class PrayerMethodsSelector extends StatelessWidget {
         return ChoiceChip(
           label: Text(AppStrings.prayerCalculationNamesList[i]),
           selected: selectedIndex == i,
+          backgroundColor: appColors.surface,
+          selectedColor: selectedIndex == i ? appColors.primaryContainer.withAlpha(75) : appColors.surface,
           showCheckmark: false,
           shape: AppShapes.medium,
           side: BorderSide(
-            width: selectedIndex == i ? 0.75 : 0.0,
+            width: selectedIndex == i ? 1.5 : 0.0,
             color: appColors.primary,
           ),
           onSelected: (selected) {

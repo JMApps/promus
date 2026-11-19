@@ -10,8 +10,6 @@ class AppConstantKeys {
   static const String keyMainCounterBox = 'key_main_counter_box';
   static const String keyBookmarkSurahs = 'key_bookmarks_surahs';
 
-
-
   static const String keyFreeCounterValue = 'key_free_counter_value';
   static const String key33CounterValue = 'key_33_counter_value';
   static const String key100CounterValue = 'key_100_counter_value';

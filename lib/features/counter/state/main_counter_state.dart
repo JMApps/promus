@@ -137,9 +137,11 @@ class MainCounterState extends ChangeNotifier with WidgetsBindingObserver {
     if (!_tacticFeedback) return;
     try {
       if (await _canVibrate) {
-        await Vibration.vibrate(pattern: const [0, 80, 70, 160]);
+        // Обычная вибрация. На Android — 500 мс, на iOS длительность
+        // игнорируется и играет стандартная системная вибрация.
+        await Vibration.vibrate(duration: 500);
       } else {
-        await HapticFeedback.heavyImpact();
+        await HapticFeedback.vibrate();
       }
     } catch (e) {
       debugPrint('MainCounterState: ошибка вибрации: $e');

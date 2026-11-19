@@ -109,18 +109,18 @@ packages:
     dependency: "direct main"
     description:
       name: cupertino_ui
-      sha256: "369e39a1c5c030a6212589c3da1809920b1c2cfade7b02aade7695bfa4b88c3a"
+      sha256: c3eaf7f5bdfee36deb0b14a4cbf7602f1b6b8d8b8576b81f38fc08c25881c94c
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.6"
+    version: "1.1.7"
   dbus:
     dependency: transitive
     description:
       name: dbus
-      sha256: f7db8504e715b835f5ebe5fe74604ccd961d504c73389a5d8e81bafc2e2f3612
+      sha256: fe6b46eae35441227e9e750656d06a4f40c230fe96e4390da7d7ebc69a60f0b3
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.0"
+    version: "0.8.1"
   device_info_plus:
     dependency: transitive
     description:
@@ -218,10 +218,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_local_notifications
-      sha256: fac349e7361f80591a0cedff03548f807282c9faee9fc6192763166e5f81def2
+      sha256: "7d37d69ded3028af4f22531a0097a3baa478a384dff2e23e873707c93df3b704"
       url: "https://pub.dev"
     source: hosted
-    version: "23.0.2"
+    version: "23.0.3"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
@@ -361,18 +361,18 @@ packages:
     dependency: transitive
     description:
       name: jni
-      sha256: "2e91e6087291affd10b31b6c872f3e3ac7dc5d93b51b5ba485d930c8f08bde6c"
+      sha256: "822c3f004742158b80b558773ebed29891f407058d5798992436a68bdf14ccda"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.2"
+    version: "1.2.0"
   jni_flutter:
     dependency: transitive
     description:
       name: jni_flutter
-      sha256: "0dd33d67797560f66e961a6053882d4df54bd345bf063b8fe7ea133f7ad8b191"
+      sha256: "586594ad345b403bda8a794b0b8a9e34298238b86c2a7d7f15160b092fe9ef3d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.4+1"
+    version: "1.1.0"
   jni_util:
     dependency: transitive
     description:
@@ -473,10 +473,10 @@ packages:
     dependency: "direct main"
     description:
       name: material_ui
-      sha256: "474c135fd46b56ff1d35ca982155e8863d28fbc6464d1192acf4ee53a738680e"
+      sha256: a6b19012df437a356cbc01f8ea22a105e07194c47c9a6009da0032a0ce35c4ab
       url: "https://pub.dev"
     source: hosted
-    version: "1.11.0"
+    version: "1.11.1"
   meta:
     dependency: transitive
     description:
@@ -533,14 +533,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  pasteboard:
-    dependency: "direct main"
-    description:
-      name: pasteboard
-      sha256: e0535da36124e6f2ca9d17424102ce5de34e72acc39f05a1d942b974b48e5eea
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.0"
   path:
     dependency: "direct main"
     description:
@@ -653,14 +645,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  responsive_builder:
-    dependency: "direct main"
-    description:
-      name: responsive_builder
-      sha256: "64a5ef3fbe3628e4588a0c2391c3186300e76f58621d8135cc77aac816255a3e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.1"
   salomon_bottom_bar:
     dependency: "direct main"
     description:
@@ -790,26 +774,26 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: f62f7a981072ce5dfbff4d8cf2fc667322a65ba0cfd13bf357270827b7206191
+      sha256: de2496525b2ff5e4493fe1bd0da212e0500f35754a55090adf82cd9b7fa0c90f
       url: "https://pub.dev"
     source: hosted
-    version: "35.1.46"
+    version: "35.2.12"
   syncfusion_flutter_datepicker:
     dependency: "direct main"
     description:
       name: syncfusion_flutter_datepicker
-      sha256: "7ba83d4c9e31fb3b71c7c418050746ff7813de9e7cce02f727ad08acaa125d1b"
+      sha256: "91ba6e36cd75b6a5f2a7c346bc7feac2080106913a81df861f5be06a834a5e86"
       url: "https://pub.dev"
     source: hosted
-    version: "35.1.46"
+    version: "35.2.12"
   syncfusion_localizations:
     dependency: "direct main"
     description:
       name: syncfusion_localizations
-      sha256: b21a6a7d590949abeca525adab28e0526bc42e2bc3924fa4813a77cde3863d5d
+      sha256: a6284676cf8454776097c69c438116acdeabcc7020c29144a4474d9d5938a554
       url: "https://pub.dev"
     source: hosted
-    version: "35.1.46"
+    version: "35.2.12"
   synchronized:
     dependency: transitive
     description:

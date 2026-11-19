@@ -28,7 +28,7 @@ class ReaderAppBarState extends ChangeNotifier {
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     unawaited(_showSystemUi());
     super.dispose();
   }

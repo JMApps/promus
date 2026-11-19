@@ -1,6 +1,7 @@
 import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/constants/app_prayer_keys.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/theme/app_text_styles.dart';
 
@@ -33,7 +34,7 @@ class MinutesSelector extends StatelessWidget {
   }
 }
 
-Future<int?> showMinutesPicker(BuildContext context, {required int initial, int max = 30}) {
+Future<int?> showMinutesPicker(BuildContext context, {required int initial, int max = AppPrayerKeys.maxIqamahMinutes}) {
   return showModalBottomSheet<int>(
     context: context,
     builder: (_) => _MinutesPickerSheet(initial: initial, max: max),

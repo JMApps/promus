@@ -32,10 +32,7 @@ class AppRoutes {
       return const MainNotificationsPage();
     },
     NamesRouter.pageReader: (context, args) {
-      final ReaderArgs readerArgs = ReaderArgs(
-        pageNumber: args.pageNumber,
-        verseKey: args.verseKey,
-      );
+      final readerArgs = args as ReaderArgs;
       return MushafReaderPage(
         initialPage: readerArgs.pageNumber,
         initialVerseKey: readerArgs.verseKey,

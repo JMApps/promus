@@ -1,9 +1,10 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
+import '../../domain/entities/fortress_footnote_entity.dart';
 import '../states/fortress_footnote_state.dart';
 
 class FootnoteContainer extends StatefulWidget {
@@ -45,17 +46,17 @@ class _FootnoteContainerState extends State<FootnoteContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<FortressFootnoteState, (String?, bool, bool)>(
+    return Selector<FortressFootnoteState, (FortressFootnoteEntity?, bool, bool)>(
       selector: (_, state) => (
-        state.cachedFootnoteById(widget.footnoteId)?.footnote,
-        state.isLoading,
-        state.error != null,
+      state.cachedFootnoteById(widget.footnoteId),
+      state.isLoading,
+      state.error != null,
       ),
       builder: (context, data, _) {
-        final (text, isLoading, hasError) = data;
+        final (footnote, isLoading, hasError) = data;
 
-        final html = switch ((text, isLoading, hasError)) {
-          (final t?, _, _) => '[${widget.footnoteId}] – $t',
+        final html = switch ((footnote, isLoading, hasError)) {
+          (final f?, _, _) => '${f.label} – ${f.footnote}',
           (_, true, _) => null,
           (_, _, true) => AppStrings.errorLoad,
           _ => null,
@@ -63,20 +64,16 @@ class _FootnoteContainerState extends State<FootnoteContainer> {
 
         return Container(
           padding: AppPaddings.withoutTopMedium,
-          child: html == null
-              ? (isLoading
-                    ? const Center(child: CircularProgressIndicator.adaptive())
-                    : const SizedBox.shrink())
-              : Html(
-                  data: html,
-                  style: {
-                    '#': Style(
-                      padding: HtmlPaddings.only(left: 4, right: 4, bottom: 4),
-                      margin: .zero,
-                      fontSize: FontSize(16.0),
-                    ),
-                  },
-                ),
+          child: html == null ? (isLoading ? const Center(child: CircularProgressIndicator.adaptive()) : const SizedBox.shrink()) : Html(
+            data: html,
+            style: {
+              '#': Style(
+                padding: HtmlPaddings.only(left: 4, right: 4, bottom: 4),
+                margin: .zero,
+                fontSize: FontSize(16.0),
+              ),
+            },
+          ),
         );
       },
     );

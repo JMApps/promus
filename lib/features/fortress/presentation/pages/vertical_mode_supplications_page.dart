@@ -1,54 +1,34 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
-import '../../../../core/theme/app_paddings.dart';
-import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
 import '../lists/fortress_supplications_list.dart';
-import '../states/fortress_chapters_state.dart';
-import '../states/fortress_supplications_state.dart';
-import '../widgets/main_html_widget.dart';
+import '../widgets/fortress_chapter_header.dart';
 
-class VerticalModeSupplicationsPage extends StatefulWidget {
+/// Мольбы главы одним списком. Только отображение: данные приходят
+/// из FortressSupplicationsPage.
+class VerticalModeSupplicationsPage extends StatelessWidget {
   const VerticalModeSupplicationsPage({
     super.key,
-    required this.chapterId,
+    required this.chapter,
+    required this.supplications,
+    required this.hasError,
+    required this.onToggleMode,
   });
 
-  final int chapterId;
-
-  @override
-  State<VerticalModeSupplicationsPage> createState() => _VerticalModeSupplicationsPageState();
-}
-
-class _VerticalModeSupplicationsPageState extends State<VerticalModeSupplicationsPage> {
-  late final FortressSupplicationState _fortressSupplicationsState;
-
-  @override
-  void initState() {
-    super.initState();
-    _fortressSupplicationsState = context.read<FortressSupplicationState>();
-
-    if (_fortressSupplicationsState.cachedSupplicationsByChapter(widget.chapterId) != null) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!mounted) return;
-      await _fortressSupplicationsState.loadSupplicationsByChapter(
-        widget.chapterId,
-      );
-    });
-  }
+  final FortressChapterEntity? chapter;
+  final List<FortressSupplicationEntity>? supplications;
+  final bool hasError;
+  final VoidCallback onToggleMode;
 
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
     final topPadding = MediaQuery.paddingOf(context).top;
-    final isLoading = context.select<FortressSupplicationState, bool>((s) => s.isLoading);
-    final error = context.select<FortressSupplicationState, Object?>((s) => s.error);
-    final chapter = context.select<FortressChapterState, FortressChapterEntity?>((s) => s.chapterById(widget.chapterId));
-    final supplications = context.select<FortressSupplicationState, List<FortressSupplicationEntity>?>((s) => s.cachedSupplicationsByChapter(widget.chapterId));
+    final chapterModel = chapter;
+    final supplicationsList = supplications;
     return Scaffold(
       body: RawScrollbar(
         padding: .only(top: topPadding + kToolbarHeight),
@@ -60,57 +40,27 @@ class _VerticalModeSupplicationsPageState extends State<VerticalModeSupplication
             SliverAppBar(
               floating: true,
               pinned: false,
-              title: Text(chapter!.chapterNumber),
+              title: Text(chapterModel?.chapterNumber ?? ''),
               actions: [
                 IconButton.filledTonal(
-                  onPressed: () {
-                    _fortressSupplicationsState.changePageMode();
-                  },
+                  onPressed: onToggleMode,
                   icon: const Icon(Icons.swap_horizontal_circle_rounded),
                 ),
               ],
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: AppPaddings.topMediumSmallOther,
-                child: Ink(
-                  decoration: ShapeDecoration(
-                    shape: AppShapes.medium,
-                    gradient: LinearGradient(
-                      begin: .centerLeft,
-                      colors: [
-                        appColors.inversePrimary,
-                        appColors.tertiaryContainer,
-                        appColors.secondaryContainer,
-                      ],
-                    ),
-                  ),
-                  child: Padding(
-                    padding: AppPaddings.small,
-                    child: MainHtmlWidget(
-                      htmlContent: chapter.chapterTitle,
-                      textAlign: .center,
-                    ),
-                  ),
-                ),
+            if (chapterModel != null)
+              SliverToBoxAdapter(
+                child: FortressChapterHeader(chapterTitle: chapterModel.chapterTitle),
               ),
-            ),
-            if (supplications != null)
+            if (supplicationsList != null)
               FortressSupplicationsList(
-                fortressChapterSupplications: supplications,
-              )
-            else if (error != null && !isLoading)
-              const SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(
-                  child: Text(AppStrings.errorLoadData),
-                ),
+                fortressChapterSupplications: supplicationsList,
               )
             else
-              const SliverFillRemaining(
+              SliverFillRemaining(
                 hasScrollBody: false,
                 child: Center(
-                  child: CircularProgressIndicator.adaptive(),
+                  child: hasError ? const Text(AppStrings.errorLoadData) : const CircularProgressIndicator.adaptive(),
                 ),
               ),
           ],

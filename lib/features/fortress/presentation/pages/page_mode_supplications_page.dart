@@ -1,80 +1,54 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
-import '../../../../core/theme/app_shapes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/fortress_chapter_entity.dart';
 import '../../domain/entities/fortress_supplication_entity.dart';
 import '../lists/fortress_horizontal_supplications_list.dart';
-import '../states/fortress_chapters_state.dart';
-import '../states/fortress_supplications_state.dart';
-import '../widgets/main_html_widget.dart';
+import '../widgets/fortress_chapter_header.dart';
 
+/// Мольбы главы постранично. Только отображение: данные приходят
+/// из FortressSupplicationsPage.
 class PageModeSupplicationsPage extends StatefulWidget {
   const PageModeSupplicationsPage({
     super.key,
-    required this.chapterId,
+    required this.chapter,
+    required this.supplications,
+    required this.hasError,
+    required this.onToggleMode,
   });
 
-  final int chapterId;
+  final FortressChapterEntity? chapter;
+  final List<FortressSupplicationEntity>? supplications;
+  final bool hasError;
+  final VoidCallback onToggleMode;
 
   @override
-  State<PageModeSupplicationsPage> createState() =>
-      _PageModeSupplicationsPageState();
+  State<PageModeSupplicationsPage> createState() => _PageModeSupplicationsPageState();
 }
 
 class _PageModeSupplicationsPageState extends State<PageModeSupplicationsPage> {
-  late final FortressSupplicationState _fortressSupplicationsState;
-  late final PageController _supplicationPageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _fortressSupplicationsState = context.read<FortressSupplicationState>();
-    _supplicationPageController = PageController();
-
-    if (_fortressSupplicationsState.cachedSupplicationsByChapter(widget.chapterId) != null) return;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!mounted) return;
-      await _fortressSupplicationsState.loadSupplicationsByChapter(
-        widget.chapterId,
-      );
-    });
-  }
+  final PageController _pageController = PageController();
 
   @override
   void dispose() {
-    _supplicationPageController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final isLoading = context.select<FortressSupplicationState, bool>(
-      (s) => s.isLoading,
-    );
-    final error = context.select<FortressSupplicationState, Object?>(
-      (s) => s.error,
-    );
-    final chapter = context.select<FortressChapterState, FortressChapterEntity?>(
-          (s) => s.chapterById(widget.chapterId),
-    );
-    final supplications = context.select<FortressSupplicationState, List<FortressSupplicationEntity>?>(
-          (s) => s.cachedSupplicationsByChapter(widget.chapterId),
-    );
+    final chapterModel = widget.chapter;
+    final supplicationsList = widget.supplications;
     return Scaffold(
       appBar: AppBar(
-        title: Text(chapter!.chapterNumber),
+        title: Text(chapterModel?.chapterNumber ?? ''),
         actions: [
           IconButton.filledTonal(
-            onPressed: () {
-              _fortressSupplicationsState.changePageMode();
-            },
+            onPressed: widget.onToggleMode,
             icon: const Icon(Icons.swap_vertical_circle_rounded),
           ),
         ],
@@ -82,62 +56,33 @@ class _PageModeSupplicationsPageState extends State<PageModeSupplicationsPage> {
       body: Column(
         crossAxisAlignment: .stretch,
         children: [
-          Padding(
-            padding: AppPaddings.topMediumSmallOther,
-            child: Ink(
-              decoration: ShapeDecoration(
-                shape: AppShapes.medium,
-                gradient: LinearGradient(
-                  begin: .centerLeft,
-                  colors: [
-                    appColors.inversePrimary,
-                    appColors.tertiaryContainer,
-                    appColors.secondaryContainer,
-                  ],
-                ),
+          if (chapterModel != null) FortressChapterHeader(chapterTitle: chapterModel.chapterTitle),
+          if (supplicationsList != null) ...[
+            Expanded(
+              child: FortressHorizontalSupplicationsList(
+                controller: _pageController,
+                fortressChapterSupplications: supplicationsList,
               ),
-              child: Padding(
-                padding: AppPaddings.small,
-                child: MainHtmlWidget(
-                  htmlContent: chapter.chapterTitle,
-                  textAlign: .center,
+            ),
+            Padding(
+              padding: AppPaddings.withoutTopMedium,
+              child: Center(
+                child: SmoothPageIndicator(
+                  controller: _pageController,
+                  count: supplicationsList.length,
+                  effect: ScrollingDotsEffect(
+                    maxVisibleDots: 5,
+                    activeDotColor: appColors.primary,
+                    dotHeight: AppSpacing.small,
+                  ),
                 ),
               ),
             ),
-          ),
-          if (supplications != null)
+          ] else
             Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: FortressHorizontalSupplicationsList(
-                      controller: _supplicationPageController,
-                      fortressChapterSupplications: supplications,
-                    ),
-                  ),
-                  Padding(
-                    padding: AppPaddings.withoutTopMedium,
-                    child: SmoothPageIndicator(
-                      controller: _supplicationPageController,
-                      count: supplications.length,
-                      effect: ScrollingDotsEffect(
-                        maxVisibleDots: 5,
-                        activeDotColor: appColors.primary,
-                        radius: AppSpacing.small,
-                        dotHeight: AppSpacing.small,
-                      ),
-                    ),
-                  ),
-                ],
+              child: Center(
+                child: widget.hasError ? const Text(AppStrings.errorLoadData) : const CircularProgressIndicator.adaptive(),
               ),
-            )
-          else if (error != null && !isLoading)
-            const Center(
-              child: Text(AppStrings.errorLoadData),
-            )
-          else
-            const Center(
-              child: CircularProgressIndicator.adaptive(),
             ),
         ],
       ),

@@ -226,7 +226,7 @@ class LocalNotificationService {
     final (details, preferredMode) = switch (channel) {
     // alarmClock — самый надёжный режим в Doze, но в строке состояния
     // будет значок будильника. Если мешает, замените на exactAllowWhileIdle.
-      NotificationChannelKind.prayer => (_prayerDetails, AndroidScheduleMode.alarmClock),
+      NotificationChannelKind.prayer => (_prayerDetails, AndroidScheduleMode.exactAllowWhileIdle),
       NotificationChannelKind.iqamah => (_iqamahDetails, AndroidScheduleMode.exactAllowWhileIdle),
       NotificationChannelKind.reminder => (_reminderDetails, AndroidScheduleMode.exactAllowWhileIdle),
     };

@@ -26,9 +26,7 @@ class AyahByAyahList extends StatefulWidget {
   @override
   State<AyahByAyahList> createState() => _AyahByAyahListState();
 
-  static List<PageLine> _buildLines({
-    required List<MushafPageEntity> rows,
-  }) {
+  static List<PageLine> _buildLines({required List<MushafPageEntity> rows}) {
     final lines = <PageLine>[];
 
     final sortedRows = [...rows]
@@ -116,8 +114,7 @@ class _AyahByAyahListState extends State<AyahByAyahList> {
     }
   }
 
-  static String _verseKeyOf(AyahLine line) =>
-      '${line.row.glyphSurahNumber}:${line.row.glyphAyahNumber}';
+  static String _verseKeyOf(AyahLine line) => '${line.row.glyphSurahNumber}:${line.row.glyphAyahNumber}';
 
   int? _indexOfVerse(String? verseKey) {
     if (verseKey == null) return null;

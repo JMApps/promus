@@ -22,13 +22,16 @@ class AppPrayerKeys {
 
   static const String keyTimeFormat = 'key_time_format';
 
-  static final DateFormat hMDateFormat = DateFormat('HH:mm');        // как сейчас
-  static final DateFormat hMDateFormat12 = DateFormat('h:mm a');     // 7:25 PM
-  static final DateFormat hMDateFormat12Compact = DateFormat('h:mm'); // 7:25
+  static final DateFormat hMDateFormat = DateFormat('HH:mm');
+  static final DateFormat hMDateFormat12 = DateFormat('h:mm a');
+  static final DateFormat hMDateFormat12Compact = DateFormat('h:mm');
 
   static const String keyHijriOffset = 'key_hijri_offset';
   static const int minHijriOffset = -2;
   static const int maxHijriOffset = 2;
+
+  static const int maxAdjustmentMinutes = 60;
+  static const int maxIqamahMinutes = 60;
 
   static const String defCity = 'Mecca';
   static const String defCountry = 'Saudi Arabia';

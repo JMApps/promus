@@ -57,7 +57,7 @@ class _SelectionCityPageState extends State<SelectionCityPage> {
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     _editingController.dispose();
     _state.dispose();
     unawaited(_cityDatabase.close());
@@ -90,7 +90,7 @@ class _SelectionCityPageState extends State<SelectionCityPage> {
                   }
 
                   return SelectionCityList(
-                    cities: state.cities,
+                    allCitiesList: state.cities,
                   );
                 },
               ),

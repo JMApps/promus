@@ -11,7 +11,6 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../data/args/reader_args.dart';
 import '../../domain/entities/surah_name_entity.dart';
 import '../../states/mushaf_page_number_state.dart';
-import '../states/surah_bookmark_state.dart';
 
 class FavoriteSurahNameItem extends StatelessWidget {
   const FavoriteSurahNameItem({
@@ -45,9 +44,8 @@ class FavoriteSurahNameItem extends StatelessWidget {
           elevation: 0,
           color: Colors.transparent,
           child: ListTile(
-            onTap: () async {
+            onTap: () {
               context.read<MushafPageNumberState>().setPageNumber(page);
-              await context.read<SurahBookmarkState>().addLastOpenedPage(surah.startPageNumber);
               Navigator.pushNamed(
                 context,
                 NamesRouter.pageReader,
@@ -106,7 +104,7 @@ class FavoriteSurahNameItem extends StatelessWidget {
               overflow: .ellipsis,
             ),
             trailing: Text(
-              '${AppStrings.strShort}\n$pageNumber',
+              '${AppStrings.strShort}\n$page',
               style: AppTextStyles.small.copyWith(
                 color: appColors.secondary,
               ),

@@ -2,6 +2,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../enums/notification_event.dart';
 import '../enums/prayer_labels.dart';
+import '../utils/fasting_calendar.dart';
 import 'models.dart';
 import 'notification_prefs.dart';
 import 'notification_texts.dart';
@@ -42,8 +43,12 @@ class NotificationPlanner {
     required bool exact,
     required int maxCount,
     required int maxHorizonDays,
+    String Function(DateTime at)? formatTime,
   }) {
     if (prefs.isEmpty || maxCount < 2) return const [];
+
+    // Формат времени пользователя (12/24 ч). По умолчанию — ЧЧ:ММ.
+    final fmt = formatTime ?? texts.formatTime;
 
     final localNow = tz.TZDateTime.from(now, tz.local);
     final today = DateTime(localNow.year, localNow.month, localNow.day);
@@ -116,7 +121,7 @@ class NotificationPlanner {
                 ? NotificationChannelKind.reminder
                 : NotificationChannelKind.prayer,
             at: at,
-            title: texts.prayerTitle(p, texts.formatTime(at)),
+            title: texts.prayerTitle(p, fmt(at)),
             body: texts.prayerBody(p),
             type: NotificationPayloadType.prayer,
             key: p.name,
@@ -132,7 +137,7 @@ class NotificationPlanner {
             slot: NotificationIds.iqamahSlot(p),
             channel: NotificationChannelKind.iqamah,
             at: iqamahAt,
-            title: texts.iqamahTitle(p, texts.formatTime(iqamahAt)),
+            title: texts.iqamahTitle(p, fmt(iqamahAt)),
             body: texts.iqamahBody(p),
             type: NotificationPayloadType.iqamah,
             key: p.name,
@@ -166,12 +171,13 @@ class NotificationPlanner {
         final tomorrow = DateTime(date.year, date.month, date.day + 1);
         final h = hijri(tomorrow);
 
-        if (!_isVoluntaryFastForbidden(h)) {
+        // Рамадан, оба Ида и дни ташрик: о добровольном посте не напоминаем.
+        if (!FastingCalendar.isVoluntaryFastReminderBlocked(h)) {
           // Если завтра начинаются белые дни, одного напоминания достаточно:
           // не шлём вдобавок «завтра понедельник» в тот же вечер.
           final whiteDays =
               prefs.events.contains(NotificationEvent.fastWhiteDays) &&
-              _isWhiteDaysStart(h);
+              FastingCalendar.isWhiteDaysStart(h);
           if (whiteDays) {
             addEvent(
               date,
@@ -224,17 +230,4 @@ class NotificationPlanner {
 
     return result;
   }
-
-  /// Белые дни — 13, 14, 15 числа. В зу-ль-хиджа 13-е — день ташрик,
-  /// пост в него запрещён, поэтому начинаем с 14-го.
-  static bool _isWhiteDaysStart(HijriDate h) =>
-      h.month == 12 ? h.day == 14 : h.day == 13;
-
-  /// Дни, когда напоминать о добровольном посте не нужно.
-  static bool _isVoluntaryFastForbidden(HijriDate h) =>
-      h.month == 9 || // Рамадан: пост и так обязательный
-      (h.month == 10 && h.day == 1) || // Ураза-байрам
-      (h.month == 12 &&
-          h.day >= 10 &&
-          h.day <= 13); // Курбан-байрам и дни ташрик
 }

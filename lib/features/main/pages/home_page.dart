@@ -50,6 +50,7 @@ class _HomePageState extends State<HomePage> {
       curve: Curves.easeOutCubic,
     );
   }
+
   @override
   void initState() {
     super.initState();
@@ -87,7 +88,10 @@ class _HomePageState extends State<HomePage> {
         context.read<MainState>().resetToHome();
       },
       child: Scaffold(
-        body: _mainPages[currentNavigatorIndex],
+        body: IndexedStack(
+          index: currentNavigatorIndex,
+          children: _mainPages,
+        ),
         extendBody: true,
         bottomNavigationBar: MediaQuery.removePadding(
           context: context,

@@ -4,7 +4,10 @@ import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_constant_keys.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../states/mushaf_page_load_state.dart';
 import '../../states/mushaf_page_number_state.dart';
 import '../../states/mushaf_page_state.dart';
@@ -27,7 +30,7 @@ class ReaderPageList extends StatefulWidget {
   State<ReaderPageList> createState() => _ReaderPageListState();
 }
 
-class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObserver {
+class _ReaderPageListState extends State<ReaderPageList> {
   late final MushafPageNumberState _pageNumberState;
   late final MushafPageState _mushafPageState;
   late final SurahBookmarkState _bookmarkState;
@@ -45,8 +48,6 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
     _mushafPageState = context.read<MushafPageState>();
     _bookmarkState = context.read<SurahBookmarkState>();
 
-    WidgetsBinding.instance.addObserver(this);
-
     _currentPage = widget.pageNumber;
     _pageNumberState.setPageNumber(_currentPage);
 
@@ -58,19 +59,12 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
   }
 
   @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return PageView.builder(
       controller: widget.pageController,
       reverse: true,
       itemCount: AppConstantKeys.totalMushafPageCount,
       onPageChanged: (index) async {
-
         _jumpVerseKey = null;
 
         final page = index + 1;
@@ -85,21 +79,36 @@ class _ReaderPageListState extends State<ReaderPageList> with WidgetsBindingObse
         final page = index + 1;
         return Selector<MushafPageState, MushafPageLoadState>(
           selector: (_, mushafPageState) => mushafPageState.getPageState(page),
-          builder: (context, mushafPageState, _) {
-            if (mushafPageState.error != null) {
-              return Padding(
-                padding: AppPaddings.medium,
-                child: Center(child: Text('${mushafPageState.error}')),
+          builder: (context, pageState, _) {
+            if (pageState.error != null) {
+              return Center(
+                child: Padding(
+                  padding: AppPaddings.medium,
+                  child: Column(
+                    mainAxisSize: .min,
+                    children: [
+                      const Text(
+                        AppStrings.errorLoadData,
+                        style: AppTextStyles.medium,
+                        textAlign: .center,
+                      ),
+                      const SizedBox(height: AppSpacing.medium),
+                      FilledButton.tonal(
+                        onPressed: () => unawaited(_mushafPageState.loadPage(page)),
+                        child: const Text(AppStrings.retry),
+                      ),
+                    ],
+                  ),
+                ),
               );
             }
-            if (!mushafPageState.loaded) {
+            if (!pageState.loaded) {
               return const Center(
                 child: CircularProgressIndicator.adaptive(),
               );
             }
-
             return ReadItem(
-              rows: mushafPageState.data!,
+              rows: pageState.data!,
               scrollToVerseKey: page == widget.pageNumber ? _jumpVerseKey : null,
             );
           },

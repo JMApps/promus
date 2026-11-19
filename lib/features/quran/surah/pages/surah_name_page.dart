@@ -21,11 +21,11 @@ class SurahNamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mqPadding = MediaQuery.of(context).padding;
+    final mqPadding = MediaQuery.paddingOf(context);
     final appColors = Theme.of(context).colorScheme;
     final isLoading = context.select<SurahNameState, bool>((s) => s.isLoading);
     final error = context.select<SurahNameState, Object?>((s) => s.error);
-    final surahs = context.select<SurahNameState, List<SurahNameEntity>>(
+    final allSurahs = context.select<SurahNameState, List<SurahNameEntity>>(
       (s) => s.allSurahs,
     );
     return Scaffold(
@@ -116,7 +116,7 @@ class SurahNamePage extends StatelessWidget {
                 padding: const .only(
                   bottom: kBottomNavigationBarHeight + AppSpacing.medium * 1.5,
                 ),
-                sliver: SurahNameList(surahs: surahs),
+                sliver: SurahNameList(surahs: allSurahs),
               ),
             ],
           ),

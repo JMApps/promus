@@ -1,4 +1,4 @@
-import 'package:promus/core/constants/app_strings.dart';
+import '../constants/app_strings.dart';
 
 enum NotificationEvent {
   fastMonday(AppStrings.fastMonday),

@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:adhan/adhan.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/constants/app_prayer_keys.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/theme/app_paddings.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -26,6 +29,7 @@ class CorrectionMinutesSheet extends StatelessWidget {
         s.ishaAdjustment,
       ),
     );
+    final hasAdjustments = adjustments != (0, 0, 0, 0, 0, 0);
     final state = context.read<PrayerState>();
 
     final rows = <({String name, DateTime time, int minutes, ValueChanged<int> onChanged})>[
@@ -72,24 +76,18 @@ class CorrectionMinutesSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: .min,
         crossAxisAlignment: .stretch,
+        spacing: AppSpacing.medium,
         children: [
           const MainGradientText(text: AppStrings.correctionMinutes),
-          const SizedBox(height: AppSpacing.medium),
           for (final r in rows)
-            Card(
-              margin: AppPaddings.bottomMedium,
-              child: PrayerCorrectTile(
-                label: '${r.name}\n${state.formatTime(r.time)}',
-                minutes: r.minutes,
-                decrementPressed: () => r.onChanged(r.minutes - 1),
-                incrementPressed: () => r.onChanged(r.minutes + 1),
-              ),
+            PrayerCorrectTile(
+              label: '${r.name}\n${state.formatTime(r.time)}',
+              minutes: r.minutes,
+              decrementPressed: r.minutes > -AppPrayerKeys.maxAdjustmentMinutes ? () => r.onChanged(r.minutes - 1) : null,
+              incrementPressed: r.minutes < AppPrayerKeys.maxAdjustmentMinutes ? () => r.onChanged(r.minutes + 1) : null,
             ),
-          const SizedBox(height: AppSpacing.small),
           OutlinedButton(
-            onPressed: () async {
-              await state.resetAdjustments();
-            },
+            onPressed: hasAdjustments ? () => unawaited(state.resetAdjustments()) : null,
             child: const Text(
               AppStrings.labelDefault,
               style: AppTextStyles.medium,

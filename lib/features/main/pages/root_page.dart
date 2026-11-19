@@ -4,7 +4,6 @@ import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_localizations/flutter_localizations.dart' hide GlobalMaterialLocalizations, GlobalCupertinoLocalizations;
 import 'package:material_ui/material_ui.dart';
 import 'package:promus/core/database/city_database_helper.dart';
-import 'package:promus/core/database/custom_city_database_helper.dart';
 import 'package:promus/core/database/fortress_database_helper.dart';
 import 'package:promus/features/main/pages/home_page.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +59,6 @@ class RootPage extends StatelessWidget {
           MushafDatabaseHelper.instance,
           FortressDatabaseHelper.instance,
           CityDatabaseHelper.instance,
-          CustomCityDatabaseHelper.instance,
         ],
         child: const HomePage(),
       ),

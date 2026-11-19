@@ -15,10 +15,10 @@ class CityRepositoryImpl implements CityRepository {
   Future<List<CityEntity>> fetchAllCities({required String country}) async {
     final database = await _databaseHelper.db;
 
-    final rows = await database.query(
-      TableNames.tableOfCityCoordinates,
-      orderBy: 'CASE WHEN ${ColumnNames.country} = ? THEN 0 ELSE 1 END, ${ColumnNames.id}',
-      whereArgs: [country],
+    final rows = await database.rawQuery(
+      'SELECT * FROM ${TableNames.tableOfCityCoordinates} '
+          'ORDER BY CASE WHEN ${ColumnNames.country} = ? THEN 0 ELSE 1 END, ${ColumnNames.id}',
+      [country],
     );
 
     return rows.map((row) => CityModel.fromMap(row).toEntity()).toList(growable: false);

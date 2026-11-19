@@ -47,8 +47,7 @@ class ToPageButton extends StatelessWidget {
                             label: '${pageNumberState.pageNumber}',
                             min: 1,
                             max: AppConstantKeys.totalMushafPageCount.toDouble(),
-                            divisions: AppConstantKeys.totalMushafPageCount,
-                            onChanged: (double value) {
+                            divisions: AppConstantKeys.totalMushafPageCount - 1,                            onChanged: (double value) {
                               pageNumberState.setPageNumber(value.round());
                             },
                             onChangeEnd: (double value) {

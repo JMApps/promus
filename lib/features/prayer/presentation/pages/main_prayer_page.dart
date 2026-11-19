@@ -4,6 +4,7 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/icon_paths.dart';
 import '../../../../core/routes/names_router.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../lists/week_days_row.dart';
 import '../widgets/adhkar_reminder_section.dart';
 import '../widgets/days_to_holidays.dart';
@@ -29,7 +30,26 @@ class MainPrayerPage extends StatelessWidget {
     final appColors = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.appName),
+        title: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: AppStrings.pro,
+                style: TextStyle(
+                  fontSize: 24.0,
+                  color: appColors.primary,
+                )
+              ),
+              TextSpan(
+                text: AppStrings.mus,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: appColors.tertiary,
+                  )
+              ),
+            ],
+          ),
+        ),
         centerTitle: false,
         actions: [
           IconButton.filledTonal(

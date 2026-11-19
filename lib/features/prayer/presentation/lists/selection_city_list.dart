@@ -7,22 +7,22 @@ import '../items/selection_city_item.dart';
 class SelectionCityList extends StatelessWidget {
   const SelectionCityList({
     super.key,
-    required this.cities,
+    required this.allCitiesList,
   });
 
-  final List<CityEntity> cities;
+  final List<CityEntity> allCitiesList;
 
   @override
   Widget build(BuildContext context) {
-    if (cities.isEmpty) {
+    if (allCitiesList.isEmpty) {
       return const SearchIsEmptyWidget();
     }
 
     return Scrollbar(
       child: ListView.builder(
-        itemCount: cities.length,
+        itemCount: allCitiesList.length,
         itemBuilder: (context, index) {
-          final cityModel = cities[index];
+          final cityModel = allCitiesList[index];
           return SelectionCityItem(
             cityModel: cityModel,
             index: index,

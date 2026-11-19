@@ -13,19 +13,19 @@ class LastOpenedSurahList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer3<SurahBookmarkState, MushafPageMetaState, SurahNameState>(
       builder: (context, bookmarks, meta, surahs, _) {
-        final items = bookmarks.resolveLastOpenedSurahs(
+        final favoriteSurahs = bookmarks.resolveLastOpenedSurahs(
           meta: meta,
           surahs: surahs,
         );
 
-        if (items.isEmpty) {
+        if (favoriteSurahs.isEmpty) {
           return const SliverToBoxAdapter(child: SizedBox.shrink());
         }
 
         return SliverList.builder(
-          itemCount: items.length,
+          itemCount: favoriteSurahs.length,
           itemBuilder: (context, index) {
-            final item = items[index];
+            final item = favoriteSurahs[index];
             return FavoriteSurahNameItem(
               surah: item.surah,
               pageNumber: item.pageNumber,

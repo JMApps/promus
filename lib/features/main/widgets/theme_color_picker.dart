@@ -48,7 +48,7 @@ class ThemeColorPicker extends StatelessWidget {
               selectedColor: color,
               onMainColorChange: (picked) {
                 if (picked is MaterialColor) state.setThemeColor(picked);
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
               },
             ),
           ),

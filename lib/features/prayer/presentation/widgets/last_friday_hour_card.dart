@@ -17,7 +17,6 @@ class LastFridayHourCard extends StatelessWidget {
           (s) => s.isFridayLastHour,
     );
     final appColors = Theme.of(context).colorScheme;
-
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 1250),
       switchInCurve: Curves.easeOutCubic,

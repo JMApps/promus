@@ -16,14 +16,13 @@ class EventTimesStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (:times, :sunnah, :step) = context.select<PrayerState, ({PrayerTimes times, SunnahTimes sunnah, int step})>((s) => (
-            times: s.prayerTimes,
-            sunnah: s.sunnahTimes,
-            step: s.currentEventStep,
-          ),
-        );
+        times: s.prayerTimes,
+        sunnah: s.sunnahTimes,
+        step: s.currentEventStep,
+      ),
+    );
     final format = context.read<PrayerState>().formatTime;
     final appColors = Theme.of(context).colorScheme;
-
     EasyStep stepOf(IconData icon, String name, DateTime time) => EasyStep(
       icon: Icon(icon),
       customTitle: Text(

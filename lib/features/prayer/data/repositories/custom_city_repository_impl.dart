@@ -18,7 +18,6 @@ class CustomCityRepositoryImpl implements CustomCityRepository {
     final rows = await database.query(
       TableNames.tableOfCityCoordinates,
       orderBy: ColumnNames.id,
-      limit: 500,
     );
 
     return rows.map((row) => CustomCityModel.fromMap(row).toEntity()).toList(growable: false);

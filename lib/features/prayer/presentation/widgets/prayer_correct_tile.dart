@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:promus/core/theme/app_text_styles.dart';
 
 import '../../../../core/theme/app_paddings.dart';
+import '../../../../core/theme/app_text_styles.dart';
 
 class PrayerCorrectTile extends StatelessWidget {
   const PrayerCorrectTile({

@@ -257,19 +257,13 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   /// Индекс следующей молитвы; после 'иша — сразу завтрашний фаджр.
   int get currentPrayerStep => AppPrayerKeys.fivePrayers.indexOf(_nextPrayer.prayer);
 
-  /// [ДУБЛЬ] Повторяет список событий из _computeDays() (восход → полночь →
-  /// последняя треть). Можно выразить через _nextEvent, чтобы порядок
-  /// событий жил в одном месте.
-  /// Цикл начинается с восхода: до сегодняшнего восхода идёт вчерашний.
-  int get currentEventStep {
-    final day = _dateTime.isBefore(_today.times.sunrise) ? _yesterday : _today;
-    final passed = [
-      day.times.sunrise,
-      day.sunnah.middleOfTheNight,
-      day.sunnah.lastThirdOfTheNight,
-    ].where((t) => !t.isAfter(_dateTime)).length;
-    return passed.clamp(0, 2);
-  }
+  /// Шаг степпера «Восход → Полночь → 1/3 ночи» по ближайшему событию из _events.
+  /// После последней трети следующим идёт восход, но шаг остаётся на трети:
+  /// цикл степпера начинается с восхода.
+  int get currentEventStep => switch (_nextEvent.name) {
+    AppStrings.midnight => 1,
+    _ => 2, // впереди последняя треть или восход
+  };
 
   // ---------------------------------------------------------------------------
   // Азкары. Порядок проверок = приоритет.
@@ -461,22 +455,23 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   int get ishaAdjustment => _adjustments[Prayer.isha]!;
 
-  set fajrAdjustment(int v) => _setAdjustment(Prayer.fajr, v);
+  set fajrAdjustment(int v) => unawaited(_setAdjustment(Prayer.fajr, v));
 
-  set sunriseAdjustment(int v) => _setAdjustment(Prayer.sunrise, v);
+  set sunriseAdjustment(int v) => unawaited(_setAdjustment(Prayer.sunrise, v));
 
-  set dhuhrAdjustment(int v) => _setAdjustment(Prayer.dhuhr, v);
+  set dhuhrAdjustment(int v) => unawaited(_setAdjustment(Prayer.dhuhr, v));
 
-  set asrAdjustment(int v) => _setAdjustment(Prayer.asr, v);
+  set asrAdjustment(int v) => unawaited(_setAdjustment(Prayer.asr, v));
 
-  set maghribAdjustment(int v) => _setAdjustment(Prayer.maghrib, v);
+  set maghribAdjustment(int v) => unawaited(_setAdjustment(Prayer.maghrib, v));
 
-  set ishaAdjustment(int v) => _setAdjustment(Prayer.isha, v);
+  set ishaAdjustment(int v) => unawaited(_setAdjustment(Prayer.isha, v));
 
   Future<void> _setAdjustment(Prayer prayer, int value) async {
-    if (_adjustments[prayer] == value) return;
-    _adjustments[prayer] = value;
-    await _persist(AppPrayerKeys.adjustmentKeys[prayer]!, value);
+    final v = value.clamp(-AppPrayerKeys.maxAdjustmentMinutes, AppPrayerKeys.maxAdjustmentMinutes);
+    if (_adjustments[prayer] == v) return;
+    _adjustments[prayer] = v;
+    await _persist(AppPrayerKeys.adjustmentKeys[prayer]!, v);
   }
 
   Future<void> resetAdjustments() async {

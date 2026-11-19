@@ -1,3 +1,5 @@
+import 'package:sqflite/sqflite.dart';
+
 import '../../../../core/database/constants/column_names.dart';
 import '../../../../core/database/constants/table_names.dart';
 import '../../../../core/database/mushaf_database_helper.dart';
@@ -33,14 +35,19 @@ class AyahByAyahRepositoryImpl implements AyahByAyahRepository {
     );
     if (words.isEmpty) return const [];
 
-    // Слово из одной буквы ищем целиком, длиннее — по началу слова.
-    final terms = words.map((word) => word.length > 1 ? '$word*' : word);
-
     final database = await _databaseHelper.db;
 
     final List<Map<String, Object?>> rows;
     if (isArabic) {
       final fts = TableNames.ftsArabicTable;
+
+      // Для каждого слова берём первое написание, которое есть в индексе:
+      // само слово или его османский вариант (см. arabicSpellingVariants).
+      final terms = <String>[];
+      for (final word in words) {
+        terms.add(await _arabicTerm(database, fts, word));
+      }
+
       rows = await database.rawQuery(
         '''
         SELECT $_selectColumns
@@ -59,6 +66,7 @@ class AyahByAyahRepositoryImpl implements AyahByAyahRepository {
       // rowid в fts_translations — это Table_of_translation.id,
       // поэтому идём через таблицу переводов, а аят находим по ключу.
       final fts = TableNames.ftsTranslationsTable;
+      final terms = words.map((word) => word.length > 1 ? '$word*' : word);
       rows = await database.rawQuery(
         '''
         SELECT $_selectColumns
@@ -78,6 +86,21 @@ class AyahByAyahRepositoryImpl implements AyahByAyahRepository {
     return rows
         .map((row) => AyahByAyahModel.fromMap(row).ayahByAyahToEntity())
         .toList(growable: false);
+  }
+
+  /// Термин FTS для арабского слова: однобуквенное ищем целиком,
+  /// остальные — по началу слова, в первом написании, которое есть в индексе.
+  /// Каждая проверка — `LIMIT 1` по индексу FTS, доли миллисекунды.
+  Future<String> _arabicTerm(DatabaseExecutor database, String fts, String word) async {
+    if (word.length == 1) return word;
+    for (final variant in arabicSpellingVariants(word)) {
+      final hit = await database.rawQuery(
+        'SELECT 1 FROM $fts WHERE $fts MATCH ? LIMIT 1',
+        ['$variant*'],
+      );
+      if (hit.isNotEmpty) return '$variant*';
+    }
+    return '$word*';
   }
 
   @override

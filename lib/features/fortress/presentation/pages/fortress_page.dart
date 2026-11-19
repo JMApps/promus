@@ -20,7 +20,7 @@ class FortressPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mqPadding = MediaQuery.of(context).padding;
+    final mqPadding = MediaQuery.paddingOf(context);
     final appColors = Theme.of(context).colorScheme;
     final isLoading = context.select<FortressChapterState, bool>((s) => s.isLoading);
     final error = context.select<FortressChapterState, Object?>((s) => s.error);

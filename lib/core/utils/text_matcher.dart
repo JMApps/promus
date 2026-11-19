@@ -12,15 +12,10 @@ class TextMatcher {
   static bool containsArabic(String s) => _arabic.hasMatch(s);
 
   // харакаты, коранические знаки, татвиль
-  static bool _isMark(int c) =>
-      (c >= 0x064B && c <= 0x065F) ||
-          c == 0x0670 ||
-          (c >= 0x06D6 && c <= 0x06ED) ||
-          c == 0x0640;
+  static bool _isMark(int c) => (c >= 0x064B && c <= 0x065F) || c == 0x0670 || (c >= 0x06D6 && c <= 0x06ED) || c == 0x0640;
 
   // آ أ إ ٱ -> ا
-  static bool _isAlefVariant(int c) =>
-      c == 0x0622 || c == 0x0623 || c == 0x0625 || c == 0x0671;
+  static bool _isAlefVariant(int c) => c == 0x0622 || c == 0x0623 || c == 0x0625 || c == 0x0671;
 
   /// Единая нормализация: используйте и для запроса в БД, и для подсветки.
   static String normalizeArabic(String s) => _normalize(s).text;
@@ -37,11 +32,7 @@ class TextMatcher {
     return (text: buf.toString(), map: map);
   }
 
-  static List<TextRange> findRanges({
-    required String text,
-    required String query,
-    required bool isArabic,
-  }) {
+  static List<TextRange> findRanges({required String text, required String query, required bool isArabic}) {
     if (text.isEmpty || query.trim().isEmpty) return const [];
 
     final ranges = <TextRange>[];

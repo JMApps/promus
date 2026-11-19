@@ -10,34 +10,26 @@ class NotificationTexts {
 
   String prayerTitle(PrayerLabels p, String time) => '${p.label} — $time';
 
-  String prayerBody(PrayerLabels p) => p == PrayerLabels.sunrise
-      ? 'Восход солнца: время утреннего намаза закончилось'
-      : 'Наступило время намаза «${p.label}»';
+  String prayerBody(PrayerLabels p) => p == PrayerLabels.sunrise ? 'Восход солнца' : 'Наступило время молитвы «${p.label}»';
 
   String iqamahTitle(PrayerLabels p, String time) => 'Икама: ${p.label} — $time';
 
-  String iqamahBody(PrayerLabels p) => 'Время икамы намаза «${p.label}»';
+  String iqamahBody(PrayerLabels p) => 'Время икамы молитвы «${p.label}»';
 
   String eventTitle(NotificationEvent e) => e.label;
 
   /// [hijriMonth] — месяц дня, к которому относится напоминание (для белых дней).
   String eventBody(NotificationEvent e, {int? hijriMonth}) => switch (e) {
-    NotificationEvent.friday =>
-    'Сегодня джума: прочитайте суру «аль-Кахф» и чаще призывайте благословение на Пророка ﷺ',
-    NotificationEvent.fridayLastHour =>
-    'Начался последний час пятницы — время, когда мольба принимается',
-    NotificationEvent.fastMonday =>
-    'Завтра понедельник — желательный пост. Не забудьте сухур и намерение',
-    NotificationEvent.fastThursday =>
-    'Завтра четверг — желательный пост. Не забудьте сухур и намерение',
-    NotificationEvent.fastWhiteDays => hijriMonth == 12
-        ? 'Завтра начинаются белые дни: желательно поститься 14 и 15 зу-ль-хиджа'
-        : 'Завтра начинаются белые дни: желательно поститься 13, 14 и 15 числа',
+    NotificationEvent.friday => 'Сегодня пятница: прочитайте суру «аль-Кахф» и чаще призывайте благословение на Пророка ﷺ',
+    NotificationEvent.fridayLastHour => 'Последний час пятницы 🤲🤲🤲',
+    NotificationEvent.fastMonday => 'Завтра понедельник — желательный пост.',
+    NotificationEvent.fastThursday => 'Завтра четверг — желательный пост.',
+    NotificationEvent.fastWhiteDays => hijriMonth == 12 ? 'Завтра начинаются белые дни: желательно поститься 14 и 15 зу-ль-хиджа' : 'Завтра начинаются белые дни: желательно поститься 13, 14 и 15 числа',
   };
 
   String get openAppTitle => 'Уведомления скоро закончатся';
 
-  String get openAppBody => 'Откройте приложение, чтобы получать время намазов на следующие дни';
+  String get openAppBody => 'Откройте приложение, чтобы перепланировались уведомления для молитв.';
 
   /// Время в часовом поясе устройства, формат ЧЧ:ММ.
   String formatTime(DateTime at) {

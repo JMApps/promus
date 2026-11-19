@@ -18,7 +18,6 @@ class AdhkarReminderSection extends StatelessWidget {
           (s) => s.adhkarReminder,
     );
     final appColors = Theme.of(context).colorScheme;
-
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 1250),
       switchInCurve: Curves.easeOutCubic,

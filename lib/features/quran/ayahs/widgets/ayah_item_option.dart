@@ -1,11 +1,14 @@
+import 'dart:async';
+
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:pasteboard/pasteboard.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../../core/theme/app_paddings.dart';
 import '../../../../../core/theme/app_radius.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../surah/states/surah_name_state.dart';
 
 class AyahItemOption extends StatelessWidget {
@@ -25,8 +28,11 @@ class AyahItemOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final surahFirstVerseKey = context.select<SurahNameState, String?>((s) => s.surahByVerseKey(AppStrings.surah, verseKey, AppStrings.ayah.toLowerCase()));
-    final endWholeAyah = '$wholeAyah\n\n$surahFirstVerseKey';
+    final source = context.select<SurahNameState, String?>(
+          (s) => s.surahByVerseKey(AppStrings.surah, verseKey, AppStrings.ayah.toLowerCase()),
+    );
+    // Если список сур ещё не загружен, подпись — просто ключ аята, а не «null».
+    final text = '$wholeAyah\n\n${source ?? verseKey}';
     return Padding(
       padding: AppPaddings.withoutTopMedium,
       child: Row(
@@ -42,22 +48,36 @@ class AyahItemOption extends StatelessWidget {
             ),
             child: Text(verseKey),
           ),
-
           IconButton(
-            onPressed: () {
+            tooltip: AppStrings.copy,
+            onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
               Navigator.pop(context);
-              Pasteboard.writeText(endWholeAyah);
+              await Clipboard.setData(ClipboardData(text: text));
+              messenger
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    backgroundColor: appColors.inversePrimary,
+                    content: Text(
+                      AppStrings.copied,
+                      style: AppTextStyles.medium.copyWith(color: appColors.primary),
+                    ),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
             },
             icon: const Icon(Icons.copy_rounded),
           ),
-
           IconButton(
-            onPressed: () async{
+            tooltip: AppStrings.share,
+            onPressed: () {
+              final box = context.findRenderObject() as RenderBox?;
+              final origin = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
               Navigator.pop(context);
-              await SharePlus.instance.share(
-                ShareParams(
-                  text: endWholeAyah,
-                  sharePositionOrigin: const .fromLTWH(1, 1, 1, 1),
+              unawaited(
+                SharePlus.instance.share(
+                  ShareParams(text: text, sharePositionOrigin: origin),
                 ),
               );
             },

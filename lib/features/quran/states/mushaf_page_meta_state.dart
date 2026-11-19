@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../domain/entities/mushaf_page_meta_entity.dart';
 import '../domain/repositories/mushaf_page_meta_repository.dart';

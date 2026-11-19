@@ -4,6 +4,8 @@ class AppStrings {
   AppStrings._();
 
   static const String appName = 'ПроМус';
+  static const String pro = 'Про';
+  static const String mus = 'Мус';
 
   static const String titleHome = 'Главная';
   static const String titleMushaf = 'Мусхаф';
@@ -58,8 +60,8 @@ class AppStrings {
   static const String selectionCity = 'Выбор города';
   static const String enterQueryLat = 'Введите запрос латиницей';
 
-  static String qiblahDirectionDescription(String qiblahDirection) => 'Кибла на $qiblahDirection\u00B0';
-
+  static String qiblahDirectionDescription(String qiblahDirection) => 'Кибла — $qiblahDirection\u00B0 от севера';
+  
   static const List<String> weekDays = [
     'Пн',
     'Вт',
@@ -81,7 +83,8 @@ class AppStrings {
   static const String fastThursday = 'Пост в четверг';
   static const String tomorrowFriday = 'Завтра пятница';
   static const String lastFridayHour = 'Последний час пятницы';
-  static const String ayahFriday = 'إِنَّ ٱللَّهَ وَمَلَٰٓئِكَتَهُۥ يُصَلُّونَ عَلَى ٱلنَّبِيِّۚ يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ صَلُّواْ عَلَيۡهِ وَسَلِّمُواْ تَسۡلِيمًا\n\nВоистину, Аллах и Его ангелы благословляют Пророка. О те, которые уверовали! Благословляйте его и приветствуйте миром.';
+  static const String ayahFridayAr = 'إِنَّ ٱللَّهَ وَمَلَٰٓئِكَتَهُۥ يُصَلُّونَ عَلَى ٱلنَّبِيِّۚ يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ صَلُّواْ عَلَيۡهِ وَسَلِّمُواْ تَسۡلِيمًا.';
+  static const String ayahFridayRu = 'Воистину, Аллах и Его ангелы благословляют Пророка. О те, которые уверовали! Благословляйте его и приветствуйте миром';
   static const String tomorrowDesirableFastingDay = 'Завтра день желательного поста';
   static const String desirableFastingDay = 'День желательного поста';
   static const String remind = 'Напоминание';
@@ -156,6 +159,8 @@ class AppStrings {
   static const today = 'Сегодня';
   static const daysShort = 'дн.';
   static const String hijriOffset = 'Сдвиг даты по хиджре';
+  static const String share = 'Поделиться';
+  static const String copy = 'Скопировать';
 
   static const List<String> prayerCalculationNamesList = [
     'Russia',

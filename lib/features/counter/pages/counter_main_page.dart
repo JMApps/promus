@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../../core/constants/app_strings.dart';
 import '../widgets/counter_layout.dart';
@@ -20,9 +19,10 @@ class CounterMainPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const .only(bottom: kBottomNavigationBarHeight),
-        child: OrientationLayoutBuilder(
-          portrait: (_) => const CounterLayout(axis: .vertical),
-          landscape: (_) => const CounterLayout(axis: .horizontal),
+        child: OrientationBuilder(
+          builder: (context, orientation) => CounterLayout(
+            axis: orientation == .portrait ? .vertical : .horizontal,
+          ),
         ),
       ),
     );

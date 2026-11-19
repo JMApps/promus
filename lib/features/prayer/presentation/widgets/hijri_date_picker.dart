@@ -38,10 +38,13 @@ class HijriDatePicker extends StatelessWidget {
             todayCellDecoration: BoxDecoration(
               shape: .circle,
               color: Colors.transparent,
-              border: .all(color: appColors.tertiary, width: 1.5),
+              border: .all(
+                color: appColors.primary,
+                width: 1.5,
+              ),
             ),
             todayTextStyle: TextStyle(
-              color: appColors.tertiary,
+              color: appColors.primary,
               fontSize: AppSpacing.medium,
               fontWeight: .bold,
             ),

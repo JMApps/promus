@@ -35,11 +35,26 @@ class FridaySalawahCard extends StatelessWidget {
         elevation: 0,
         child: Padding(
           padding: AppPaddings.medium,
-          child: Text(
-            AppStrings.ayahFriday,
-            style: TextStyle(
-              fontFamily: FontFamilies.uthmanic,
-              letterSpacing: 0,
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: AppStrings.ayahFridayAr,
+                  style: TextStyle(
+                    fontFamily: FontFamilies.uthmanic,
+                    letterSpacing: 0,
+                    fontSize: 17.0,
+                    height: 1.8,
+                  ),
+                ),
+                TextSpan(text: '\n'),
+                TextSpan(
+                  text: AppStrings.ayahFridayRu,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                  ),
+                ),
+              ],
             ),
             textAlign: .center,
           ),

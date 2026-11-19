@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../../core/constants/font_families.dart';
 import '../../../../../core/theme/app_paddings.dart';
 import '../../../../../core/theme/app_radius.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../surah/states/surah_name_state.dart';
 
 class SurahHeaderItem extends StatelessWidget {
@@ -17,15 +18,17 @@ class SurahHeaderItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    final String surahNameTranscription = context.read<SurahNameState>().surahByNumber(surahNumber: surahNumber)!.nameTranscription;
+    final surahNameTranscription = context.select<SurahNameState, String>((s) =>
+      s.surahByNumber(surahNumber: surahNumber)?.nameTranscription ?? '${AppStrings.surah} $surahNumber',
+    );
     return Container(
       padding: AppPaddings.medium,
       margin: AppPaddings.medium,
-      width: double.infinity,
+      width: .infinity,
       alignment: .center,
       decoration: BoxDecoration(
         color: appColors.inversePrimary.withAlpha(75),
-        borderRadius: AppRadius.medium
+        borderRadius: AppRadius.medium,
       ),
       child: Column(
         children: [

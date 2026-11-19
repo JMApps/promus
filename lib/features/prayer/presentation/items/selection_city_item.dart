@@ -30,8 +30,8 @@ class SelectionCityItem extends StatelessWidget {
       elevation: 0,
       margin: AppPaddings.withoutTopSmall,
       child: ListTile(
-        onTap: () {
-          showBottomSheet(
+        onTap: () async {
+          final citySelectExit = await showModalBottomSheet<bool>(
             context: context,
             builder: (context) => Padding(
               padding: AppPaddings.withoutTopMedium,
@@ -71,6 +71,7 @@ class SelectionCityItem extends StatelessWidget {
               ),
             ),
           );
+          if (citySelectExit != true || !context.mounted) return;
         },
         horizontalTitleGap: AppSpacing.medium,
         shape: AppShapes.medium,

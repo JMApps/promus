@@ -18,6 +18,9 @@ typedef PrayerTimesSourceLoader = FutureOr<PrayerTimesSource?> Function();
 /// Возвращает конвертер в хиджру с текущим пользовательским смещением.
 typedef HijriResolverLoader = FutureOr<HijriResolver> Function();
 
+/// Форматирует время в тексте уведомления по настройке пользователя (12/24 ч).
+typedef NotificationTimeFormatter = String Function(DateTime at);
+
 /// Держит запланированные уведомления в соответствии с настройками.
 ///
 /// Принцип: на любое изменение строится полный план «как должно быть»
@@ -30,6 +33,7 @@ class NotificationScheduler with WidgetsBindingObserver {
     required Box notificationsBox,
     required this._loadPrayerTimes,
     required this._loadHijri,
+    this._formatTime,
     this._planner = const NotificationPlanner(),
     this.debounce = const Duration(milliseconds: 400),
     this.maxHorizonDays = 30,
@@ -41,6 +45,7 @@ class NotificationScheduler with WidgetsBindingObserver {
   final Box _box;
   final PrayerTimesSourceLoader _loadPrayerTimes;
   final HijriResolverLoader _loadHijri;
+  final NotificationTimeFormatter? _formatTime;
   final NotificationPlanner _planner;
 
   final Duration debounce;
@@ -136,9 +141,7 @@ class NotificationScheduler with WidgetsBindingObserver {
     final exact = await _service.canScheduleExactAlarms();
     final times = await _loadPrayerTimes();
 
-    final plan = times == null
-        ? const <PlannedNotification>[]
-        : _planner.build(
+    final plan = times == null ? const <PlannedNotification>[] : _planner.build(
       now: DateTime.now(),
       prefs: prefs,
       times: times,
@@ -146,6 +149,7 @@ class NotificationScheduler with WidgetsBindingObserver {
       exact: exact,
       maxCount: maxPending,
       maxHorizonDays: maxHorizonDays,
+      formatTime: _formatTime,
     );
 
     await _apply(plan, exact: exact);
@@ -193,8 +197,7 @@ class NotificationScheduler with WidgetsBindingObserver {
 
   /// «Свои» уведомления: новый формат payload или старые фиксированные id.
   /// Чужие (если появятся другие функции) планировщик не отменяет.
-  bool _isManaged(PendingNotificationRequest r) =>
-      NotificationPayload.tryDecode(r.payload) != null || NotificationKeys.legacyIds.contains(r.id);
+  bool _isManaged(PendingNotificationRequest r) => NotificationPayload.tryDecode(r.payload) != null || NotificationKeys.legacyIds.contains(r.id);
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {

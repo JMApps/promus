@@ -9,6 +9,9 @@ import 'db_install_phase.dart';
 /// Показывает [child] только когда все [databases] готовы, а до этого —
 /// прогресс копирования или ошибку с кнопкой повтора.
 ///
+/// Пока не ясно, что показывать (идёт проверка установленных баз),
+/// первый кадр откладывается и пользователь видит нативный сплэш.
+///
 /// Базы копируются по очереди: `rootBundle` читает файл целиком в память,
 /// и параллельное копирование нескольких больших файлов съело бы много RAM.
 class DatabaseGate extends StatefulWidget {
@@ -30,10 +33,29 @@ class _DatabaseGateState extends State<DatabaseGate> {
     for (final database in widget.databases) database.status,
   ]);
 
+  bool _firstFrameAllowed = false;
+
   @override
   void initState() {
     super.initState();
+    // Держим нативный сплэш, пока не станет ясно, что показывать:
+    // готовое приложение, прогресс копирования или ошибку.
+    WidgetsBinding.instance.deferFirstFrame();
+    _statuses.addListener(_allowFirstFrameIfResolved);
     _installAll().ignore();
+    _allowFirstFrameIfResolved();
+  }
+
+  void _allowFirstFrameIfResolved() {
+    if (_firstFrameAllowed) return;
+    final phases = [
+      for (final database in widget.databases) database.status.value.phase,
+    ];
+    final resolved = phases.contains(DbInstallPhase.copying) || phases.contains(DbInstallPhase.failed) || phases.every((p) => p == DbInstallPhase.ready);
+    if (!resolved) return;
+    _firstFrameAllowed = true;
+    _statuses.removeListener(_allowFirstFrameIfResolved);
+    WidgetsBinding.instance.allowFirstFrame();
   }
 
   Future<void> _installAll() async {
@@ -58,6 +80,15 @@ class _DatabaseGateState extends State<DatabaseGate> {
   }
 
   @override
+  void dispose() {
+    if (!_firstFrameAllowed) {
+      _statuses.removeListener(_allowFirstFrameIfResolved);
+      WidgetsBinding.instance.allowFirstFrame();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Material(
       child: ListenableBuilder(
@@ -66,31 +97,14 @@ class _DatabaseGateState extends State<DatabaseGate> {
           final statuses = [
             for (final database in widget.databases) database.status.value,
           ];
+          if (statuses.every((s) => s.phase == DbInstallPhase.ready)) {
+            return widget.child;
+          }
           final count = statuses.length;
           final copyingIndex = statuses.indexWhere(
                 (s) => s.phase == DbInstallPhase.copying,
           );
-          if (copyingIndex != -1) {
-            final progress = statuses[copyingIndex].progress;
-            final prefix = count > 1 ? AppStrings.databaseOfCount(copyingIndex + 1, count) : '';
-            return Center(
-              child: Padding(
-                padding: AppPaddings.hrMedium,
-                child: Column(
-                  mainAxisSize: .min,
-                  children: [
-                    LinearProgressIndicator(value: progress),
-                    const SizedBox(height: AppSpacing.medium),
-                    Text(
-                      prefix + (progress == null ? AppStrings.databasePreparing : AppStrings.databaseCopying((progress * 100).round())),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-
-          if (statuses.any((s) => s.phase == DbInstallPhase.failed)) {
+          if (copyingIndex == -1 && statuses.any((s) => s.phase == DbInstallPhase.failed)) {
             return Center(
               child: Column(
                 mainAxisSize: .min,
@@ -106,11 +120,25 @@ class _DatabaseGateState extends State<DatabaseGate> {
             );
           }
 
-          if (statuses.every((s) => s.phase == DbInstallPhase.ready)) {
-            return widget.child;
-          }
-
-          return const SizedBox.shrink();
+          // Копирование или короткая пауза между базами (проверка следующей).
+          final progress =
+          copyingIndex == -1 ? null : statuses[copyingIndex].progress;
+          final prefix = count > 1 && copyingIndex != -1 ? AppStrings.databaseOfCount(copyingIndex + 1, count) : '';
+          return Center(
+            child: Padding(
+              padding: AppPaddings.hrMedium,
+              child: Column(
+                mainAxisSize: .min,
+                children: [
+                  LinearProgressIndicator(value: progress),
+                  const SizedBox(height: AppSpacing.medium),
+                  Text(
+                    prefix + (progress == null ? AppStrings.databasePreparing : AppStrings.databaseCopying((progress * 100).round())),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       ),
     );

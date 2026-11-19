@@ -5,12 +5,11 @@ import '../../../../core/theme/app_spacing.dart';
 import '../pages/search_ayahs_body.dart';
 
 class SearchAyahsDelegate extends SearchDelegate<void> {
-  SearchAyahsDelegate()
-    : super(
-        searchFieldLabel: AppStrings.searchAyahs,
-        keyboardType: .text,
-        textInputAction: .search,
-      );
+  SearchAyahsDelegate() : super(
+    searchFieldLabel: AppStrings.searchAyahs,
+    keyboardType: .text,
+    textInputAction: .search,
+  );
 
   @override
   ThemeData appBarTheme(BuildContext context) {

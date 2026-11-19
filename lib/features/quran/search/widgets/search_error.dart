@@ -23,13 +23,13 @@ class SearchErrorWidget extends StatelessWidget {
         padding: AppPaddings.medium,
         child: Column(
           mainAxisAlignment: .center,
+          spacing: AppSpacing.medium,
           children: [
             Icon(
               Icons.error_outline,
               size: 64,
               color: appColors.error,
             ),
-            const SizedBox(height: AppSpacing.medium),
             Text(
               AppStrings.searchError(error.toString()),
               style: AppTextStyles.medium.copyWith(
@@ -39,7 +39,6 @@ class SearchErrorWidget extends StatelessWidget {
               maxLines: 3,
               overflow: .ellipsis,
             ),
-            const SizedBox(height: AppSpacing.large),
             FilledButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh),

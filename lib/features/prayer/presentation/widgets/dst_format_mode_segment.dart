@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/enums/dst_format_mode.dart';
+import '../../../../core/theme/app_shapes.dart';
 import '../../state/prayer_state.dart';
 
 class DSTFormatModeSegment extends StatelessWidget {
@@ -10,6 +11,7 @@ class DSTFormatModeSegment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appColors = Theme.of(context).colorScheme;
     return SegmentedButton<DSTFormatMode>(
       segments: const [
         ButtonSegment(
@@ -25,6 +27,12 @@ class DSTFormatModeSegment extends StatelessWidget {
           label: Text(AppStrings.plusHour),
         ),
       ],
+      style: SegmentedButton.styleFrom(
+        backgroundColor: appColors.surface,
+        selectedBackgroundColor: appColors.primaryContainer.withAlpha(175),
+        selectedForegroundColor: appColors.onPrimaryContainer,
+        shape: AppShapes.medium,
+      ),
       selected: {context.select((PrayerState s) => s.dstMode)},
       onSelectionChanged: (selection) => context.read<PrayerState>().setDstMode = selection.first,
     );

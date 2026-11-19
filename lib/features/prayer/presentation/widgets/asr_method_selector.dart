@@ -21,11 +21,13 @@ class AsrMethodSelector extends StatelessWidget {
       children: List.generate(AppStrings.asrMethodNamesList.length, (i) {
         return ChoiceChip(
           label: Text(AppStrings.asrMethodNamesList[i]),
+          backgroundColor: appColors.surface,
+          selectedColor: selectedIndex == i ? appColors.primaryContainer.withAlpha(75) : appColors.surface,
           selected: selectedIndex == i,
           showCheckmark: false,
           shape: AppShapes.medium,
           side: BorderSide(
-            width: selectedIndex == i ? 0.75 : 0.0,
+            width: selectedIndex == i ? 1.5 : 0.0,
             color: appColors.primary,
           ),
           onSelected: (selected) {

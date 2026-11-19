@@ -50,6 +50,7 @@ class DaysToHolidays extends StatelessWidget {
             );
           },
           builder: (_, data, _) => Row(
+            spacing: AppSpacing.medium,
             children: [
               Expanded(
                 child: Text(
@@ -58,7 +59,6 @@ class DaysToHolidays extends StatelessWidget {
                   overflow: .ellipsis,
                 ),
               ),
-              const SizedBox(width: AppSpacing.medium),
               Text(data.value.toString()),
             ],
           ),

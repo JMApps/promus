@@ -20,20 +20,23 @@ class MonthlyPrayersDayRow extends StatelessWidget {
 
   static const double height = 56;
 
+  static const double horizontalPadding = 8;
+  static const double leadingWidth = AppSpacing.medium * 2 + AppSpacing.medium;
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
 
     final style = Theme.of(context).textTheme.bodyMedium?.copyWith(
       fontFeatures: const [.tabularFigures()],
-      fontWeight: isToday ? FontWeight.w600 : FontWeight.w400,
+      fontWeight: isToday ? .w600 : .w400,
       color: isToday ? scheme.onPrimaryContainer : (isFriday ? scheme.error : null),
     );
 
     return Container(
       height: height,
       color: isToday ? scheme.primaryContainer : null,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      padding: AppPaddings.hrSmallVrMedium,
       child: Row(
         children: [
           Padding(
@@ -50,7 +53,11 @@ class MonthlyPrayersDayRow extends StatelessWidget {
           ),
           for (final value in values)
             Expanded(
-              child: Text(value, style: style),
+              child: Text(
+                value,
+                style: style,
+                textAlign: .center,
+              ),
             ),
         ],
       ),

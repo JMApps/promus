@@ -35,7 +35,7 @@ class FortressChapterState extends ChangeNotifier {
       _chapterById = {for (final c in _fortressChapters) c.chapterId: c};
       _index = [
         for (final c in _fortressChapters)
-          '${c.chapterId} ${c.chapterTitle}'.replaceAll(RegExp(r'<[^>]*>'), '').toLowerCase().replaceAll('ё', 'е')
+          '${c.chapterId} ${c.chapterTitle}'.replaceAll(RegExp(r'<[^>]*>'), '').toLowerCase()
       ];
     } catch (e, s) {
       _error = e;

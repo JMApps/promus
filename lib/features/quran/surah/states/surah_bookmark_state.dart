@@ -19,6 +19,9 @@ class SurahBookmarkState extends ChangeNotifier {
   List<int> get lastOpenedPages => _lastOpenedPages;
 
   Future<void> addLastOpenedPage(int page) async {
+    // Страница уже первая — ничего не меняется.
+    if (_lastOpenedPages.isNotEmpty && _lastOpenedPages.first == page) return;
+
     final pages = [..._lastOpenedPages]
       ..remove(page)
       ..insert(0, page);
@@ -28,8 +31,8 @@ class SurahBookmarkState extends ChangeNotifier {
     }
 
     _lastOpenedPages = List.unmodifiable(pages);
+    notifyListeners(); // интерфейс сразу, запись — следом
     await _bookMarksSurahsBox.put(AppConstantKeys.keyBookmarkSurahs, _lastOpenedPages);
-    notifyListeners();
   }
 
   List<LastOpenedSurahEntity> resolveLastOpenedSurahs({required MushafPageMetaState meta, required SurahNameState surahs, int limit = 3}) {

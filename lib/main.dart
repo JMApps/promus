@@ -8,7 +8,6 @@ import 'core/constants/notification_keys.dart';
 import 'core/database/fortress_database_helper.dart';
 import 'core/database/mushaf_database_helper.dart';
 import 'core/services/local_notification_service.dart';
-import 'core/services/models.dart';
 import 'core/services/notification_scheduler.dart';
 import 'features/counter/state/main_counter_state.dart';
 import 'features/fortress/data/repositories/fortress_chapter_repository_impl.dart';
@@ -76,7 +75,9 @@ void main() async {
           ),
         ),
         ChangeNotifierProvider(
-          create: (_) => TimeState(),
+          create: (_) => TimeState(
+            settingsPrayerTimeBox: settingsPrayerTimeBox,
+          ),
         ),
         ChangeNotifierProvider(
           create: (_) => PrayerState(
@@ -134,6 +135,7 @@ void main() async {
           lazy: false,
           create: (context) {
             final prayerState = context.read<PrayerState>();
+            final timeState = context.read<TimeState>();
 
             return NotificationScheduler(
               service: LocalNotificationService(),
@@ -142,10 +144,10 @@ void main() async {
                 prayerState.coordinates,
                 prayerState.calculationParameters,
               ),
-              loadHijri: () => (DateTime date) {
-                final h = prayerState.hijriFor(date);
-                return HijriDate(year: h.hYear, month: h.hMonth, day: h.hDay);
-              },
+              // Один источник даты хиджры (со смещением) для экрана и уведомлений.
+              loadHijri: () => timeState.hijriDateFor,
+              // Время в заголовках уведомлений — в формате пользователя (12/24 ч).
+              formatTime: (at) => prayerState.formatTime(at.toLocal()),
             )..start(watchBoxes: [settingsPrayerTimeBox]);
           },
           dispose: (_, s) => s.dispose(),

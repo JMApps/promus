@@ -37,18 +37,15 @@ class _MonthlyPrayersListState extends State<MonthlyPrayersList> {
   @override
   Widget build(BuildContext context) {
     context.select((PrayerState state) => (
-    state.coordinates,
-    state.calculationParameters,
-    state.use24HourFormat,
+      state.coordinates,
+      state.calculationParameters,
+      state.use24HourFormat,
     ));
-
     final today = context.select(
           (TimeState state) => DateUtils.dateOnly(state.getDateTime),
     );
-
     final prayerState = Provider.of<PrayerState>(context, listen: false);
     final daysInMonth = DateUtils.getDaysInMonth(today.year, today.month);
-
     return Scrollbar(
       controller: _controller,
       child: ListView.separated(
@@ -59,7 +56,6 @@ class _MonthlyPrayersListState extends State<MonthlyPrayersList> {
         itemBuilder: (context, index) {
           final date = DateTime(today.year, today.month, index + 1);
           final times = prayerState.prayerTimeSchedule(time: date);
-
           return MonthlyPrayersDayRow(
             day: date.day,
             isToday: date.day == today.day,
