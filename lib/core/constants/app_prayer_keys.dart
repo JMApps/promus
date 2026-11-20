@@ -61,7 +61,10 @@ class AppPrayerKeys {
     HighLatitudeRule.middle_of_the_night,
     HighLatitudeRule.seventh_of_the_night,
     HighLatitudeRule.twilight_angle,
+    ?null, // Авто
   ];
+
+  static const int highLatitudeAutoIndex = 3;
 
   static const List<Madhab> calculationMadhabList = [
     Madhab.shafi,

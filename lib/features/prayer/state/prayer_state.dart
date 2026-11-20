@@ -10,6 +10,7 @@ import '../../../core/constants/app_prayer_keys.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/enums/dst_format_mode.dart';
 import '../../../core/enums/time_format_mode.dart';
+import '../../../core/utils/high_latitude.dart';
 import '../domain/entities/prayer_records.dart';
 import '../domain/entities/sleek_entity.dart';
 
@@ -19,7 +20,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
       for (final e in AppPrayerKeys.adjustmentKeys.entries) e.key: _read<int>(e.value, 0),
     };
     _calculationMethodIndex = _read<int>(AppPrayerKeys.keyCalculationIndex, 5).clamp(0, AppPrayerKeys.prayerCalculationMethodList.length - 1);
-    _highLatitudeMethodIndex = _read<int>(AppPrayerKeys.keyHighLatitudeIndex, 0).clamp(0, AppPrayerKeys.highLatitudeList.length - 1);
+    _highLatitudeMethodIndex = _read<int>(AppPrayerKeys.keyHighLatitudeIndex, AppPrayerKeys.highLatitudeAutoIndex).clamp(0, AppPrayerKeys.highLatitudeList.length - 1);
     _asrMethodIndex = _read<int>(AppPrayerKeys.keyMadhabIndex, 0).clamp(0, AppPrayerKeys.calculationMadhabList.length - 1);
     _dstMode = _readDstMode();
     _country = _read(AppPrayerKeys.keyCountry, AppPrayerKeys.defCountry);
@@ -88,6 +89,7 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
   // ---------------------------------------------------------------------------
 
   /// Полный пересчёт: старт и смена любых настроек.
+  /// Полный пересчёт: старт и смена любых настроек.
   void initPrayerTime() {
     _coordinates = Coordinates(_latitude, _longitude);
 
@@ -97,9 +99,18 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
       DSTFormatMode.plusHour => 60,
     };
 
-    _prayerParams = AppPrayerKeys.prayerCalculationMethodList[_calculationMethodIndex].getParameters()
-      ..highLatitudeRule = AppPrayerKeys.highLatitudeList[_highLatitudeMethodIndex]
+    final params = AppPrayerKeys.prayerCalculationMethodList[_calculationMethodIndex].getParameters()
       ..madhab = AppPrayerKeys.calculationMadhabList[_asrMethodIndex];
+
+    // Ниже предела широты правило ничего не меняет, поэтому выбор пользователя
+    // там не применяем. null в списке означает «Авто», то есть 1/7 ночи.
+    _prayerParams = params
+      ..highLatitudeRule = HighLatitude.effectiveRule(
+        _latitude,
+        params,
+        AppPrayerKeys.highLatitudeList[_highLatitudeMethodIndex],
+      );
+
     _prayerParams.adjustments
       ..fajr = _adjustments[Prayer.fajr]! + offset
       ..sunrise = _adjustments[Prayer.sunrise]! + offset
@@ -116,11 +127,19 @@ class PrayerState extends ChangeNotifier with WidgetsBindingObserver {
 
   /// Расчёт на произвольную дату (расписание, уведомления).
   PrayerTimes prayerTimeSchedule({required DateTime time}) =>
-      PrayerTimes(_coordinates, DateComponents.from(time), _prayerParams);
+      HighLatitude.prayerTimes(_coordinates, DateComponents.from(time), _prayerParams).times;
 
   PrayerDay _dayFor(DateTime date) {
-    final times = prayerTimeSchedule(time: date);
-    return (times: times, sunnah: SunnahTimes(times));
+    final d = DateComponents.from(date);
+    try {
+      final times = PrayerTimes(_coordinates, d, _prayerParams);
+      return (times: times, sunnah: SunnahTimes(times), polar: false);
+    } on ArgumentError {
+      // Полярный день/ночь. SunnahTimes тоже считает «завтра» и может упасть
+      // даже при удачном PrayerTimes, поэтому в try обёрнуты оба.
+      final times = PrayerTimes(HighLatitude.polarFallback(_coordinates), d, _prayerParams);
+      return (times: times, sunnah: SunnahTimes(times), polar: true);
+    }
   }
 
   /// Вчера/сегодня/завтра и производные ряды. Раз в сутки или при смене настроек.

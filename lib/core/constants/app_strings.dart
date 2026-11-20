@@ -129,7 +129,14 @@ class AppStrings {
   static const String databaseFailed = 'Не удалось подготовить базу данных';
   static const String databaseRetry = 'Попробовать заново';
 
-
+  static const String iqamah = 'Икама';
+  static const String prayerDuha = 'Ад-Духа';
+  static const String adhkar = 'Азкары';
+  static const String fridayEve = 'Накануне пятницы';
+  static const String adhkarBeforeSleepReminder = 'Не забудь азкары перед сном!';
+  static const String tomorrowWhiteDays = 'Завтра начинаются белые дни: 13-14-15';
+  static const String notificationsEndingSoon = 'Уведомления скоро закончатся';
+  static const String openAppToExtendNotifications = 'Откройте приложение, чтобы перепланировались уведомления для молитв.';
 
   static String ayahsCount(int count) => Intl.plural(
     count,

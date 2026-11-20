@@ -41,6 +41,14 @@ abstract final class FastingCalendar {
   /// в Рамадан пост и так обязательный, а в праздники и ташрик запрещён.
   static bool isVoluntaryFastReminderBlocked(HijriDate h) => isRamadan(h) || isFastingForbidden(h);
 
+  /// Напоминание «завтра день желательного поста» накануне [tomorrow] не шлём:
+  /// Рамадан, оба Ида, дни ташрик и 'Ашура.
+  static bool isFastReminderBlocked(HijriDate tomorrow) => isVoluntaryFastReminderBlocked(tomorrow) || isAshura(tomorrow);
+
+  /// Вечером 12-го: «завтра начинаются белые дни 13-14-15».
+  /// В Рамадан и в зуль-хиджу (13-е — день ташрик) не напоминаем.
+  static bool isWhiteDaysReminder(HijriDate tomorrow) => tomorrow.day == 13 && !isFastReminderBlocked(tomorrow);
+
   // ---------------------------------------------------------------------------
   // Желательные посты
   // ---------------------------------------------------------------------------

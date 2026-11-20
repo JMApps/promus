@@ -24,12 +24,20 @@ class MainNotificationList extends StatelessWidget {
         NotificationSection(
           title: AppStrings.prayers,
           children: [
-            for (final prayer in PrayerLabels.values)
+            for (final prayer in PrayerLabels.withIqamah) ...[
               NotificationSwitchTile(
                 label: prayer.label,
                 value: notificationsState.prayerEnabled(prayer),
                 onChanged: (v) => notificationsState.setPrayer(prayer, v),
               ),
+              // Ад-Духа — сразу после Фаджра, в порядке дня.
+              if (prayer == PrayerLabels.fajr)
+                NotificationSwitchTile(
+                  label: NotificationEvent.duha.label,
+                  value: notificationsState.eventEnabled(NotificationEvent.duha),
+                  onChanged: (v) => notificationsState.setEvent(NotificationEvent.duha, v),
+                ),
+            ],
           ],
         ),
         NotificationSection(
@@ -45,6 +53,21 @@ class MainNotificationList extends StatelessWidget {
                   enabled: notificationsState.iqamahEnabled(iqamah),
                   onChanged: (m) => notificationsState.setIqamahMinutes(iqamah, m),
                 ),
+              ),
+          ],
+        ),
+        NotificationSection(
+          title: AppStrings.adhkar,
+          children: [
+            for (final adhkar in const [
+              NotificationEvent.morningAdhkar,
+              NotificationEvent.eveningAdhkar,
+              NotificationEvent.sleepAdhkar,
+            ])
+              NotificationSwitchTile(
+                label: adhkar.label,
+                value: notificationsState.eventEnabled(adhkar),
+                onChanged: (v) => notificationsState.setEvent(adhkar, v),
               ),
           ],
         ),
@@ -67,7 +90,7 @@ class MainNotificationList extends StatelessWidget {
           title: AppStrings.friday,
           children: [
             for (final friday in const [
-              NotificationEvent.friday,
+              NotificationEvent.fridayEve,
               NotificationEvent.fridayLastHour,
             ])
               NotificationSwitchTile(

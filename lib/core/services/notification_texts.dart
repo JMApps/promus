@@ -1,41 +1,58 @@
-import 'package:timezone/timezone.dart' as tz;
-
+import '../constants/app_strings.dart';
 import '../enums/notification_event.dart';
 import '../enums/prayer_labels.dart';
 
-/// Тексты уведомлений. Вшиваются в момент планирования, поэтому смена языка
-/// должна вызывать синхронизацию (если появится локализация).
-class NotificationTexts {
-  const NotificationTexts();
+/// Тексты уведомлений. Сами строки живут в AppStrings, здесь — только
+/// какая строка к какому уведомлению. Вшиваются в момент планирования,
+/// поэтому смена языка (если появится локализация) должна вызывать синхронизацию.
+abstract final class NotificationTexts {
+  static const String prayerTitle = AppStrings.prayerTime;
+  static const String iqamahTitle = AppStrings.iqamah;
+  static const String reminderTitle = AppStrings.remind;
 
-  String prayerTitle(PrayerLabels p, String time) => '${p.label} — $time';
+  static const String openAppTitle = AppStrings.notificationsEndingSoon;
+  static const String openAppBody = AppStrings.openAppToExtendNotifications;
 
-  String prayerBody(PrayerLabels p) => p == PrayerLabels.sunrise ? 'Восход солнца' : 'Наступило время молитвы «${p.label}»';
-
-  String iqamahTitle(PrayerLabels p, String time) => 'Икама: ${p.label} — $time';
-
-  String iqamahBody(PrayerLabels p) => 'Время икамы молитвы «${p.label}»';
-
-  String eventTitle(NotificationEvent e) => e.label;
-
-  /// [hijriMonth] — месяц дня, к которому относится напоминание (для белых дней).
-  String eventBody(NotificationEvent e, {int? hijriMonth}) => switch (e) {
-    NotificationEvent.friday => 'Сегодня пятница: прочитайте суру «аль-Кахф» и чаще призывайте благословение на Пророка ﷺ',
-    NotificationEvent.fridayLastHour => 'Последний час пятницы 🤲🤲🤲',
-    NotificationEvent.fastMonday => 'Завтра понедельник — желательный пост.',
-    NotificationEvent.fastThursday => 'Завтра четверг — желательный пост.',
-    NotificationEvent.fastWhiteDays => hijriMonth == 12 ? 'Завтра начинаются белые дни: желательно поститься 14 и 15 зу-ль-хиджа' : 'Завтра начинаются белые дни: желательно поститься 13, 14 и 15 числа',
+  /// «Время молитвы» → «Фаджр».
+  static const prayerBodies = <PrayerLabels, String>{
+    PrayerLabels.fajr: AppStrings.prayerFajr,
+    PrayerLabels.dhuhr: AppStrings.prayerDhuhr,
+    PrayerLabels.asr: AppStrings.prayerAsr,
+    PrayerLabels.maghrib: AppStrings.prayerMaghrib,
+    PrayerLabels.isha: AppStrings.prayerIsha,
   };
 
-  String get openAppTitle => 'Уведомления скоро закончатся';
+  /// «Икама» → «Время молитвы Фаджр».
+  static const iqamahBodies = <PrayerLabels, String>{
+    PrayerLabels.fajr: '${AppStrings.prayerTime} ${AppStrings.prayerFajr}',
+    PrayerLabels.dhuhr: '${AppStrings.prayerTime} ${AppStrings.prayerDhuhr}',
+    PrayerLabels.asr: '${AppStrings.prayerTime} ${AppStrings.prayerAsr}',
+    PrayerLabels.maghrib: '${AppStrings.prayerTime} ${AppStrings.prayerMaghrib}',
+    PrayerLabels.isha: '${AppStrings.prayerTime} ${AppStrings.prayerIsha}',
+  };
 
-  String get openAppBody => 'Откройте приложение, чтобы перепланировались уведомления для молитв.';
+  /// Ад-Духа приходит как молитва, остальное — как «Напоминание».
+  static const eventTitles = <NotificationEvent, String>{
+    NotificationEvent.duha: prayerTitle,
+    NotificationEvent.morningAdhkar: reminderTitle,
+    NotificationEvent.eveningAdhkar: reminderTitle,
+    NotificationEvent.sleepAdhkar: reminderTitle,
+    NotificationEvent.fridayEve: reminderTitle,
+    NotificationEvent.fridayLastHour: reminderTitle,
+    NotificationEvent.fastMonday: reminderTitle,
+    NotificationEvent.fastThursday: reminderTitle,
+    NotificationEvent.fastWhiteDays: reminderTitle,
+  };
 
-  /// Время в часовом поясе устройства, формат ЧЧ:ММ.
-  String formatTime(DateTime at) {
-    final local = tz.TZDateTime.from(at, tz.local);
-    final h = local.hour.toString().padLeft(2, '0');
-    final m = local.minute.toString().padLeft(2, '0');
-    return '$h:$m';
-  }
+  static const eventBodies = <NotificationEvent, String>{
+    NotificationEvent.duha: AppStrings.prayerDuha,
+    NotificationEvent.morningAdhkar: AppStrings.adhkarMorning,
+    NotificationEvent.eveningAdhkar: AppStrings.adhkarEvening,
+    NotificationEvent.sleepAdhkar: AppStrings.adhkarBeforeSleepReminder,
+    NotificationEvent.fridayEve: AppStrings.tomorrowFriday,
+    NotificationEvent.fridayLastHour: AppStrings.lastFridayHour,
+    NotificationEvent.fastMonday: AppStrings.tomorrowDesirableFastingDay,
+    NotificationEvent.fastThursday: AppStrings.tomorrowDesirableFastingDay,
+    NotificationEvent.fastWhiteDays: AppStrings.tomorrowWhiteDays,
+  };
 }

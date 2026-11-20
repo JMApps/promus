@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		04789DE230AEB1C700AFAFA0 /* adhan.caf in Resources */ = {isa = PBXBuildFile; fileRef = 04789DE030AEB1C700AFAFA0 /* adhan.caf */; };
-		04789DE330AEB1C700AFAFA0 /* ikamah.caf in Resources */ = {isa = PBXBuildFile; fileRef = 04789DE130AEB1C700AFAFA0 /* ikamah.caf */; };
+		04F5FC8C30B00B0900DB6ED8 /* iqamah.caf in Resources */ = {isa = PBXBuildFile; fileRef = 04F5FC8B30B00B0900DB6ED8 /* iqamah.caf */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
@@ -45,8 +45,8 @@
 
 /* Begin PBXFileReference section */
 		04789DE030AEB1C700AFAFA0 /* adhan.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = adhan.caf; sourceTree = "<group>"; };
-		04789DE130AEB1C700AFAFA0 /* ikamah.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ikamah.caf; sourceTree = "<group>"; };
 		049708BC3099DBEF0035CB37 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		04F5FC8B30B00B0900DB6ED8 /* iqamah.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = iqamah.caf; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
@@ -128,9 +128,9 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				04F5FC8B30B00B0900DB6ED8 /* iqamah.caf */,
 				049708BC3099DBEF0035CB37 /* Runner.entitlements */,
 				04789DE030AEB1C700AFAFA0 /* adhan.caf */,
-				04789DE130AEB1C700AFAFA0 /* ikamah.caf */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -252,7 +252,7 @@
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				04789DE230AEB1C700AFAFA0 /* adhan.caf in Resources */,
-				04789DE330AEB1C700AFAFA0 /* ikamah.caf in Resources */,
+				04F5FC8C30B00B0900DB6ED8 /* iqamah.caf in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
@@ -290,7 +290,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

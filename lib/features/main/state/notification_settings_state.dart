@@ -31,7 +31,7 @@ class NotificationSettingsState extends ChangeNotifier {
     );
   }
 
-  bool eventEnabled(NotificationEvent e) => _read(NotificationKeys.event[e]!, NotificationPrefs.defaultEventEnabled);
+  bool eventEnabled(NotificationEvent e) => _read(NotificationKeys.event[e]!, NotificationPrefs.isEventEnabledByDefault(e));
 
   Future<void> setPrayer(PrayerLabels p, bool v) => _write(NotificationKeys.prayer[p]!, v);
 

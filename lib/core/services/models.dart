@@ -70,18 +70,23 @@ abstract final class NotificationIds {
     return dayKey(localDate) * _slotsPerDay + slot;
   }
 
-  /// 0–5: fajr, sunrise, dhuhr, asr, maghrib, isha.
+  /// 0–5 по индексу PrayerLabels (слот восхода, 1, не используется).
   static int prayerSlot(PrayerLabels p) => p.index;
 
   /// 8–13 (слот восхода не используется).
   static int iqamahSlot(PrayerLabels p) => 8 + p.index;
 
+  /// 16–24.
   static int eventSlot(NotificationEvent e) => switch (e) {
-    NotificationEvent.friday => 16,
-    NotificationEvent.fridayLastHour => 17,
-    NotificationEvent.fastMonday => 18,
-    NotificationEvent.fastThursday => 19,
-    NotificationEvent.fastWhiteDays => 20,
+    NotificationEvent.duha => 16,
+    NotificationEvent.morningAdhkar => 17,
+    NotificationEvent.eveningAdhkar => 18,
+    NotificationEvent.sleepAdhkar => 19,
+    NotificationEvent.fridayEve => 20,
+    NotificationEvent.fridayLastHour => 21,
+    NotificationEvent.fastMonday => 22,
+    NotificationEvent.fastThursday => 23,
+    NotificationEvent.fastWhiteDays => 24,
   };
 }
 

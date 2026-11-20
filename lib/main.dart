@@ -146,8 +146,6 @@ void main() async {
               ),
               // Один источник даты хиджры (со смещением) для экрана и уведомлений.
               loadHijri: () => timeState.hijriDateFor,
-              // Время в заголовках уведомлений — в формате пользователя (12/24 ч).
-              formatTime: (at) => prayerState.formatTime(at.toLocal()),
             )..start(watchBoxes: [settingsPrayerTimeBox]);
           },
           dispose: (_, s) => s.dispose(),

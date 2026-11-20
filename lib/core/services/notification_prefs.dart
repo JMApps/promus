@@ -21,8 +21,21 @@ class NotificationPrefs {
 
   static const bool defaultPrayerEnabled = true;
   static const bool defaultIqamahEnabled = false;
-  static const bool defaultEventEnabled = true;
   static const int fallbackIqamahMinutes = 15;
+
+  /// Включены по умолчанию все напоминания, кроме Ад-Духа.
+  static const defaultEvents = <NotificationEvent>{
+    NotificationEvent.morningAdhkar,
+    NotificationEvent.eveningAdhkar,
+    NotificationEvent.sleepAdhkar,
+    NotificationEvent.fridayEve,
+    NotificationEvent.fridayLastHour,
+    NotificationEvent.fastMonday,
+    NotificationEvent.fastThursday,
+    NotificationEvent.fastWhiteDays,
+  };
+
+  static bool isEventEnabledByDefault(NotificationEvent e) => defaultEvents.contains(e);
 
   static const defaultIqamahMinutes = <PrayerLabels, int>{
     PrayerLabels.fajr: 30,
@@ -60,7 +73,7 @@ class NotificationPrefs {
       },
       events: {
         for (final entry in NotificationKeys.event.entries)
-          if (read(entry.value, defaultEventEnabled)) entry.key,
+          if (read(entry.value, isEventEnabledByDefault(entry.key))) entry.key,
       },
     );
   }

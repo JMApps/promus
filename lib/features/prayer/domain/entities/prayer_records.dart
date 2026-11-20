@@ -1,7 +1,7 @@
 import 'package:adhan/adhan.dart';
 
 /// Расчёт одних календарных суток.
-typedef PrayerDay = ({PrayerTimes times, SunnahTimes sunnah});
+typedef PrayerDay = ({PrayerTimes times, SunnahTimes sunnah, bool polar});
 
 /// Момент молитвы в общем ряду «вчера → сегодня → завтра».
 typedef PrayerMoment = ({Prayer prayer, DateTime time});

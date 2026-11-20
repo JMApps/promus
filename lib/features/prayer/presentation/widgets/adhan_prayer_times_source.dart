@@ -2,6 +2,7 @@ import 'package:adhan/adhan.dart';
 
 import '../../../../core/enums/prayer_labels.dart';
 import '../../../../core/services/models.dart';
+import '../../../../core/utils/high_latitude.dart';
 
 class AdhanPrayerTimesSource implements PrayerTimesSource {
   AdhanPrayerTimesSource(this.coordinates, this.params);
@@ -11,7 +12,8 @@ class AdhanPrayerTimesSource implements PrayerTimesSource {
 
   @override
   DayPrayerTimes timesFor(DateTime date) {
-    final t = PrayerTimes(coordinates, DateComponents.from(date), params);
+    // Не падает в полярный день/ночь: там считает по широте 65°.
+    final t = HighLatitude.prayerTimes(coordinates, DateComponents.from(date), params).times;
     return {
       PrayerLabels.fajr: t.fajr,
       PrayerLabels.sunrise: t.sunrise,

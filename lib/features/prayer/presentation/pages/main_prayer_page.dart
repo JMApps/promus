@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:promus/core/constants/font_families.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/icon_paths.dart';
@@ -37,6 +38,7 @@ class MainPrayerPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24.0,
                   color: appColors.primary,
+                  fontFamily: FontFamilies.ptSans,
                 )
               ),
               TextSpan(
@@ -44,6 +46,7 @@ class MainPrayerPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24.0,
                     color: appColors.tertiary,
+                    fontFamily: FontFamilies.ptSans,
                   )
               ),
             ],

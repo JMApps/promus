@@ -18,9 +18,6 @@ typedef PrayerTimesSourceLoader = FutureOr<PrayerTimesSource?> Function();
 /// Возвращает конвертер в хиджру с текущим пользовательским смещением.
 typedef HijriResolverLoader = FutureOr<HijriResolver> Function();
 
-/// Форматирует время в тексте уведомления по настройке пользователя (12/24 ч).
-typedef NotificationTimeFormatter = String Function(DateTime at);
-
 /// Держит запланированные уведомления в соответствии с настройками.
 ///
 /// Принцип: на любое изменение строится полный план «как должно быть»
@@ -33,7 +30,6 @@ class NotificationScheduler with WidgetsBindingObserver {
     required Box notificationsBox,
     required this._loadPrayerTimes,
     required this._loadHijri,
-    this._formatTime,
     this._planner = const NotificationPlanner(),
     this.debounce = const Duration(milliseconds: 400),
     this.maxHorizonDays = 30,
@@ -45,7 +41,6 @@ class NotificationScheduler with WidgetsBindingObserver {
   final Box _box;
   final PrayerTimesSourceLoader _loadPrayerTimes;
   final HijriResolverLoader _loadHijri;
-  final NotificationTimeFormatter? _formatTime;
   final NotificationPlanner _planner;
 
   final Duration debounce;
@@ -149,7 +144,6 @@ class NotificationScheduler with WidgetsBindingObserver {
       exact: exact,
       maxCount: maxPending,
       maxHorizonDays: maxHorizonDays,
-      formatTime: _formatTime,
     );
 
     await _apply(plan, exact: exact);

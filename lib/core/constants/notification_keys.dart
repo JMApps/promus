@@ -16,7 +16,7 @@ abstract final class NotificationKeys {
   static const String defaultIqamahChannelName = 'Икама';
   static const String defaultIqamahChannelDescription = 'Уведомления о времени икамы';
   static const String defaultReminderChannelName = 'Напоминания';
-  static const String defaultReminderChannelDescription = 'Напоминания о посте, пятнице и белых днях';
+  static const String defaultReminderChannelDescription = 'Ад-Духа, азкары, пятница, посты и белые дни';
 
   static const List<int> legacyIds = [
     435, 123, 675, 342, 768, 245, // намазы
@@ -26,7 +26,6 @@ abstract final class NotificationKeys {
   ];
 
   static const String keyFajrNotification = 'key_fajr_notification';
-  static const String keySunriseNotification = 'key_sunrise_notification';
   static const String keyDhuhrNotification = 'key_dhuhr_notification';
   static const String keyAsrNotification = 'key_asr_notification';
   static const String keyMaghribNotification = 'key_maghrib_notification';
@@ -44,12 +43,18 @@ abstract final class NotificationKeys {
   static const String keyMaghribIqamahValue = 'key_maghrib_iqamah_value';
   static const String keyIshaIqamahValue = 'key_isha_iqamah_value';
 
+  static const String keyDuhaNotification = 'key_duha_notification';
+
+  static const String keyMorningAdhkarNotification = 'key_morning_adhkar_notification';
+  static const String keyEveningAdhkarNotification = 'key_evening_adhkar_notification';
+  static const String keySleepAdhkarNotification = 'key_sleep_adhkar_notification';
+
+  static const String keyFridayEveNotification = 'key_friday_eve_notification';
+  static const String keyLastHourFridayNotification = 'key_last_hour_friday_notification';
+
   static const String keyFastMondayNotification = 'key_fast_monday_notification';
   static const String keyFastThursdayNotification = 'key_fast_thursday_notification';
   static const String keyFastWhiteDaysNotification = 'key_fast_white_days_notification';
-
-  static const String keyFridayNotification = 'key_friday_notification';
-  static const String keyLastHourFridayNotification = 'key_last_hour_friday_notification';
 
   static Iterable<String> get allNotificationDefValues => [
     ...prayer.values,
@@ -58,9 +63,10 @@ abstract final class NotificationKeys {
     ...event.values,
   ];
 
+  /// Пять обязательных намазов. Восход — только время для расчётов
+  /// (Ад-Духа, пятница), отдельного уведомления о нём нет.
   static const prayer = <PrayerLabels, String>{
     PrayerLabels.fajr: keyFajrNotification,
-    PrayerLabels.sunrise: keySunriseNotification,
     PrayerLabels.dhuhr: keyDhuhrNotification,
     PrayerLabels.asr: keyAsrNotification,
     PrayerLabels.maghrib: keyMaghribNotification,
@@ -84,10 +90,14 @@ abstract final class NotificationKeys {
   };
 
   static const event = <NotificationEvent, String>{
+    NotificationEvent.duha: keyDuhaNotification,
+    NotificationEvent.morningAdhkar: keyMorningAdhkarNotification,
+    NotificationEvent.eveningAdhkar: keyEveningAdhkarNotification,
+    NotificationEvent.sleepAdhkar: keySleepAdhkarNotification,
+    NotificationEvent.fridayEve: keyFridayEveNotification,
+    NotificationEvent.fridayLastHour: keyLastHourFridayNotification,
     NotificationEvent.fastMonday: keyFastMondayNotification,
     NotificationEvent.fastThursday: keyFastThursdayNotification,
     NotificationEvent.fastWhiteDays: keyFastWhiteDaysNotification,
-    NotificationEvent.friday: keyFridayNotification,
-    NotificationEvent.fridayLastHour: keyLastHourFridayNotification,
   };
 }
