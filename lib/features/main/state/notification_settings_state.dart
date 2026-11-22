@@ -33,6 +33,10 @@ class NotificationSettingsState extends ChangeNotifier {
 
   bool eventEnabled(NotificationEvent e) => _read(NotificationKeys.event[e]!, NotificationPrefs.isEventEnabledByDefault(e));
 
+  bool get allEnabled => _read(NotificationKeys.keyAllNotifications, NotificationPrefs.defaultAllEnabled);
+
+  Future<void> setAll(bool v) => _write(NotificationKeys.keyAllNotifications, v);
+
   Future<void> setPrayer(PrayerLabels p, bool v) => _write(NotificationKeys.prayer[p]!, v);
 
   Future<void> setIqamah(PrayerLabels p, bool v) {

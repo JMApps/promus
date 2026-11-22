@@ -4,6 +4,8 @@ import '../enums/prayer_labels.dart';
 abstract final class NotificationKeys {
   static const String appIconName = 'app_icon_notification';
 
+  static const String keyAllNotifications = 'key_all_notifications';
+
   static const String keyMainNotificationsBox = 'key_main_notifications_box';
   static const String keyPermissionAsked = 'key_permission_asked';
 
@@ -57,6 +59,7 @@ abstract final class NotificationKeys {
   static const String keyFastWhiteDaysNotification = 'key_fast_white_days_notification';
 
   static Iterable<String> get allNotificationDefValues => [
+    keyAllNotifications,
     ...prayer.values,
     ...iqamahEnabled.values,
     ...iqamahMinutes.values,

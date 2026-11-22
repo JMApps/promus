@@ -13,18 +13,28 @@ import '../enums/prayer_labels.dart';
 @immutable
 class NotificationPrefs {
   const NotificationPrefs({
+    required this.enabled,
     required this.prayers,
     required this.iqamahs,
     required this.iqamahMinutes,
     required this.events,
   });
 
+  static const bool defaultAllEnabled = true;
+
+  /// Главный переключатель. Выключен — не планируем ничего,
+  /// но отдельные настройки сохраняются.
+  final bool enabled;
+
+  bool get isEmpty => !enabled || (prayers.isEmpty && iqamahs.isEmpty && events.isEmpty);
+
   static const bool defaultPrayerEnabled = true;
   static const bool defaultIqamahEnabled = false;
   static const int fallbackIqamahMinutes = 15;
 
-  /// Включены по умолчанию все напоминания, кроме Ад-Духа.
+  /// Напоминания, включённые по умолчанию.
   static const defaultEvents = <NotificationEvent>{
+    NotificationEvent.duha,
     NotificationEvent.morningAdhkar,
     NotificationEvent.eveningAdhkar,
     NotificationEvent.sleepAdhkar,
@@ -50,8 +60,6 @@ class NotificationPrefs {
   final Map<PrayerLabels, int> iqamahMinutes;
   final Set<NotificationEvent> events;
 
-  bool get isEmpty => prayers.isEmpty && iqamahs.isEmpty && events.isEmpty;
-
   factory NotificationPrefs.fromBox(Box box) {
     T read<T>(String key, T defaultValue) {
       final value = box.get(key);
@@ -59,6 +67,7 @@ class NotificationPrefs {
     }
 
     return NotificationPrefs(
+      enabled: read(NotificationKeys.keyAllNotifications, defaultAllEnabled),
       prayers: {
         for (final entry in NotificationKeys.prayer.entries)
           if (read(entry.value, defaultPrayerEnabled)) entry.key,

@@ -19,6 +19,7 @@ class NotificationSection extends StatelessWidget {
       crossAxisAlignment: .stretch,
       children: [
         MainGradientText(text: title),
+        const SizedBox(height: AppSpacing.medium),
         for (var i = 0; i < children.length; i++) ...[
           children[i],
           const Divider(),

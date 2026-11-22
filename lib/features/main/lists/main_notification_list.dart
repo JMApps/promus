@@ -17,10 +17,21 @@ class MainNotificationList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notificationsState = context.watch<NotificationSettingsState>();
+    final allEnabled = notificationsState.allEnabled;
 
     return ListView(
       padding: AppPaddings.small,
       children: [
+        NotificationSection(
+          title: AppStrings.notifications,
+          children: [
+            NotificationSwitchTile(
+              label: AppStrings.allNotifications,
+              value: allEnabled,
+              onChanged: notificationsState.setAll,
+            ),
+          ],
+        ),
         NotificationSection(
           title: AppStrings.prayers,
           children: [
@@ -28,6 +39,7 @@ class MainNotificationList extends StatelessWidget {
               NotificationSwitchTile(
                 label: prayer.label,
                 value: notificationsState.prayerEnabled(prayer),
+                enabled: allEnabled,
                 onChanged: (v) => notificationsState.setPrayer(prayer, v),
               ),
               // Ад-Духа — сразу после Фаджра, в порядке дня.
@@ -35,6 +47,7 @@ class MainNotificationList extends StatelessWidget {
                 NotificationSwitchTile(
                   label: NotificationEvent.duha.label,
                   value: notificationsState.eventEnabled(NotificationEvent.duha),
+                  enabled: allEnabled,
                   onChanged: (v) => notificationsState.setEvent(NotificationEvent.duha, v),
                 ),
             ],
@@ -47,10 +60,11 @@ class MainNotificationList extends StatelessWidget {
               NotificationSwitchTile(
                 label: iqamah.label,
                 value: notificationsState.iqamahEnabled(iqamah),
+                enabled: allEnabled,
                 onChanged: (v) => notificationsState.setIqamah(iqamah, v),
                 extra: MinutesSelector(
                   value: notificationsState.iqamahMinutes(iqamah),
-                  enabled: notificationsState.iqamahEnabled(iqamah),
+                  enabled: allEnabled && notificationsState.iqamahEnabled(iqamah),
                   onChanged: (m) => notificationsState.setIqamahMinutes(iqamah, m),
                 ),
               ),
@@ -67,6 +81,7 @@ class MainNotificationList extends StatelessWidget {
               NotificationSwitchTile(
                 label: adhkar.label,
                 value: notificationsState.eventEnabled(adhkar),
+                enabled: allEnabled,
                 onChanged: (v) => notificationsState.setEvent(adhkar, v),
               ),
           ],
@@ -82,6 +97,7 @@ class MainNotificationList extends StatelessWidget {
               NotificationSwitchTile(
                 label: fast.label,
                 value: notificationsState.eventEnabled(fast),
+                enabled: allEnabled,
                 onChanged: (v) => notificationsState.setEvent(fast, v),
               ),
           ],
@@ -96,6 +112,7 @@ class MainNotificationList extends StatelessWidget {
               NotificationSwitchTile(
                 label: friday.label,
                 value: notificationsState.eventEnabled(friday),
+                enabled: allEnabled,
                 onChanged: (v) => notificationsState.setEvent(friday, v),
               ),
           ],

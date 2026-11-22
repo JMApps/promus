@@ -11,18 +11,21 @@ class NotificationSwitchTile extends StatelessWidget {
     required this.label,
     required this.value,
     required this.onChanged,
+    this.enabled = true,
     this.extra,
   });
 
   final String label;
   final bool value;
   final ValueChanged<bool> onChanged;
+  final bool enabled;
 
   final Widget? extra;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      enabled: enabled,
       visualDensity: .compact,
       shape: AppShapes.medium,
       contentPadding: AppPaddings.hrMedium,
@@ -39,7 +42,7 @@ class NotificationSwitchTile extends StatelessWidget {
             extra!,
             const SizedBox(width: AppSpacing.medium),
           ],
-          Switch(value: value, onChanged: onChanged),
+          Switch(value: value, onChanged: enabled ? onChanged : null),
         ],
       ),
     );

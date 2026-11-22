@@ -129,6 +129,7 @@ class AppStrings {
   static const String databaseFailed = 'Не удалось подготовить базу данных';
   static const String databaseRetry = 'Попробовать заново';
 
+  static const String allNotifications = 'Все уведомления';
   static const String iqamah = 'Икама';
   static const String prayerDuha = 'Ад-Духа';
   static const String adhkar = 'Азкары';
