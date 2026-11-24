@@ -15,7 +15,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  syncfusion_localizations: ^35.2.12
+  syncfusion_localizations: ^35.2.13
 
   cupertino_icons: 2.0.0
   material_ui: ^1.11.1
@@ -33,7 +33,7 @@ dependencies:
   timezone: ^0.11.2
   wakelock_plus: ^1.8.2
   vibration: ^3.2.1
-  flutter_local_notifications: ^23.0.3
+  flutter_local_notifications: ^23.0.4
   hive_ce: ^2.24.0
   path_provider: ^2.1.6
   equatable: ^3.0.0
