@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path_provider/path_provider.dart';
@@ -37,6 +39,29 @@ import 'features/quran/surah/states/surah_name_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  void registerFontLicenses() {
+    LicenseRegistry.addLicense(() async* {
+      yield LicenseEntryWithLineBreaks(
+        ['PT Sans'],
+        await rootBundle.loadString('assets/licenses/pt_sans_ofl.txt'),
+      );
+      yield LicenseEntryWithLineBreaks(
+        ['Noto Naskh Arabic'],
+        await rootBundle.loadString('assets/licenses/noto_naskh_ofl.txt'),
+      );
+      yield LicenseEntryWithLineBreaks(
+        ['KFGQPC HAFS Uthmanic Script'],
+        await rootBundle.loadString('assets/licenses/kfgqpc_hafs.txt'),
+      );
+      yield LicenseEntryWithLineBreaks(
+        ['Surah name v4', 'Juz name', 'QCF Bismillah'],
+        await rootBundle.loadString('assets/licenses/qul_fonts.txt'),
+      );
+    });
+  }
+
+  registerFontLicenses();
 
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);

@@ -23,7 +23,7 @@ class RemainingPrayerTimeSleek extends StatelessWidget {
       appearance: CircularSliderAppearance(
         startAngle: 270,
         angleRange: 360,
-        counterClockwise: false,
+        counterClockwise: true,
         customWidths: CustomSliderWidths(
           progressBarWidth: AppSpacing.medium,
           shadowWidth: 0,

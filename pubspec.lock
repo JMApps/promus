@@ -361,10 +361,10 @@ packages:
     dependency: transitive
     description:
       name: jni
-      sha256: "822c3f004742158b80b558773ebed29891f407058d5798992436a68bdf14ccda"
+      sha256: "19764f78f6b9e0d40f6395b04649d1046eb57f5ccf05afce50cc63e5a82777b0"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   jni_flutter:
     dependency: transitive
     description:
@@ -775,14 +775,6 @@ packages:
     description:
       name: syncfusion_flutter_core
       sha256: de2496525b2ff5e4493fe1bd0da212e0500f35754a55090adf82cd9b7fa0c90f
-      url: "https://pub.dev"
-    source: hosted
-    version: "35.2.12"
-  syncfusion_flutter_datepicker:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_datepicker
-      sha256: "91ba6e36cd75b6a5f2a7c346bc7feac2080106913a81df861f5be06a834a5e86"
       url: "https://pub.dev"
     source: hosted
     version: "35.2.12"

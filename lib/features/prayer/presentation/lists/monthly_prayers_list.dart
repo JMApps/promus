@@ -13,7 +13,7 @@ class MonthlyPrayersList extends StatefulWidget {
 }
 
 class _MonthlyPrayersListState extends State<MonthlyPrayersList> {
-  static const double _dividerHeight = 1;
+  static const double _dividerHeight = 0;
   static const double _rowExtent = MonthlyPrayersDayRow.height + _dividerHeight;
 
   late final ScrollController _controller;

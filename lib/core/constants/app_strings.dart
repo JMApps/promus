@@ -4,6 +4,8 @@ class AppStrings {
   AppStrings._();
 
   static const String appName = 'ПроМус';
+  static const String appVersion = '1.0.0';
+  static const String licenses = 'Лицензии';
   static const String pro = 'Про';
   static const String mus = 'Мус';
 

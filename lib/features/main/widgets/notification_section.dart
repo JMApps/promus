@@ -22,7 +22,7 @@ class NotificationSection extends StatelessWidget {
         const SizedBox(height: AppSpacing.medium),
         for (var i = 0; i < children.length; i++) ...[
           children[i],
-          const Divider(),
+          const Divider(height: 7.5),
         ],
         const SizedBox(height: AppSpacing.small),
       ],

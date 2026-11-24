@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:promus/core/theme/app_spacing.dart';
-import 'package:promus/core/theme/app_text_styles.dart';
 
 import '../../../../core/theme/app_paddings.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 
 class MonthlyPrayersDayRow extends StatelessWidget {
   const MonthlyPrayersDayRow({
@@ -18,9 +18,8 @@ class MonthlyPrayersDayRow extends StatelessWidget {
   final bool isFriday;
   final List<String> values;
 
-  static const double height = 56;
+  static const double height = 50;
 
-  static const double horizontalPadding = 8;
   static const double leadingWidth = AppSpacing.medium * 2 + AppSpacing.medium;
 
   @override

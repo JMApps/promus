@@ -26,7 +26,6 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   scrollable_positioned_list: ^0.3.8
   flutter_material_color_picker: ^1.2.0
-  syncfusion_flutter_datepicker: ^35.2.12
   home_widget: ^0.10.0
   sqflite: ^2.4.6
   hijri: ^3.0.1
@@ -62,6 +61,7 @@ flutter:
     - assets/fonts/
     - assets/icons/
     - assets/databases/
+    - assets/licenses/
 
   fonts:
     - family: Uthmanic
