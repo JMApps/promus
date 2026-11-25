@@ -21,7 +21,7 @@ class MainSettingsPage extends StatelessWidget {
           const Padding(
             padding: AppPaddings.medium,
             child: Text(
-              '${AppStrings.appName} | ${AppStrings.appVersion}\nПосвящается Обладаетлю величия и Почитаемому',
+              '${AppStrings.appName} | ${AppStrings.appVersion}\nПосвящается Обладателю величия и Почитаемому',
               style: AppTextStyles.small,
             ),
           ),
