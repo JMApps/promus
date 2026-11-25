@@ -21,7 +21,8 @@ dependencies:
   material_ui: ^1.11.1
   cupertino_ui: ^1.1.7
 
-  adhan: ^2.0.0+1
+  adhan:
+    path: packages/adhan
   flutter_html: ^3.0.0
   salomon_bottom_bar: ^3.3.2
   scrollable_positioned_list: ^0.3.8
@@ -85,3 +86,5 @@ flutter:
 
 dependency_overrides:
   html: 0.15.4
+  adhan:
+    path: packages/adhan

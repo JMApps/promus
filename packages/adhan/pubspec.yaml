@@ -1,0 +1,17 @@
+name: adhan
+description: Adhan for Dart / Muslim Prayer Times Library. Now retrieving Prayer time in Dart easier than ever.
+version: 2.0.0+1
+homepage: https://github.com/iamriajul/adhan-dart
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dev_dependencies:
+  pedantic: ^1.11.0
+  test: ^1.16.5
+  intl: ^0.17.0
+  dart_numerics: ^0.0.5
+  enum_to_string: ^2.0.1
+  strings: ^0.1.2
+  path: ^1.8.0
+  timezone: ^0.9.2
