@@ -74,7 +74,7 @@
 
 ## Обратная связь
 
-Нашли ошибку или есть предложение? Создайте [Issue](https://github.com/JMApps/promus/issues) или напишите: devmusapps@gmail.com
+Нашли ошибку или есть предложение? Создайте [Issue](https://github.com/JMApps/promus/issues) или напишите: jmappsmuslim@gmail.com
 
 ---
 
