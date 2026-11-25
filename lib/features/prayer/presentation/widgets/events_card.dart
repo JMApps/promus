@@ -8,21 +8,40 @@ import 'event_times_stepper.dart';
 class EventsCard extends StatelessWidget {
   const EventsCard({super.key});
 
+  /// Минимальная ширина, при которой степпер и кольцо помещаются в ряд.
+  static const double rowBreakpoint = 380;
+
   @override
   Widget build(BuildContext context) {
-    return const Card(
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
+    return Card(
       child: Padding(
         padding: AppPaddings.mediumBottomSmall,
-        child: Row(
-          crossAxisAlignment: .center,
-          mainAxisAlignment: .center,
-          children: [
-            Flexible(
-              child: EventTimesStepper(),
-            ),
-            SizedBox(width: AppSpacing.large),
-            EventProgressRing(),
-          ],
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isCompact = constraints.maxWidth < rowBreakpoint * textScale;
+            return isCompact
+                ? const Column(
+              mainAxisSize: .min,
+              crossAxisAlignment: .center,
+              children: [
+                EventProgressRing(size: 72),
+                SizedBox(height: AppSpacing.small),
+                EventTimesStepper(),
+              ],
+            )
+                : const Row(
+              crossAxisAlignment: .center,
+              mainAxisAlignment: .center,
+              children: [
+                Flexible(
+                  child: EventTimesStepper(),
+                ),
+                SizedBox(width: AppSpacing.medium),
+                EventProgressRing(),
+              ],
+            );
+          },
         ),
       ),
     );

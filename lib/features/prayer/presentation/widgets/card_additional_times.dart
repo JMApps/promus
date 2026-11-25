@@ -10,21 +10,23 @@ class CardAdditionalTimes extends StatelessWidget {
     required this.eventName,
     required this.progress,
     required this.timeText,
+    this.size = 85,
   });
 
   final String eventName;
   final double progress;
   final String timeText;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
     return SleekCircularSlider(
       appearance: CircularSliderAppearance(
-        size: 85,
+        size: size,
         startAngle: 270,
         angleRange: 360,
-        counterClockwise: false,
+        counterClockwise: true,
         customWidths: CustomSliderWidths(
           progressBarWidth: AppSpacing.small,
           shadowWidth: 0,

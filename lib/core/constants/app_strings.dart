@@ -3,8 +3,11 @@ import 'package:intl/intl.dart';
 class AppStrings {
   AppStrings._();
 
+  // git tag v1.0.1
+  // git push origin v1.0.1
+
   static const String appName = 'ПроМус';
-  static const String appVersion = '1.0.0';
+  static const String appVersion = '1.0.1';
   static const String licenses = 'Лицензии';
   static const String pro = 'Про';
   static const String mus = 'Мус';
@@ -101,7 +104,7 @@ class AppStrings {
 
   static const String sunrise = 'Восход';
   static const String midnight = 'Полночь';
-  static const String lastThirdNight = '1/3 ночи';
+  static const String lastThirdNight = 'Тахаджуд';
 
   static const String daysToRamadan = 'Дней до Рамадана';
   static const String holyRamadan = 'Священный Рамадан';

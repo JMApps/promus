@@ -6,7 +6,9 @@ import '../../state/prayer_state.dart';
 import 'card_additional_times.dart';
 
 class EventProgressRing extends StatelessWidget {
-  const EventProgressRing({super.key});
+  const EventProgressRing({super.key, this.size = 85});
+
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +17,7 @@ class EventProgressRing extends StatelessWidget {
       eventName: event.name,
       progress: event.progress,
       timeText: event.timeText,
+      size: size,
     );
   }
 }

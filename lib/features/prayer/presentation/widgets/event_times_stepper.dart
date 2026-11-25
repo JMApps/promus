@@ -16,10 +16,10 @@ class EventTimesStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (:times, :sunnah, :step) = context.select<PrayerState, ({PrayerTimes times, SunnahTimes sunnah, int step})>((s) => (
-        times: s.prayerTimes,
-        sunnah: s.sunnahTimes,
-        step: s.currentEventStep,
-      ),
+    times: s.prayerTimes,
+    sunnah: s.sunnahTimes,
+    step: s.currentEventStep,
+    ),
     );
     final format = context.read<PrayerState>().formatTime;
     final appColors = Theme.of(context).colorScheme;
@@ -28,6 +28,8 @@ class EventTimesStepper extends StatelessWidget {
       customTitle: Text(
         '$name\n${format(time)}',
         textAlign: .center,
+        maxLines: 2,
+        overflow: .ellipsis,
         style: TextStyle(
           color: appColors.onSurface,
           fontFamily: FontFamilies.ptSans,
@@ -38,46 +40,53 @@ class EventTimesStepper extends StatelessWidget {
     return fm.Material(
       type: fm.MaterialType.transparency,
       child: IgnorePointer(
-        child: EasyStepper(
-          verticalAlignment: .start,
-          activeStep: step,
-          direction: .horizontal,
-          showTitle: true,
-          showLoadingAnimation: false,
-          stepRadius: AppSpacing.large,
-          finishedStepBackgroundColor: appColors.primary,
-          activeStepBackgroundColor: appColors.tertiary,
-          unreachedStepBorderColor: appColors.secondaryContainer,
-          activeStepBorderColor: Colors.transparent,
-          unreachedStepIconColor: appColors.secondaryContainer,
-          activeStepIconColor: appColors.primaryContainer,
-          finishedStepIconColor: appColors.onPrimary,
-          borderThickness: 3.5,
-          activeStepBorderType: .normal,
-          unreachedStepBorderType: .normal,
-          lineStyle: LineStyle(
-            lineType: .dotted,
-            unreachedLineType: .dotted,
-            defaultLineColor: appColors.inversePrimary,
-            finishedLineColor: appColors.primary,
-          ),
-          steps: [
-            stepOf(
-              CupertinoIcons.sunrise_fill,
-              AppStrings.sunrise,
-              times.sunrise,
-            ),
-            stepOf(
-              CupertinoIcons.moon_fill,
-              AppStrings.midnight,
-              sunnah.middleOfTheNight,
-            ),
-            stepOf(
-              Icons.donut_small,
-              AppStrings.lastThirdNight,
-              sunnah.lastThirdOfTheNight,
-            ),
-          ],
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final stepRadius = (constraints.maxWidth / 12)
+                .clamp(AppSpacing.medium, AppSpacing.large)
+                .toDouble();
+            return EasyStepper(
+              verticalAlignment: .start,
+              activeStep: step,
+              direction: .horizontal,
+              showTitle: true,
+              showLoadingAnimation: false,
+              stepRadius: stepRadius,
+              finishedStepBackgroundColor: appColors.primary,
+              activeStepBackgroundColor: appColors.tertiary,
+              unreachedStepBorderColor: appColors.secondaryContainer,
+              activeStepBorderColor: Colors.transparent,
+              unreachedStepIconColor: appColors.secondaryContainer,
+              activeStepIconColor: appColors.primaryContainer,
+              finishedStepIconColor: appColors.onPrimary,
+              borderThickness: 3.5,
+              activeStepBorderType: .normal,
+              unreachedStepBorderType: .normal,
+              lineStyle: LineStyle(
+                lineType: .dotted,
+                unreachedLineType: .dotted,
+                defaultLineColor: appColors.inversePrimary,
+                finishedLineColor: appColors.primary,
+              ),
+              steps: [
+                stepOf(
+                  CupertinoIcons.sunrise_fill,
+                  AppStrings.sunrise,
+                  times.sunrise,
+                ),
+                stepOf(
+                  CupertinoIcons.moon_fill,
+                  AppStrings.midnight,
+                  sunnah.middleOfTheNight,
+                ),
+                stepOf(
+                  Icons.donut_small,
+                  AppStrings.lastThirdNight,
+                  sunnah.lastThirdOfTheNight,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

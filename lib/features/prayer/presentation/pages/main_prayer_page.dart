@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:promus/core/constants/font_families.dart';
 
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/font_families.dart';
 import '../../../../core/constants/icon_paths.dart';
 import '../../../../core/routes/names_router.dart';
 import '../../../../core/theme/app_spacing.dart';
