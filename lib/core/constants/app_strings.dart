@@ -3,8 +3,11 @@ import 'package:intl/intl.dart';
 class AppStrings {
   AppStrings._();
 
-  // git tag v1.0.1
-  // git push origin v1.0.1
+  /*
+  git commit -m "Новая версия"
+  git tag v1.0.1
+  git push origin v1.0.1
+   */
 
   static const String appName = 'ПроМус';
   static const String appVersion = '1.0.1';
