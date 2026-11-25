@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/screenshots/1.png" alt="ПроМус — время молитв" width="300">
+ <img src="docs/screenshots/1_p.jpg" alt="ПроМус — время молитв" width="300">
 </p>
 
 <h1 align="center">ПроМус — Провизия мусульманина</h1>
@@ -16,14 +16,12 @@
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/1.png" width="200">
-  <img src="docs/screenshots/2.png" width="200">
-  <img src="docs/screenshots/3.png" width="200">
-  <img src="docs/screenshots/4.png" width="200">
-  <img src="docs/screenshots/5.png" width="200">
-
+  <img src="docs/screenshots/1_p.jpg" width="160">
+  <img src="docs/screenshots/2_p.jpg" width="160">
+  <img src="docs/screenshots/3_p.jpg" width="160">
+  <img src="docs/screenshots/4_p.jpg" width="160">
+  <img src="docs/screenshots/5_p.jpg" width="160">
 </p>
-
 ---
 
 ## О приложении
@@ -74,7 +72,7 @@
 
 ## Обратная связь
 
-Нашли ошибку или есть предложение? Создайте [Issue](https://github.com/JMApps/promus/issues) или напишите: devmusapps@gmail.com
+Нашли ошибку или есть предложение? Создайте [Issue](https://github.com/JMApps/promus/issues) или напишите: jmappsmuslim@gmail.com
 
 ---
 
