@@ -1,5 +1,5 @@
 <p align="center">
- <img src="docs/screenshots/1_p.jpg" alt="ПроМус — время молитв" width="300">
+ <img src="docs/screenshots/logo.png" alt="ПроМус — время молитв" width="300">
 </p>
 
 <h1 align="center">ПроМус — Провизия мусульманина</h1>
